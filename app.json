@@ -1,9 +1,10 @@
 {
   "expo": {
     "name": "Lotes",
-    "slug": "Lotes",
+    "slug": "lotes",
     "version": "1.0.0",
     "orientation": "portrait",
+    "plugins": ["react-native-nfc-manager"],
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -18,7 +19,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.hynjin.lotes"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,6 +30,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c644f692-b5fb-4c0d-95ea-a055c083c1da"
+      }
+    },
+    "owner": "hynjin"
   }
 }
