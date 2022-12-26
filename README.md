@@ -7,4 +7,5 @@ You can load the banknote with the application. It should contain LNURLw. You th
 
 _At this point, you are assured that no previous owner of the note, or anyone who may have previously scanned it, can claim the funds._
 
-![Untitled-2022-12-13-2051](https://user-images.githubusercontent.com/26002916/209556239-a91ff526-a48a-411c-a7e7-70248e4c7ded.png)
+![Untitled-2022-12-13-2051](https://user-images.githubusercontent.com/26002916/209556239-a91ff526-a48a-411c-a7e7-70248e4c7ded.png#gh-light-mode-only)
+![Untitled-2022-12-13-2051 (1)](https://user-images.githubusercontent.com/26002916/209576535-8be5a6d8-ae5e-4a20-93bb-6ad5e8f4dd35.png#gh-dark-mode-only)
