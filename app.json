@@ -4,7 +4,9 @@
     "slug": "lotes",
     "version": "1.0.0",
     "orientation": "portrait",
-    "plugins": ["react-native-nfc-manager"],
+    "plugins": [
+      "react-native-nfc-manager"
+    ],
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -26,7 +28,11 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "permissions": [
+        "android.permission.NFC"
+      ],
+      "package": "com.hynjin.lotes"
     },
     "web": {
       "favicon": "./assets/favicon.png"
