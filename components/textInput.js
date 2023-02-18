@@ -1,9 +1,9 @@
 import React from "react";
 import { SafeAreaView, StyleSheet, TextInput } from "react-native";
 
-const UselessTextInput = () => {
-  const [text, onChangeText] = React.useState("Default Text");
-  const [number, onChangeNumber] = React.useState(null);
+const LNURLwTextInput = () => {
+  const [text, onChangeText] = React.useState(null);
+
 
   return (
     <SafeAreaView>
@@ -11,14 +11,9 @@ const UselessTextInput = () => {
         style={styles.input}
         onChangeText={onChangeText}
         value={text}
+        placeholder="Insert LNURLw"
       />
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangeNumber}
-        value={number}
-        placeholder="useless placeholder"
-        keyboardType="numeric"
-      />
+  
     </SafeAreaView>
   );
 };
@@ -32,4 +27,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UselessTextInput;
+export default LNURLwTextInput;

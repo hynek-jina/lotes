@@ -9,6 +9,8 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+App nfc.js
+App nfc2.js
 
 # macOS
 .DS_Store
