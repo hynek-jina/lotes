@@ -43,18 +43,38 @@ export const readNfc = async () => {
   
 };
 
+// export const writeNdef = async (message) => {
+//   try {
+//     await NfcManager.requestTechnology(NfcTech.Ndef);
+
+//     const bytes = Ndef.encodeMessage([Ndef.textRecord(message)]);
+
+//     if (bytes) {
+//       await NfcManager.ndefHandler.writeNdefMessage(bytes);
+//     }
+//   } catch (ex) {
+//     console.warn(ex);
+//   } finally {
+//     NfcManager.cancelTechnologyRequest();
+//   }
+// };
+
 export const writeNdef = async (message) => {
-  try {
-    await NfcManager.requestTechnology(NfcTech.Ndef);
-
-    const bytes = Ndef.encodeMessage([Ndef.textRecord(message)]);
-
-    if (bytes) {
-      await NfcManager.ndefHandler.writeNdefMessage(bytes);
+    try {
+      const tech = await NfcManager.requestTechnology(NfcTech.Ndef, {
+        alertMessage: "Hold your device close to the tag you wish to write to.",
+      });
+  
+      const bytes = Ndef.encodeMessage([Ndef.textRecord(message)]);
+      await NfcManager.writeNdefMessage(bytes);
+  
+      await NfcManager.setAlertMessageIOS("Successfully wrote to NFC tag.");
+      await NfcManager.cancelTechnologyRequest();
+  
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
     }
-  } catch (ex) {
-    console.warn(ex);
-  } finally {
-    NfcManager.cancelTechnologyRequest();
-  }
-};
+  };
+  

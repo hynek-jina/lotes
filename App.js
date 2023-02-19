@@ -43,11 +43,12 @@ const App = () => {
         setStatus("5");
         const newLNURL = await createLNURL(invoiceAmount);
         console.log(`LNURL created: ${newLNURL}`);
+        setMessage(newLNURL)
 
-        //6) WRITE TO NFC
-        setStatus("6");
-        await writeNdef(newLNURL); //tohle to taky nedělá
-        setStatus("Nádhera");
+        // //6) WRITE TO NFC
+        // setStatus("6");
+        // await writeNdef(newLNURL); //tohle to taky nedělá
+        // setStatus("Nádhera");
       }
     } catch (error) {
       console.error(error);
@@ -63,12 +64,12 @@ const App = () => {
         <Text style={styles.buttonText}>Scan NFC</Text>
       </TouchableOpacity>
 
-      {/* <TouchableOpacity
+      <TouchableOpacity
         style={styles.button}
         onPress={() => writeNdef(message)}
       >
         <Text style={styles.buttonText}>Write to NFC</Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
 
       <Text>Message: {message}</Text>
       <Text>Status: {status}</Text>
