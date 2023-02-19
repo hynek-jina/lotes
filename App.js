@@ -1,12 +1,6 @@
-import { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  ActivityIndicator,
-} from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { readNfc, writeNdef } from "./components/nfc";
 import {
   createLNURL,
   scanLNURL,
@@ -15,70 +9,69 @@ import {
 } from "./components/api";
 
 const App = () => {
-  const [paymentStatus, setPaymentStatus] = useState("");
-
-  const [isLoading, setIsLoading] = useState(false);
-
-  const getContent = () => {
-    if (isLoading) {
-      return (
-        <View>
-          <ActivityIndicator />
-        </View>
-      );
-    }
-
-    return (
-      <View>
-        <Text style={styles.displayedText}>Status: {paymentStatus}</Text>
-      </View>
-    );
-  };
+  const [message, setMessage] = useState("Lotes");
+  const [status, setStatus] = useState("");
 
   const handleButtonPress = async () => {
-    setIsLoading(true);
-
     try {
-      //CREATE LNURL
-      const bobLNURL = await createLNURL();
-      console.log(`LNURL created: ${bobLNURL}`);
+      //1) READ NFC
+      setStatus("1");
+      const readNfcMessage = await readNfc();
+      setMessage(readNfcMessage); // TODO: Add LNURL validation (no spaces, starting with "LNRUL", longer then 20 characters) Nebo to handlovat následnou funkcí scanLNURL?
+      console.log("tohle jsme přečetli: ", readNfcMessage);
 
-      //SCAN LNURL
-      const json = await scanLNURL(bobLNURL);
+      //2) SCAN LNURL
+      setStatus("2");
+      const json = await scanLNURL(readNfcMessage);
       const callback = json.callback;
       const maxWithdrawable = json.maxWithdrawable;
       const invoiceAmount = maxWithdrawable / 1000;
 
-      //CREATE AN INVOICE
+      //3) CREATE AN INVOICE
+      setStatus("3");
       const invoice = await getInvoice(invoiceAmount);
       console.log(`Invoice generated: ${invoice}`);
 
-      //REQUEST PAYMENT
+      //4) REQUEST PAYMENT
+      setStatus("4");
       const paymentStatus = await paymentRequest(callback, invoice);
       console.log("payment requested");
-      setPaymentStatus(paymentStatus);
+
+      setStatus("4.5");
+      if (paymentStatus === "OK") {
+        //5) CREATE LNURL
+        setStatus("5");
+        const newLNURL = await createLNURL(invoiceAmount);
+        console.log(`LNURL created: ${newLNURL}`);
+
+        //6) WRITE TO NFC
+        setStatus("6");
+        await writeNdef(newLNURL); //tohle to taky nedělá
+        setStatus("Nádhera");
+      }
     } catch (error) {
       console.error(error);
-      setPaymentStatus("Error occurred while processing payment");
-    } finally {
-      setIsLoading(false);
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text>Insert LNURL and see it displayed</Text>
+      <Text style={styles.header}> Lotes</Text>
+      <Text>NFC reader for lightning notes ⚡️</Text>
 
-      {/* <TextInput
-        style={styles.input}
-        placeholder="Paste LNURL here"
-        onChangeText={handleInputChange}
-        value={inputValue}
-      /> */}
       <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
-        <Text style={styles.buttonText}>Scan LNURL</Text>
+        <Text style={styles.buttonText}>Scan NFC</Text>
       </TouchableOpacity>
-      <Text>{getContent()}</Text>
+
+      {/* <TouchableOpacity
+        style={styles.button}
+        onPress={() => writeNdef(message)}
+      >
+        <Text style={styles.buttonText}>Write to NFC</Text>
+      </TouchableOpacity> */}
+
+      <Text>Message: {message}</Text>
+      <Text>Status: {status}</Text>
     </View>
   );
 };
@@ -86,27 +79,28 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
   },
-  input: {
-    width: "80%",
-    padding: 10,
-    borderWidth: 1,
-    borderColor: "gray",
-    marginBottom: 10,
-  },
   button: {
-    backgroundColor: "lightblue",
+    marginVertical: 20,
     padding: 10,
-    width: "40%",
+    backgroundColor: "#008CBA",
+    borderRadius: 5,
   },
   buttonText: {
-    textAlign: "center",
-    color: "white",
+    color: "#ffffff",
+    fontWeight: "bold",
   },
-  displayedText: {
-    marginTop: 10,
+  header: {
+    height: 80,
+    width: "100%",
+    borderBottomColor: "#333",
+    color: "#000",
+    fontSize: 36,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
 

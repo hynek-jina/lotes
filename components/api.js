@@ -1,15 +1,14 @@
 const apiKey = "91e1464689ba490abb38fa77e2db6239";
 const serverDomain = "https://legend.lnbits.com/";
 
-export const createLNURL = async () =>  {
-  //Bob
-  const result = await fetch("https://legend.lnbits.com/withdraw/api/v1/links", {
+export const createLNURL = async (amount) =>  {
+  const result = await fetch(serverDomain + "withdraw/api/v1/links", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
-      "X-Api-Key": "43d476646c4d407b94cdf6ca80c09e5a",
+      "X-Api-Key": apiKey
     },
-    body: JSON.stringify({"title": "Lotes", "min_withdrawable": 1, "max_withdrawable": 2, "uses": 1, "wait_time": 1, "is_unique": true}),
+    body: JSON.stringify({"title": "Lotes", "min_withdrawable": amount, "max_withdrawable": amount, "uses": 1, "wait_time": 1, "is_unique": true}),
   })
   const json = await result.json();
   return json.lnurl;

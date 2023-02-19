@@ -11,11 +11,11 @@ PODS:
     - ExpoModulesCore
   - EXFont (11.0.1):
     - ExpoModulesCore
-  - Expo (47.0.8):
+  - Expo (47.0.13):
     - ExpoModulesCore
   - ExpoKeepAwake (11.0.1):
     - ExpoModulesCore
-  - ExpoModulesCore (1.0.3):
+  - ExpoModulesCore (1.1.1):
     - React-Core
     - ReactCommon/turbomodule/core
   - EXSplashScreen (0.17.5):
@@ -240,7 +240,7 @@ PODS:
   - React-jsinspector (0.70.5)
   - React-logger (0.70.5):
     - glog
-  - react-native-nfc-manager (3.14.1):
+  - react-native-nfc-manager (3.14.2):
     - React-Core
   - React-perflogger (0.70.5)
   - React-RCTActionSheet (0.70.5):
@@ -453,9 +453,9 @@ SPEC CHECKSUMS:
   EXErrorRecovery: ae43433feb0608a64dc5b1c8363b3e7769a9ea24
   EXFileSystem: 60602b6eefa6873f97172c684b7537c9760b50d6
   EXFont: 319606bfe48c33b5b5063fb0994afdc496befe80
-  Expo: 36b5f625d36728adbdd1934d4d57182f319ab832
+  Expo: b9fa98bf260992312ee3c424400819fb9beadafe
   ExpoKeepAwake: 69b59d0a8d2b24de9f82759c39b3821fec030318
-  ExpoModulesCore: b5d21c8880afda6fb6ee95469f9ac2ec9b98e995
+  ExpoModulesCore: 485dff3a59b036a33b6050c0a5aea3cf1037fdd1
   EXSplashScreen: 3e989924f61a8dd07ee4ea584c6ba14be9b51949
   FBLazyVector: affa4ba1bfdaac110a789192f4d452b053a86624
   FBReactNativeSpec: fe8b5f1429cfe83a8d72dc8ed61dc7704cac8745
@@ -475,7 +475,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 31564fa6912459921568e8b0e49024285a4d584b
   React-jsinspector: badd81696361249893a80477983e697aab3c1a34
   React-logger: fdda34dd285bdb0232e059b19d9606fa0ec3bb9c
-  react-native-nfc-manager: 60e143e34fd2080597c56306764aabdfc875e2f0
+  react-native-nfc-manager: c0e6048b119fa3ae7b02ae927d4a801b8e76f287
   React-perflogger: e68d3795cf5d247a0379735cbac7309adf2fb931
   React-RCTActionSheet: 05452c3b281edb27850253db13ecd4c5a65bc247
   React-RCTAnimation: 578eebac706428e68466118e84aeacf3a282b4da
