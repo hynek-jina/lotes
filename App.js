@@ -6,11 +6,60 @@ import {
   scanLNURL,
   getInvoice,
   paymentRequest,
+  getBalance,
+  getRecords,
 } from "./components/api";
+import { RecordsList } from "./components/lotes";
 
 const App = () => {
   const [message, setMessage] = useState("Lotes");
   const [status, setStatus] = useState("");
+  const [balance, setBalance] = useState(0);
+  const [records, setRecords] = useState([]);
+  const [allLotesValue, setAllLotesValue] = useState(0);
+
+  useEffect(() => {
+    const fetchBalance = async () => {
+      const showBalance = await getBalance();
+      setBalance(showBalance);
+    };
+    const timer = setInterval(fetchBalance, 10000);
+    return () => clearInterval(timer);
+  }, [setBalance]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getRecords();
+      // const data = await response.json();
+      setRecords(data);
+
+      let sum = 0;
+      data.forEach((withdrawal) => {
+        sum += withdrawal.max_withdrawable;
+      });
+      setAllLotesValue(sum);
+    };
+
+    fetchData();
+  }, []);
+
+  const returtnAvailableBalance = () => {
+    if (balance >= allLotesValue) {
+      return (
+        <View>
+          <Text>{balance - allLotesValue} sats k dispozici</Text>
+        </View>
+      );
+    }
+    return (
+      <View>
+        <Text style={styles.redText}>
+          Vaše lotes nejsou dostatečně kryté.. ({balance - allLotesValue} sats k
+          dispozici)
+        </Text>
+      </View>
+    );
+  };
 
   const handleButtonPress = async () => {
     try {
@@ -43,7 +92,7 @@ const App = () => {
         setStatus("5");
         const newLNURL = await createLNURL(invoiceAmount);
         console.log(`LNURL created: ${newLNURL}`);
-        setMessage(newLNURL)
+        setMessage(newLNURL);
 
         // //6) WRITE TO NFC
         // setStatus("6");
@@ -57,8 +106,11 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}> Lotes</Text>
+      <Text style={styles.header}> {balance} </Text>
+      <Text style={styles.subHeader}>sats</Text>
+
       <Text>NFC reader for lightning notes ⚡️</Text>
+      {returtnAvailableBalance()}
 
       <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
         <Text style={styles.buttonText}>Scan NFC</Text>
@@ -73,6 +125,10 @@ const App = () => {
 
       <Text>Message: {message}</Text>
       <Text>Status: {status}</Text>
+      <View>
+        <Text>Your Lotes</Text>
+        <RecordsList records={records} />
+      </View>
     </View>
   );
 };
@@ -94,14 +150,20 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontWeight: "bold",
   },
+  redText: {
+    color: "#F00",
+  },
   header: {
-    height: 80,
+    // height: 80,
     width: "100%",
     borderBottomColor: "#333",
     color: "#000",
     fontSize: 36,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  subHeader: {
+    height: 80,
   },
 });
 
