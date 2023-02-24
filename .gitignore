@@ -11,6 +11,8 @@ npm-debug.*
 web-build/
 App nfc stable.js
 App lnurl.js
+config.js
+
 
 # macOS
 .DS_Store
