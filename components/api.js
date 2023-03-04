@@ -1,5 +1,4 @@
 import { apiKey } from "../config";
-
 const serverDomain = "https://legend.lnbits.com/";
 
 export const createLNURL = async (amount) => {
@@ -60,22 +59,23 @@ export const paymentRequest = async (scanCallback, invoice) => {
   return json.status;
 };
 
-export const getBalance = async () => {
+export const getBalance = async (key) => {
+  console.log("Koukám na balance s klíčem: ", key);
   const result = await fetch(serverDomain + "api/v1/wallet", {
     method: "GET",
     headers: {
-      "X-Api-Key": apiKey,
+      "X-Api-Key": key,
     },
   });
   const json = await result.json();
   return json.balance / 1000;
 };
 
-export const getRecords = async () => {
+export const getRecords = async (key) => {
   const result = await fetch(serverDomain + "withdraw/api/v1/links", {
     method: "GET",
     headers: {
-      "X-Api-Key": apiKey,
+      "X-Api-Key": key,
     },
   });
   const json = await result.json();
