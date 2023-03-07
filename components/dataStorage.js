@@ -1,4 +1,5 @@
 import { AsyncStorage } from "react-native";
+// import { AsyncStorage } from "@react-native-async-storage";
 import { useState, useEffect } from "react";
 
 const dataStorage = () => {
@@ -32,7 +33,7 @@ const dataStorage = () => {
     };
     getValue();
   }, []);
-  return  { key, server }
+  return { key, server };
 };
 
 export default dataStorage;

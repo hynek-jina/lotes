@@ -1,6 +1,7 @@
-import { AsyncStorage, View, Text } from "react-native";
+import {View, Text } from "react-native";
+// import { AsyncStorage } from "@react-native-async-storage";
 import { useState } from "react";
-import { TouchableOpacity, SafeAreaView, TextInput } from "react-native";
+import { AsyncStorage, TouchableOpacity, SafeAreaView, TextInput } from "react-native";
 import { styles } from "../components/styles";
 import { API_KEY, SERVER } from "../config";
 
