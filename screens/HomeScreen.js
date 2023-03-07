@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, AsyncStorage } from "react-native";
+import { AsyncStorage, View, Text, TouchableOpacity} from "react-native";
+// import { AsyncStorage } from "@+react-native-async-storage";
 import { readNfc, writeNdef } from "../components/nfc";
 import {
   createLNURL,
@@ -71,7 +72,7 @@ function HomeScreen({ navigation }) {
     fetchData();
   }, [apiKey]);
 
-  const returtnAvailableBalance = () => {
+  const returnAvailableBalance = () => {
     if (balance >= allLotesValue) {
       return (
         <View>
@@ -145,7 +146,7 @@ function HomeScreen({ navigation }) {
       <Text style={styles.subHeader}>sats</Text>
 
       <Text>NFC reader for lightning notes ⚡️</Text>
-      {returtnAvailableBalance()}
+      {returnAvailableBalance()}
 
       <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
         <Text style={styles.buttonText}>Scan NFC</Text>
