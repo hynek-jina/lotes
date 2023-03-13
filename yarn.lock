@@ -5348,10 +5348,10 @@ react-native-gradle-plugin@^0.70.3:
   resolved "https://registry.npmjs.org/react-native-gradle-plugin/-/react-native-gradle-plugin-0.70.3.tgz"
   integrity sha512-oOanj84fJEXUg9FoEAQomA8ISG+DVIrTZ3qF7m69VQUJyOGYyDZmPqKcjvRku4KXlEH6hWO9i4ACLzNBh8gC0A==
 
-react-native-nfc-manager@^3.14.1:
-  version "3.14.1"
-  resolved "https://registry.npmjs.org/react-native-nfc-manager/-/react-native-nfc-manager-3.14.1.tgz"
-  integrity sha512-K23ixhdrMWE3f67I92V7AM3wDpSmd5K+MioC9hHTfsBbiGi73A6mIFiq6P0EK9a1T9auM9d2LYcsvXwm3fyQeg==
+react-native-nfc-manager@^3.14.2:
+  version "3.14.2"
+  resolved "https://registry.yarnpkg.com/react-native-nfc-manager/-/react-native-nfc-manager-3.14.2.tgz#5cdc65cc0552f89a17365e243b8d73b996e65e68"
+  integrity sha512-9w//z3MwigtZ3YWDvgY+IFZ//dH7jHf70CmzUrMGhM9N4DxlUJOJHjF0GveRh+YxwlVgFDVTFFG96YSRZgPtOw==
   dependencies:
     "@expo/config-plugins" "^4.0.16"
 
