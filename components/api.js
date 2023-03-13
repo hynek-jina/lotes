@@ -78,6 +78,13 @@ export const getRecords = async (key) => {
       "X-Api-Key": key,
     },
   });
+  // TODO use TaskEither and Axios ;)
+  // if result.status is not 2xx number
+    if (!result.ok) {
+      console.error("Error when fetching records", result)
+      throw new Error("Error when fetching records")
+    }
+
   const json = await result.json();
   console.log("records: ", json);
   return json;
