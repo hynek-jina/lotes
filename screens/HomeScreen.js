@@ -9,7 +9,7 @@ import {
   getBalance,
   getRecords,
 } from "../components/api";
-import { RecordsList } from "../components/lotes";
+// import { RecordsList } from "../components/lotes";
 import { Feather } from "@expo/vector-icons";
 import { styles } from "../components/styles";
 import { defaultApiKey } from "../config";
@@ -160,10 +160,10 @@ function HomeScreen({ navigation }) {
 
       <Text>Message: {message}</Text>
       <Text>Status: {status}</Text>
-      <View>
+      {/* <View>
         <Text>Your Lotes</Text>
         <RecordsList records={records} />
-      </View>
+      </View> */}
       
     </View>
   );
