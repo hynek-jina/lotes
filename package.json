@@ -20,7 +20,8 @@
     "react-native-screens": "~3.18.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.19.3"
+    "@babel/core": "^7.19.3",
+    "@types/react-native": "^0.71.3"
   },
   "private": true
 }
