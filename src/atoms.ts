@@ -1,3 +1,3 @@
-import { atomWithAsyncStorage } from "./utils";
+import { atomWithMMKV } from "./atomWithMMKV";
 
-export const apiKeyAtom = atomWithAsyncStorage('apiKey', '')
+export const apiKeyAtom = atomWithMMKV('apiKey', '')
