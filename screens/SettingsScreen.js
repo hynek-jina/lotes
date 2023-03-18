@@ -1,7 +1,7 @@
 import { AsyncStorage, View, Text } from "react-native";
 import { useState } from "react";
 import { TouchableOpacity, SafeAreaView, TextInput } from "react-native";
-import { styles } from "../components/styles";
+import { styles } from "../src/styles";
 import { API_KEY, SERVER } from "../config";
 
 function SettingsScreen({ navigation }) {

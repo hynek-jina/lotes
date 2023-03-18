@@ -11,7 +11,7 @@ import {
 } from "../components/api";
 // import { RecordsList } from "../components/lotes";
 import { Feather } from "@expo/vector-icons";
-import { styles } from "../components/styles";
+import { styles } from "../src/styles";
 import { defaultApiKey } from "../config";
 
 function HomeScreen({ navigation }) {
