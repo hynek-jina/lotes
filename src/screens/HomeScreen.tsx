@@ -19,11 +19,9 @@ import { Feather } from "@expo/vector-icons";
 import { styles } from "../styles";
 // import { defaultApiKey } from "../config";
 
-function Home() {
+function Home({navigation}: {navigation: any}) {
   const [apiKey, setApiKey] = useAtom(apiKeyAtom);
   const [server, setServer] = useAtom(serverAtom);
-
-  
 
   //   const [message, setMessage] = useState("Lotes");
   //   const [status, setStatus] = useState("");
@@ -145,7 +143,7 @@ function Home() {
   return (
     <View style={styles.container}>
       <Feather
-        // onPress={() => navigation.navigate("Settings")}
+        onPress={() => navigation.navigate("Settings")}
         style={styles.right}
         name="settings"
         size={26}
@@ -153,13 +151,13 @@ function Home() {
       />
 
       <Feather
-        // onPress={()=> setBalance(getBalance)}
+        onPress={()=> setBalance(getBalance())}
         style={styles.left}
         name="refresh-ccw"
         size={26}
         color="black"
       />
-      
+
       <Text style={styles.header}> {balance} </Text>
       <Text style={styles.subHeader}>sats</Text>
 

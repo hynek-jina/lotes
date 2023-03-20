@@ -6,7 +6,6 @@ import {
   View,
 } from "react-native";
 import { styles } from "../styles";
-// import { setApiKey, getApiKey } from "../components/ApiKey";
 import { useState } from "react";
 import { atom, useAtom } from "jotai";
 import { apiKeyAtom, serverAtom } from "../atoms";

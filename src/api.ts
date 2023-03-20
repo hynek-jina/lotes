@@ -1,4 +1,4 @@
-import { apiKeyAtom, serverAtom } from './atoms'
+import { apiKeyAtom, serverAtom } from "./atoms";
 import { atom, useAtom } from "jotai";
 
 const [apiKey, setApiKey] = useAtom(apiKeyAtom);
@@ -62,17 +62,46 @@ const [server, setServer] = useAtom(serverAtom);
 //   return json.status;
 // };
 
-export const getBalance = async () => {
-  console.log("Koukám na balance s klíčem: ", apiKey);
-  const result = await fetch(server + "api/v1/wallet", {
+interface getBalanceApiResponse {
+  id: string;
+  name: string;
+  balance: number;
+}
+
+export const getBalance = async (): Promise<number> => {
+  if (!apiKey) {
+    throw new Error("API key not found");
+  }
+
+  const result: Response = await fetch(server + "api/v1/wallet", {
     method: "GET",
     headers: {
       "X-Api-Key": apiKey,
     },
   });
-  const json = await result.json();
+
+  if (!result.ok) {
+    throw new Error(
+      `Failed to fetch wallet balance. Status: ${result.status} - ${result.statusText}`
+    );
+  }
+
+  const json: getBalanceApiResponse = await result.json();
+
   return json.balance / 1000;
 };
+
+// export const getBalance = async () => {
+//   console.log("Koukám na balance s klíčem: ", apiKey);
+//   const result = await fetch(server + "api/v1/wallet", {
+//     method: "GET",
+//     headers: {
+//       "X-Api-Key": apiKey,
+//     },
+//   });
+//   const json = await result.json();
+//   return json.balance / 1000;
+// };
 
 // export const getRecords = async (key) => {
 //   const result = await fetch(serverDomain + "withdraw/api/v1/links", {
