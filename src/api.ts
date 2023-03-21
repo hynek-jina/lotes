@@ -1,8 +1,8 @@
 import { apiKeyAtom, serverAtom } from "./atoms";
-import { atom, useAtom } from "jotai";
+import { atom, useAtom, useAtomValue } from "jotai";
 
-const [apiKey, setApiKey] = useAtom(apiKeyAtom);
-// const apiKey = useAtom(apiKeyAtom)[0]; Tohle je možná lepší -> check with Dejv
+// const [apiKey, setApiKey] = useAtom(apiKeyAtom);
+const apiKey = useAtomValue(apiKeyAtom);
 const [server, setServer] = useAtom(serverAtom);
 
 // export const createLNURL = async (amount) => {
@@ -67,6 +67,39 @@ interface getBalanceApiResponse {
   id: string;
   name: string;
   balance: number;
+}
+
+interface Api {
+  getBalance: () => Promise<number>;
+}
+
+export function useGetBalance(): Api {
+  const apiKey = useAtomValue(apiKeyAtom);
+
+  return {
+    getBalance: async (): Promise<number> => {
+      if (!apiKey) {
+        throw new Error("API key not found");
+      }
+
+      const result: Response = await fetch(server + "api/v1/wallet", {
+        method: "GET",
+        headers: {
+          "X-Api-Key": apiKey,
+        },
+      });
+
+      if (!result.ok) {
+        throw new Error(
+          `Failed to fetch wallet balance. Status: ${result.status} - ${result.statusText}`
+        );
+      }
+
+      const json: getBalanceApiResponse = await result.json();
+
+      return json.balance / 1000;
+    },
+  };
 }
 
 export const getBalance = async (): Promise<number> => {

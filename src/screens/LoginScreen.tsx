@@ -14,26 +14,26 @@ function Login(): JSX.Element {
   const [temporaryApiKey, setTemporaryApiKey] = useState("");
   const [apiKey, setApiKey] = useAtom(apiKeyAtom);
 
-  const [temporaryServer, setTemporaryServer] = useState("https://legend.lnbits.com/");
+  const [temporaryServer, setTemporaryServer] = useState(
+    "https://legend.lnbits.com/"
+  );
   const [server, setServer] = useAtom(serverAtom);
 
   const handleButtonClick = () => {
     setApiKey(temporaryApiKey);
-    setServer(temporaryServer)
+    setServer(temporaryServer);
   };
 
   return (
     <View style={styles.container}>
-
       <SafeAreaView>
-      <Text>Your LNbits apikey:</Text>
+        <Text>Your LNbits apikey:</Text>
         <TextInput
           style={styles.input}
           onChangeText={setTemporaryApiKey}
           placeholder={temporaryApiKey}
-          
         />
-<Text>Your LNbits server:</Text>
+        <Text>Your LNbits server:</Text>
         <TextInput
           style={styles.input}
           onChangeText={setTemporaryServer}
@@ -45,7 +45,6 @@ function Login(): JSX.Element {
         >
           <Text style={styles.buttonText}>Save settings</Text>
         </TouchableOpacity>
-
       </SafeAreaView>
     </View>
   );

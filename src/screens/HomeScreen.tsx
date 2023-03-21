@@ -13,15 +13,17 @@ import { apiKeyAtom, serverAtom } from "../atoms";
 //   getRecords,
 // } from "../components/api";
 // import { RecordsList } from "../components/lotes";
-import { getBalance } from "../api";
+import { useGetBalance } from "../api";
 
 import { Feather } from "@expo/vector-icons";
 import { styles } from "../styles";
 // import { defaultApiKey } from "../config";
 
-function Home({navigation}: {navigation: any}) {
+function Home({ navigation }: { navigation: any }) {
   const [apiKey, setApiKey] = useAtom(apiKeyAtom);
   const [server, setServer] = useAtom(serverAtom);
+
+  const { getBalance } = useGetBalance();
 
   //   const [message, setMessage] = useState("Lotes");
   //   const [status, setStatus] = useState("");

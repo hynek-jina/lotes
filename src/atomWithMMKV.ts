@@ -1,5 +1,5 @@
-import { atomWithStorage, createJSONStorage } from 'jotai/utils';
-import { MMKV } from 'react-native-mmkv';
+import { atomWithStorage, createJSONStorage } from "jotai/utils";
+import { MMKV } from "react-native-mmkv";
 
 const storage = new MMKV();
 
@@ -29,5 +29,5 @@ export const atomWithMMKV = <T>(key: string, initialValue: T) =>
       setItem,
       removeItem,
       clearAll,
-    })),
+    }))
   );
