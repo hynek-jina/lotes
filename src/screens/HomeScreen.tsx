@@ -151,7 +151,7 @@ function Home({navigation}: {navigation: any}) {
       />
 
       <Feather
-        onPress={()=> setBalance(getBalance())}
+        onPress={async () => setBalance(await getBalance())}
         style={styles.left}
         name="refresh-ccw"
         size={26}

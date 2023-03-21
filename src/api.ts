@@ -2,6 +2,7 @@ import { apiKeyAtom, serverAtom } from "./atoms";
 import { atom, useAtom } from "jotai";
 
 const [apiKey, setApiKey] = useAtom(apiKeyAtom);
+// const apiKey = useAtom(apiKeyAtom)[0]; Tohle je možná lepší -> check with Dejv
 const [server, setServer] = useAtom(serverAtom);
 
 // export const createLNURL = async (amount) => {
