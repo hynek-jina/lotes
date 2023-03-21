@@ -2,8 +2,8 @@ import { apiKeyAtom, serverAtom } from "./atoms";
 import { atom, useAtom, useAtomValue } from "jotai";
 
 // const [apiKey, setApiKey] = useAtom(apiKeyAtom);
-const apiKey = useAtomValue(apiKeyAtom);
-const [server, setServer] = useAtom(serverAtom);
+// const apiKey = useAtomValue(apiKeyAtom);
+// const [server, setServer] = useAtom(serverAtom);
 
 // export const createLNURL = async (amount) => {
 //   const result = await fetch(serverDomain + "withdraw/api/v1/links", {
@@ -75,6 +75,7 @@ interface Api {
 
 export function useGetBalance(): Api {
   const apiKey = useAtomValue(apiKeyAtom);
+  const server = useAtomValue(serverAtom);
 
   return {
     getBalance: async (): Promise<number> => {
