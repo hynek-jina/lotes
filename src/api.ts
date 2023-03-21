@@ -63,14 +63,15 @@ import { atom, useAtom, useAtomValue } from "jotai";
 //   return json.status;
 // };
 
+interface Api {
+  getBalance: () => Promise<number>;
+  getInvoice: (amount:number) => Promise<string>;
+}
+
 interface getBalanceApiResponse {
   id: string;
   name: string;
   balance: number;
-}
-
-interface Api {
-  getBalance: () => Promise<number>;
 }
 
 export function useGetBalance(): Api {
@@ -78,7 +79,7 @@ export function useGetBalance(): Api {
   const server = useAtomValue(serverAtom);
 
   return {
-    getBalance: async (): Promise<number> => {
+    getBalance: async (): ReturnType<Api["getBalance"]> => {
       if (!apiKey) {
         throw new Error("API key not found");
       }
@@ -100,31 +101,34 @@ export function useGetBalance(): Api {
 
       return json.balance / 1000;
     },
+    getInvoice: async (amount:number): ReturnType<Api["getInvoice"]> => {
+      return "test"+amount;
+    },
   };
 }
 
-export const getBalance = async (): Promise<number> => {
-  if (!apiKey) {
-    throw new Error("API key not found");
-  }
+// export const getBalance = async (): Promise<number> => {
+//   if (!apiKey) {
+//     throw new Error("API key not found");
+//   }
 
-  const result: Response = await fetch(server + "api/v1/wallet", {
-    method: "GET",
-    headers: {
-      "X-Api-Key": apiKey,
-    },
-  });
+//   const result: Response = await fetch(server + "api/v1/wallet", {
+//     method: "GET",
+//     headers: {
+//       "X-Api-Key": apiKey,
+//     },
+//   });
 
-  if (!result.ok) {
-    throw new Error(
-      `Failed to fetch wallet balance. Status: ${result.status} - ${result.statusText}`
-    );
-  }
+//   if (!result.ok) {
+//     throw new Error(
+//       `Failed to fetch wallet balance. Status: ${result.status} - ${result.statusText}`
+//     );
+//   }
 
-  const json: getBalanceApiResponse = await result.json();
+//   const json: getBalanceApiResponse = await result.json();
 
-  return json.balance / 1000;
-};
+//   return json.balance / 1000;
+// };
 
 // export const getBalance = async () => {
 //   console.log("Koukám na balance s klíčem: ", apiKey);

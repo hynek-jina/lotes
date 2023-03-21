@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { atom, useAtom } from "jotai";
 import { apiKeyAtom, serverAtom } from "../atoms";
 
@@ -22,12 +22,14 @@ import { styles } from "../styles";
 function Home({ navigation }: { navigation: any }) {
   const [apiKey, setApiKey] = useAtom(apiKeyAtom);
   const [server, setServer] = useAtom(serverAtom);
+  const [balance, setBalance] = useState(0);
+  const [invoice, setInvoice] = useState("");
 
-  const { getBalance } = useGetBalance();
+  const { getBalance, getInvoice } = useGetBalance();
+  
 
   //   const [message, setMessage] = useState("Lotes");
   //   const [status, setStatus] = useState("");
-  const [balance, setBalance] = useState(0);
   //   const [records, setRecords] = useState([]);
   //   const [allLotesValue, setAllLotesValue] = useState(0);
   //   const [apiKey, setApiKey] = useState(defaultApiKey);
@@ -98,7 +100,9 @@ function Home({ navigation }: { navigation: any }) {
   //       </View>
   //     );
   //   };
-
+  const handleCreateInvoiceButtonPress = async () => {
+    setInvoice(await getInvoice(10))
+  }
   //   const handleButtonPress = async () => {
   //     try {
   //       //1) READ NFC
@@ -166,8 +170,15 @@ function Home({ navigation }: { navigation: any }) {
       <Text>NFC reader for lightning notes ⚡️</Text>
       <Text>Tvůj api klíč je: {apiKey}</Text>
       <Text>Tvůj api klíč je: {server}</Text>
-      {/* {returtnAvailableBalance()}
+      {/* {returtnAvailableBalance()} */}
 
+      <TouchableOpacity style={styles.button} onPress={handleCreateInvoiceButtonPress}>
+        <Text style={styles.buttonText}>Create an Invoice</Text>
+      </TouchableOpacity>
+
+      <Text>Invoice: {invoice}</Text>
+
+      {/*
       <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
         <Text style={styles.buttonText}>Scan NFC</Text>
       </TouchableOpacity>
