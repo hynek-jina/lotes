@@ -1,7 +1,11 @@
-import React from "react";
 import { Text } from "react-native";
 
-function Record(props) {
+interface RecordProps {
+  max_withdrawable: number;
+  id: string;
+}
+
+function Record(props: RecordProps): JSX.Element {
   return (
     <Text>
       <Text style={{ fontWeight: "bold" }}>{props.max_withdrawable}</Text>
@@ -12,7 +16,11 @@ function Record(props) {
   );
 }
 
-export function RecordsList(props) {
+interface RecordsListProps {
+  records: RecordProps[];
+}
+
+export function RecordsList(props: RecordsListProps): JSX.Element {
   return (
     <Text>
       {props.records.map((record) => (
@@ -21,3 +29,4 @@ export function RecordsList(props) {
     </Text>
   );
 }
+

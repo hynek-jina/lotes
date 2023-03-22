@@ -25,6 +25,11 @@ export const styles = StyleSheet.create({
     top: 40,
     right: 24,
   },
+  left: {
+    position: "absolute",
+    top: 40,
+    left: 24,
+  },
   header: {
     // height: 80,
     width: "100%",
