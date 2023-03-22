@@ -24,7 +24,6 @@ function Home({ navigation }: { navigation: any }) {
   const [apiKey, setApiKey] = useAtom(apiKeyAtom);
   const [server, setServer] = useAtom(serverAtom);
   const [balance, setBalance] = useState(0);
-  const [invoice, setInvoice] = useState("");
   const [message, setMessage] = useState("");
 
   const { getBalance, getInvoice, scanLnurl } = useGetBalance();
@@ -183,7 +182,7 @@ function Home({ navigation }: { navigation: any }) {
         style={styles.button}
         onPress={handleCreateInvoiceButtonPress}
       >
-        <Text style={styles.buttonText}>Create an Invoice</Text>
+        <Text style={styles.buttonText}>Do the Magic 🦄</Text>
       </TouchableOpacity>
 
       <Text>text: {message}</Text>

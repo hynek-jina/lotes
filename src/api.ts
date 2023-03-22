@@ -1,40 +1,12 @@
 import { apiKeyAtom, serverAtom } from "./atoms";
 import { atom, useAtom, useAtomValue } from "jotai";
 
-// const [apiKey, setApiKey] = useAtom(apiKeyAtom);
-// const apiKey = useAtomValue(apiKeyAtom);
-// const [server, setServer] = useAtom(serverAtom);
-
-// export const createLNURL = async (amount) => {
-//   const result = await fetch(serverDomain + "withdraw/api/v1/links", {
-//     method: "POST",
-//     headers: {
-//       "Content-type": "application/json",
-//       "X-Api-Key": apiKey,
-//     },
-//     body: JSON.stringify({
-//       title: "Lotes",
-//       min_withdrawable: amount,
-//       max_withdrawable: amount,
-//       uses: 1,
-//       wait_time: 1,
-//       is_unique: true,
-//     }),
-//   });
-//   const json = await result.json();
-//   return json.lnurl;
-// };
-
-// export const paymentRequest = async (scanCallback, invoice) => {
-//   const result = await fetch(`${scanCallback}&pr=${invoice}`);
-//   const json = await result.json();
-//   return json.status;
-// };
-
 interface Api {
   getBalance: () => Promise<number>;
   getInvoice: (amount: number) => Promise<string>;
-  scanLnurl: (lnurl: string) => Promise<scanLnurlApiResponse>
+  scanLnurl: (lnurl: string) => Promise<scanLnurlApiResponse>;
+  requestPayment: (scanCallback: string, invoice: string) => Promise<boolean>;
+  createLnurl: (amount: number) => Promise<string>;
 }
 
 interface getBalanceApiResponse {
@@ -50,17 +22,38 @@ interface getInvoiceApiResponse {
   lnurl_response: string;
 }
 
-
 interface scanLnurlApiResponse {
   domain: string;
-	tag: string;
-	callback: string;
-	k1: string;
-	minWithdrawable: number;
-	maxWithdrawable: number;
-	defaultDescription: string;
-	kind: string;
-	fixed: boolean
+  tag: string;
+  callback: string;
+  k1: string;
+  minWithdrawable: number;
+  maxWithdrawable: number;
+  defaultDescription: string;
+  kind: string;
+  fixed: boolean;
+}
+
+interface createLnurlApiResponse {
+  id: string;
+  wallet: string;
+  title: string;
+  min_withdrawable: number;
+  max_withdrawable: number;
+  uses: number;
+  wait_time: number;
+  is_unique: boolean;
+  unique_hash: string;
+  k1: string;
+  open_time: number;
+  used: number;
+  usescsv: number;
+  number: number;
+  webhook_url: string;
+  webhook_headers: string;
+  webhook_body: string;
+  custom_url: string;
+  lnurl: string;
 }
 
 export function useGetBalance(): Api {
@@ -119,13 +112,16 @@ export function useGetBalance(): Api {
         throw new Error("API key not found");
       }
 
-      const result: Response = await fetch(server + "api/v1/lnurlscan/" + lnurl, {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json",
-          "X-Api-Key": apiKey,
+      const result: Response = await fetch(
+        server + "api/v1/lnurlscan/" + lnurl,
+        {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            "X-Api-Key": apiKey,
+          },
         }
-      });
+      );
 
       if (!result.ok) {
         throw new Error(
@@ -135,10 +131,79 @@ export function useGetBalance(): Api {
 
       const json: scanLnurlApiResponse = await result.json();
 
-      return json
-    }
+      return json;
+    },
+    requestPayment: async (
+      scanCallback: string,
+      invoice: string
+    ): ReturnType<Api["requestPayment"]> => {
+      if (!apiKey) {
+        throw new Error("API key not found");
+      }
+
+      const result: Response = await fetch(`${scanCallback}&pr=${invoice}`);
+
+      if (!result.ok) {
+        throw new Error(
+          `Failed to scan lnurl. Status: ${result.status} - ${result.statusText}`
+        );
+      }
+
+      return true;
+    },
+    createLnurl: async (amount: number): ReturnType<Api["createLnurl"]> => {
+      if (!apiKey) {
+        throw new Error("API key not found");
+      }
+
+      const result: Response = await fetch(server + "withdraw/api/v1/links", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+          "X-Api-Key": apiKey,
+        },
+        body: JSON.stringify({
+          title: "Lotes",
+          min_withdrawable: amount,
+          max_withdrawable: amount,
+          uses: 1,
+          wait_time: 1,
+          is_unique: true,
+        }),
+      });
+
+      if (!result.ok) {
+        throw new Error(
+          `Failed to create lnurl. Status: ${result.status} - ${result.statusText}`
+        );
+      }
+
+      const json: createLnurlApiResponse = await result.json();
+
+      return json.lnurl;
+    },
   };
 }
+
+export const createLNURL = async (amount) => {
+  const result = await fetch(serverDomain + "withdraw/api/v1/links", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+      "X-Api-Key": apiKey,
+    },
+    body: JSON.stringify({
+      title: "Lotes",
+      min_withdrawable: amount,
+      max_withdrawable: amount,
+      uses: 1,
+      wait_time: 1,
+      is_unique: true,
+    }),
+  });
+  const json = await result.json();
+  return json.lnurl;
+};
 
 // export const getRecords = async (key) => {
 //   const result = await fetch(serverDomain + "withdraw/api/v1/links", {
