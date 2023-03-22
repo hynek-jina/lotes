@@ -17,6 +17,7 @@ import { useGetBalance } from "../api";
 
 import { Feather } from "@expo/vector-icons";
 import { styles } from "../styles";
+// import { scanLNURL } from "../../components/api";
 // import { defaultApiKey } from "../config";
 
 function Home({ navigation }: { navigation: any }) {
@@ -24,9 +25,11 @@ function Home({ navigation }: { navigation: any }) {
   const [server, setServer] = useAtom(serverAtom);
   const [balance, setBalance] = useState(0);
   const [invoice, setInvoice] = useState("");
+  const [message, setMessage] = useState("");
 
-  const { getBalance, getInvoice } = useGetBalance();
-  
+  const { getBalance, getInvoice, scanLnurl } = useGetBalance();
+
+  const adhocLnurl: string = "LNURL1DP68GURN8GHJ7MR9VAJKUEPWD3HXY6T5WVHXXMMD9AMKJARGV3EXZAE0V9CXJTMKXYHKCMN4WFKZ7C2CX4P9G5ZPGDNXSU268QENGA2VX488XAM59A55WEJK2DR5XJ6G2Y6RWM2GGFJ4V4REDAG4VMF9C85"
 
   //   const [message, setMessage] = useState("Lotes");
   //   const [status, setStatus] = useState("");
@@ -101,8 +104,12 @@ function Home({ navigation }: { navigation: any }) {
   //     );
   //   };
   const handleCreateInvoiceButtonPress = async () => {
-    setInvoice(await getInvoice(10))
-  }
+    // setInvoice(await getInvoice(10));
+    
+    const scanResult = await scanLnurl(adhocLnurl);
+    setMessage(scanResult.callback);
+
+  };
   //   const handleButtonPress = async () => {
   //     try {
   //       //1) READ NFC
@@ -172,11 +179,14 @@ function Home({ navigation }: { navigation: any }) {
       <Text>Tvůj api klíč je: {server}</Text>
       {/* {returtnAvailableBalance()} */}
 
-      <TouchableOpacity style={styles.button} onPress={handleCreateInvoiceButtonPress}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleCreateInvoiceButtonPress}
+      >
         <Text style={styles.buttonText}>Create an Invoice</Text>
       </TouchableOpacity>
 
-      <Text>Invoice: {invoice}</Text>
+      <Text>text: {message}</Text>
 
       {/*
       <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
