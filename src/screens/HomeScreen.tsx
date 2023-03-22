@@ -3,22 +3,13 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { atom, useAtom } from "jotai";
 import { apiKeyAtom, serverAtom } from "../atoms";
 
-// import { readNfc, writeNdef } from "../components/nfc";
-// import {
-//   createLNURL,
-//   scanLNURL,
-//   getInvoice,
-//   paymentRequest,
-// getBalance,
-//   getRecords,
-// } from "../components/api";
+import { readNfc, writeNdef } from "../nfc";
+
 // import { RecordsList } from "../components/lotes";
 import { useGetBalance } from "../api";
 
 import { Feather } from "@expo/vector-icons";
 import { styles } from "../styles";
-// import { scanLNURL } from "../../components/api";
-// import { defaultApiKey } from "../config";
 
 function Home({ navigation }: { navigation: any }) {
   const [apiKey, setApiKey] = useAtom(apiKeyAtom);
@@ -28,7 +19,8 @@ function Home({ navigation }: { navigation: any }) {
 
   const { getBalance, getInvoice, scanLnurl } = useGetBalance();
 
-  const adhocLnurl: string = "LNURL1DP68GURN8GHJ7MR9VAJKUEPWD3HXY6T5WVHXXMMD9AMKJARGV3EXZAE0V9CXJTMKXYHKCMN4WFKZ7C2CX4P9G5ZPGDNXSU268QENGA2VX488XAM59A55WEJK2DR5XJ6G2Y6RWM2GGFJ4V4REDAG4VMF9C85"
+  const adhocLnurl: string =
+    "LNURL1DP68GURN8GHJ7MR9VAJKUEPWD3HXY6T5WVHXXMMD9AMKJARGV3EXZAE0V9CXJTMKXYHKCMN4WFKZ7C2CX4P9G5ZPGDNXSU268QENGA2VX488XAM59A55WEJK2DR5XJ6G2Y6RWM2GGFJ4V4REDAG4VMF9C85";
 
   //   const [message, setMessage] = useState("Lotes");
   //   const [status, setStatus] = useState("");
@@ -104,10 +96,12 @@ function Home({ navigation }: { navigation: any }) {
   //   };
   const handleCreateInvoiceButtonPress = async () => {
     // setInvoice(await getInvoice(10));
-    
-    const scanResult = await scanLnurl(adhocLnurl);
-    setMessage(scanResult.callback);
 
+    // const scanResult = await scanLnurl(adhocLnurl);
+    // setMessage(scanResult.callback);
+
+    const readNfcMessage = await readNfc();
+    setMessage(readNfcMessage);
   };
   //   const handleButtonPress = async () => {
   //     try {
