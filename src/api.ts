@@ -3,6 +3,7 @@ import { atom, useAtom, useAtomValue } from "jotai";
 
 interface Api {
   getBalance: () => Promise<number>;
+  getRecords: () => Promise<JSON>;
   getInvoice: (amount: number) => Promise<string>;
   scanLnurl: (lnurl: string) => Promise<scanLnurlApiResponse>;
   requestPayment: (scanCallback: string, invoice: string) => Promise<boolean>;
@@ -56,7 +57,7 @@ interface createLnurlApiResponse {
   lnurl: string;
 }
 
-export function useGetBalance(): Api {
+export function useApiCalls(): Api {
   const apiKey = useAtomValue(apiKeyAtom);
   const server = useAtomValue(serverAtom);
 
@@ -182,28 +183,28 @@ export function useGetBalance(): Api {
 
       return json.lnurl;
     },
+    getRecords: async (): ReturnType<Api["getRecords"]> => {
+      if (!apiKey) {
+        throw new Error("API key not found");
+      }
+      const result: Response = await fetch(server + "withdraw/api/v1/links", {
+        method: "GET",
+        headers: {
+          "X-Api-Key": apiKey,
+        },
+      });
+
+      if (!result.ok) {
+        throw new Error(
+          `Failed to create lnurl. Status: ${result.status} - ${result.statusText}`
+        );
+      }
+
+      const json: JSON = await result.json();
+      return json
+    }
   };
 }
-
-export const createLNURL = async (amount) => {
-  const result = await fetch(serverDomain + "withdraw/api/v1/links", {
-    method: "POST",
-    headers: {
-      "Content-type": "application/json",
-      "X-Api-Key": apiKey,
-    },
-    body: JSON.stringify({
-      title: "Lotes",
-      min_withdrawable: amount,
-      max_withdrawable: amount,
-      uses: 1,
-      wait_time: 1,
-      is_unique: true,
-    }),
-  });
-  const json = await result.json();
-  return json.lnurl;
-};
 
 // export const getRecords = async (key) => {
 //   const result = await fetch(serverDomain + "withdraw/api/v1/links", {

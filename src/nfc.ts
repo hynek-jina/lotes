@@ -1,13 +1,13 @@
 import NfcManager, { NfcTech, Ndef } from "react-native-nfc-manager";
 import { Platform } from "react-native";
 
-
 export const readNfc = async (): Promise<string> => {
   let text = "";
+  let resp: number[] | string | null = null;
   try {
     let tech = Platform.OS === "ios" ? NfcTech.MifareIOS : NfcTech.NfcA;
-    let resp = await NfcManager.requestTechnology(tech, {
-      alertMessage: "Začni scanovat",
+    resp = await NfcManager.requestTechnology(tech, {
+      alertMessage: "Scan",
     });
 
     let cmd =
@@ -37,10 +37,13 @@ export const readNfc = async (): Promise<string> => {
     }
 
     NfcManager.cancelTechnologyRequest();
-  } catch (ex) {
+  } catch (ex: any) {
     console.log(ex.toString());
   }
-  console.log("Read NFC output: ", text);
+  if (resp) {
+    NfcManager.cancelTechnologyRequest();
+  }
+  
   return text;
 };
 
@@ -49,15 +52,15 @@ export const writeNdef = async (message: string): Promise<boolean> => {
     const tech = await NfcManager.requestTechnology(NfcTech.Ndef, {
       alertMessage: "Hold your device close to the tag you wish to write to.",
     });
-    
+
     const bytes = Ndef.encodeMessage([Ndef.textRecord(message)]);
     await NfcManager.ndefHandler.writeNdefMessage(bytes);
-    
+
     await NfcManager.setAlertMessageIOS("Successfully wrote to NFC tag.");
     await NfcManager.cancelTechnologyRequest();
 
     return true;
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
     return false;
   }
