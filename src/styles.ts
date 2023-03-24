@@ -16,6 +16,7 @@ export const styles = StyleSheet.create({
   buttonText: {
     color: "#ffffff",
     fontWeight: "bold",
+    textAlign: "center",
   },
   redText: {
     color: "#F00",
