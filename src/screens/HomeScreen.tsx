@@ -80,22 +80,22 @@ function Home({ navigation }: { navigation: any }) {
   };
 
   const handleValidateButtonPress = async () => {
-    const lnurlFromNfc = await readNfc();
-    const scanResultJson = await scanLnurl(lnurlFromNfc);
-    const createdInvoice = await getInvoice(
-      scanResultJson.maxWithdrawable / 1000
-    );
-    const paymentReceived = await requestPayment(
-      scanResultJson.callback,
-      createdInvoice
-    );
-    if (paymentReceived) {
+    try {
+      const lnurlFromNfc = await readNfc();
+      const scanResultJson = await scanLnurl(lnurlFromNfc);
+      const createdInvoice = await getInvoice(
+        scanResultJson.maxWithdrawable / 1000
+      );
+      const paymentReceived = await requestPayment(
+        scanResultJson.callback,
+        createdInvoice
+      );
       const createdLnurl = await createLnurl(
         scanResultJson.maxWithdrawable / 1000
       );
-      setTimeout(() => {
-        writeNdef(createdLnurl);
-      }, 2000);
+      await writeNdef(createdLnurl);
+    } catch (error) {
+      console.error(error);
     }
   };
 
