@@ -11,13 +11,16 @@ import { atom, useAtom } from "jotai";
 import { apiKeyAtom, serverAtom } from "../atoms";
 
 function Login(): JSX.Element {
-  const [temporaryApiKey, setTemporaryApiKey] = useState("");
   const [apiKey, setApiKey] = useAtom(apiKeyAtom);
+  const [temporaryApiKey, setTemporaryApiKey] = useState(apiKey);
 
-  const [temporaryServer, setTemporaryServer] = useState(
-    "https://legend.lnbits.com/"
-  );
+  const defaultServer = (): string => {
+    if (server) {
+      return server;
+    } else return "https://legend.lnbits.com/";
+  };
   const [server, setServer] = useAtom(serverAtom);
+  const [temporaryServer, setTemporaryServer] = useState(defaultServer);
 
   const handleButtonClick = () => {
     setApiKey(temporaryApiKey);
