@@ -1,14 +1,16 @@
 import { apiKeyAtom, serverAtom } from "./atoms";
-import { atom, useAtom, useAtomValue } from "jotai";
+import { useAtomValue } from "jotai";
 
 interface Api {
   getBalance: () => Promise<number>;
-  getRecords: () => Promise<JSON>;
+  getRecords: () => Promise<RecordsApi>;
   getInvoice: (amount: number) => Promise<string>;
   scanLnurl: (lnurl: string) => Promise<scanLnurlApiResponse>;
   requestPayment: (scanCallback: string, invoice: string) => Promise<boolean>;
   createLnurl: (amount: number) => Promise<string>;
 }
+
+
 
 interface getBalanceApiResponse {
   id: string;
@@ -35,7 +37,7 @@ interface scanLnurlApiResponse {
   fixed: boolean;
 }
 
-interface createLnurlApiResponse {
+export interface RecordApi {
   id: string;
   wallet: string;
   title: string;
@@ -55,6 +57,10 @@ interface createLnurlApiResponse {
   webhook_body: string;
   custom_url: string;
   lnurl: string;
+}
+
+export interface RecordsApi {
+  records: RecordApi[];
 }
 
 export function useApiCalls(): Api {
@@ -179,7 +185,7 @@ export function useApiCalls(): Api {
         );
       }
 
-      const json: createLnurlApiResponse = await result.json();
+      const json: RecordApi = await result.json();
 
       return json.lnurl;
     },
@@ -200,8 +206,8 @@ export function useApiCalls(): Api {
         );
       }
 
-      const json: JSON = await result.json();
-      return json
+      const json: RecordsApi = await result.json();
+      return {records: json}
     }
   };
 }

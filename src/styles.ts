@@ -18,6 +18,12 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
+  sectionHeader: {
+    color: "010101",
+    fontWeight: "bold",
+    textAlign: "center",
+    height: 24,
+  },
   redText: {
     color: "#F00",
   },
@@ -49,4 +55,5 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
   },
+
 });

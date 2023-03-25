@@ -6,7 +6,7 @@ import { apiKeyAtom, serverAtom } from "../atoms";
 import { readNfc, writeNdef } from "../nfc";
 
 import { RecordsList } from "../components/Lotes";
-import { useApiCalls } from "../api";
+import { useApiCalls, RecordsApi } from "../api";
 
 import { Feather } from "@expo/vector-icons";
 import { styles } from "../styles";
@@ -15,7 +15,6 @@ function Home({ navigation }: { navigation: any }) {
   const [apiKey, setApiKey] = useAtom(apiKeyAtom);
   const [server, setServer] = useAtom(serverAtom);
   const [balance, setBalance] = useState(0);
-  const [message, setMessage] = useState("");
 
   const {
     getBalance,
@@ -26,65 +25,77 @@ function Home({ navigation }: { navigation: any }) {
     getRecords,
   } = useApiCalls();
 
-  const [records, setRecords] = useState([]);
-  // const [allLotesValue, setAllLotesValue] = useState(0);
+  const [records, setRecords] = useState<RecordsApi>({ records: [] });
+  const [allLotesValue, setAllLotesValue] = useState(0);
 
-  //
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       console.log("APi key pro getRecords je: ", apiKey)
-  //       const data = await getRecords(apiKey);
-  //       setRecords(data);
+  useEffect(() => {
+    const fetchData = async () => {
+      setBalance(await getBalance());
+      const data = await getRecords();
+      setRecords(data);
+      const filteredRecords = data.records.filter(
+        (record) => record.uses - record.used >= 1
+      );
+      const totalAmount = filteredRecords.reduce(
+        (sum, record) => sum + record.max_withdrawable,
+        0
+      );
+      setAllLotesValue(totalAmount);
+    };
+    const intervalId = setInterval(fetchData, 60000); // Update every 60 seconds
+    fetchData();
 
-  //       let sum = 0;
-  //       data.forEach((withdrawal) => {
-  //         sum += withdrawal.max_withdrawable;
-  //       });
-  //       setAllLotesValue(sum);
-  //     };
+    return () => clearInterval(intervalId);
+  }, [apiKey, server]);
 
-  //     fetchData();
-  //   }, [apiKey]);
-
-  // const returtnAvailableBalance = () => {
-  //   if (balance >= allLotesValue) {
-  //     return (
-  //       <View>
-  //         <Text>{balance - allLotesValue} sats k dispozici</Text>
-  //       </View>
-  //     );
-  //   }
-  //   return (
-  //     <View>
-  //       <Text style={styles.redText}>
-  //         Vaše lotes nejsou dostatečně kryté.. ({balance - allLotesValue} sats k
-  //         dispozici)
-  //       </Text>
-  //     </View>
-  //   );
-  // };
+  const returnAvailableBalance = () => {
+    if (balance >= allLotesValue) {
+      return (
+        <View>
+          <Text>{balance - allLotesValue} sats available</Text>
+        </View>
+      );
+    }
+    return (
+      <View>
+        <Text style={styles.redText}>
+          Your lotes aren't covered.. ({allLotesValue - balance} sats missing)
+        </Text>
+      </View>
+    );
+  };
 
   const handleRefreshButtonPress = async () => {
     setBalance(await getBalance());
     const data = await getRecords();
     setRecords(data);
+    const filteredRecords = data.records.filter(
+      (record) => record.uses - record.used >= 1
+    );
+    const totalAmount = filteredRecords.reduce(
+      (sum, record) => sum + record.max_withdrawable,
+      0
+    );
+    setAllLotesValue(totalAmount);
   };
 
   const handleValidateButtonPress = async () => {
-    const lnurlFromNfc = await readNfc();
-    const scanResultJson = await scanLnurl(lnurlFromNfc);
-    const createdInvoice = await getInvoice(
-      scanResultJson.maxWithdrawable / 1000
-    );
-    const paymentReceived = await requestPayment(
-      scanResultJson.callback,
-      createdInvoice
-    );
-    if (paymentReceived) {
+    try {
+      const lnurlFromNfc = await readNfc();
+      const scanResultJson = await scanLnurl(lnurlFromNfc);
+      const createdInvoice = await getInvoice(
+        scanResultJson.maxWithdrawable / 1000
+      );
+      const paymentReceived = await requestPayment(
+        scanResultJson.callback,
+        createdInvoice
+      );
       const createdLnurl = await createLnurl(
         scanResultJson.maxWithdrawable / 1000
       );
       await writeNdef(createdLnurl);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -103,15 +114,14 @@ function Home({ navigation }: { navigation: any }) {
         style={styles.left}
         name="refresh-ccw"
         size={26}
-        color="black"
+        color="white"
       />
 
       <Text style={styles.header}> {balance.toLocaleString()} </Text>
       <Text style={styles.subHeader}>sats</Text>
 
-      <Text>Api Key: {apiKey}</Text>
-      <Text>Server: {server}</Text>
-      {/* {returtnAvailableBalance()} */}
+      {/* <Text>Api Key: {apiKey}</Text>
+      <Text>Server: {server}</Text> */}
 
       <TouchableOpacity
         style={styles.button}
@@ -120,9 +130,10 @@ function Home({ navigation }: { navigation: any }) {
         <Text style={styles.buttonText}>Validate 🦄</Text>
       </TouchableOpacity>
       <View>
-        <Text>Your Lotes</Text>
-        <RecordsList records={records} />
+        <Text style={styles.sectionHeader}>Your Lotes</Text>
+        <RecordsList data={records} />
       </View>
+      {returnAvailableBalance()}
     </View>
   );
 }
