@@ -7,7 +7,7 @@ export const readNfc = async (): Promise<string> => {
   try {
     let tech = Platform.OS === "ios" ? NfcTech.MifareIOS : NfcTech.NfcA;
     resp = await NfcManager.requestTechnology(tech, {
-      alertMessage: "Scan",
+      alertMessage: "Scan the Lote",
     });
 
     let cmd =
@@ -23,7 +23,7 @@ export const readNfc = async (): Promise<string> => {
 
     resp = await cmd([0x3a, startPage, endPage]);
     let bytes = resp.toString().split(",");
-
+    
     for (let i = 0; i < bytes.length; i++) {
       if (i < 5) {
         continue;
@@ -47,16 +47,16 @@ export const readNfc = async (): Promise<string> => {
   return text;
 };
 
-export const writeNdef = async (message: string): Promise<boolean> => {
+export const writeNdef = async (message: string, alert:string): Promise<boolean> => {
   try {
     const tech = await NfcManager.requestTechnology(NfcTech.Ndef, {
-      alertMessage: "Hold your device close to the tag you wish to write to.",
+      alertMessage: alert,
     });
 
     const bytes = Ndef.encodeMessage([Ndef.textRecord(message)]);
     await NfcManager.ndefHandler.writeNdefMessage(bytes);
 
-    await NfcManager.setAlertMessageIOS("Successfully wrote to NFC tag.");
+    await NfcManager.setAlertMessageIOS("Successfully stored.");
     await NfcManager.cancelTechnologyRequest();
 
     return true;

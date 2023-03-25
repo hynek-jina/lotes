@@ -15,6 +15,7 @@ function Home({ navigation }: { navigation: any }) {
   const [apiKey, setApiKey] = useAtom(apiKeyAtom);
   const [server, setServer] = useAtom(serverAtom);
   const [balance, setBalance] = useState(0);
+  const [refreshCounter, setRefreshCounter] = useState(0);
 
   const {
     getBalance,
@@ -46,7 +47,7 @@ function Home({ navigation }: { navigation: any }) {
     fetchData();
 
     return () => clearInterval(intervalId);
-  }, [apiKey, server]);
+  }, [apiKey, server, refreshCounter]);
 
   const returnAvailableBalance = () => {
     if (balance >= allLotesValue) {
@@ -83,17 +84,20 @@ function Home({ navigation }: { navigation: any }) {
     try {
       const lnurlFromNfc = await readNfc();
       const scanResultJson = await scanLnurl(lnurlFromNfc);
-      const createdInvoice = await getInvoice(
-        scanResultJson.maxWithdrawable / 1000
-      );
+      let temporaryAmount = scanResultJson.maxWithdrawable / 1000;
+      const createdInvoice = await getInvoice(temporaryAmount);
       const paymentReceived = await requestPayment(
         scanResultJson.callback,
         createdInvoice
       );
-      const createdLnurl = await createLnurl(
-        scanResultJson.maxWithdrawable / 1000
-      );
-      await writeNdef(createdLnurl);
+      const createdLnurl = await createLnurl(temporaryAmount);
+      setTimeout(async () => {
+        await writeNdef(
+          createdLnurl,
+          `Store ${temporaryAmount.toLocaleString()} sats`
+        );
+      }, 3000);
+      setRefreshCounter(refreshCounter + 1);
     } catch (error) {
       console.error(error);
     }
@@ -119,9 +123,6 @@ function Home({ navigation }: { navigation: any }) {
 
       <Text style={styles.header}> {balance.toLocaleString()} </Text>
       <Text style={styles.subHeader}>sats</Text>
-
-      {/* <Text>Api Key: {apiKey}</Text>
-      <Text>Server: {server}</Text> */}
 
       <TouchableOpacity
         style={styles.button}
