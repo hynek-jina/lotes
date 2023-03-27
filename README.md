@@ -5,6 +5,7 @@
 Lotes are bitcoin physical notes running on LNbits and Lightning Network. <br>
 The application serves as a validator for these lotes.
 
+**Proof of concept video:** <br>
 [![Lotes app - proof of concept](https://i9.ytimg.com/vi_webp/_cQutic0CX0/mq2.webp?sqp=CLC5hqEG-oaymwEmCMACELQB8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGGUgUShIMA8=&rs=AOn4CLAq53lG9oddARa3klEu_J3FDoEv_g)](https://youtu.be/_cQutic0CX0)
 
 ## Users flow
