@@ -16,6 +16,7 @@ function Home({ navigation }: { navigation: any }) {
   const [server, setServer] = useAtom(serverAtom);
   const [balance, setBalance] = useState(0);
   const [refreshCounter, setRefreshCounter] = useState(0);
+  const [message, setMessage] = useState("")
 
   const {
     getBalance,
@@ -103,6 +104,15 @@ function Home({ navigation }: { navigation: any }) {
     }
   };
 
+  const handleScanButtonPress = async () => {
+    const result = await readNfc()
+    setMessage(result)
+  }
+
+  const handleWriteButtonPress = async () => {
+    writeNdef(message, `record: ${message}`)
+  }
+
   return (
     <View style={styles.container}>
       <Feather
@@ -135,6 +145,23 @@ function Home({ navigation }: { navigation: any }) {
         <RecordsList data={records} />
       </View>
       {returnAvailableBalance()}
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleScanButtonPress}
+      >
+        <Text style={styles.buttonText}>Scan 🔭</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleWriteButtonPress}
+      >
+        <Text style={styles.buttonText}>Write 🖊️</Text>
+      </TouchableOpacity>
+
+      <Text>Message: {message}</Text>
+
     </View>
   );
 }
