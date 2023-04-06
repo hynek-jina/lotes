@@ -1,5 +1,5 @@
-import NfcManager, { NfcTech, NfcV } from "react-native-nfc-manager";
-import { Platform } from "react-native";
+import NfcManager, { NfcTech, NfcV, nfcManager, IsoDepHandler } from "react-native-nfc-manager";
+import { Platform, Alert } from "react-native";
 
 export const readNfc = async (): Promise<string> => {
   let text = "";
@@ -70,3 +70,40 @@ export const writeNdef = async (
     return false;
   }
 };
+
+function failSilently(todo: () => any) {
+  try {
+    return todo()
+  } catch (e) {
+    // nothing
+  }
+}
+await NfcManager.start()
+
+export async function readTag() {
+  try {
+    if (!NfcManager.isEnabled) {
+      Alert.alert("Nfc not enabled", "", [{
+        text: "to settings", onPress: () => {
+          NfcManager.goToNfcSetting()
+        }
+      }, { text: "cancel" }])
+      return null
+    }
+
+    const ntech = await NfcManager.requestTechnology(NfcTech.IsoDep)
+    if(!ntech){
+      console.log("ntech null")
+      return
+    }
+
+    NfcManager.isoDepHandler.transceive()
+
+  } catch(error) {
+    console.error("error while reading tag", error)
+  }
+}
+
+export const writeTag = async (success: boolean){
+
+}
