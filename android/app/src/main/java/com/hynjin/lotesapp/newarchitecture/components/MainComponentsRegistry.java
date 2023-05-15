@@ -1,4 +1,4 @@
-package com.hynjin.lotes.newarchitecture.components;
+package com.hynjin.lotesapp.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

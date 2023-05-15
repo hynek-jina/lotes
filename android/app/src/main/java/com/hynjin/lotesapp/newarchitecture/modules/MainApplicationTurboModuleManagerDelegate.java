@@ -1,4 +1,4 @@
-package com.hynjin.lotes.newarchitecture.modules;
+package com.hynjin.lotesapp.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

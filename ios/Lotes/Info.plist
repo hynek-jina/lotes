@@ -25,7 +25,7 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>com.hynjin.lotes</string>
+          <string>com.hynjin.lotesapp</string>
         </array>
       </dict>
     </array>

@@ -13,7 +13,7 @@ class MainComponentsRegistry
  public:
   // Adapt it to the package you used for your Java class.
   constexpr static auto kJavaDescriptor =
-      "Lcom/hynjin/lotes/newarchitecture/components/MainComponentsRegistry;";
+      "Lcom/hynjin/lotesapp/newarchitecture/components/MainComponentsRegistry;";
 
   static void registerNatives();
 
