@@ -22,7 +22,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.hynjin.lotes"
+      "bundleIdentifier": "com.hynjin.lotesapp"
     },
     "android": {
       "adaptiveIcon": {
@@ -32,16 +32,16 @@
       "permissions": [
         "android.permission.NFC"
       ],
-      "package": "com.hynjin.lotes"
+      "package": "com.hynjin.lotesapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "c644f692-b5fb-4c0d-95ea-a055c083c1da"
+        "projectId": "4ac6fbbf-2dbb-45d9-88ca-234fa8d92d9d"
       }
     },
-    "owner": "hynjin"
+    "owner": "lotesapp"
   }
 }
