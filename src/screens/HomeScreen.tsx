@@ -53,7 +53,7 @@ function Home({ navigation }: { navigation: any }) {
     if (balance >= allLotesValue) {
       return (
         <View>
-          <Text>{balance - allLotesValue} sats available</Text>
+          <Text>{Math.floor(balance - allLotesValue).toLocaleString()} sats available</Text>
         </View>
       );
     }
@@ -121,7 +121,7 @@ function Home({ navigation }: { navigation: any }) {
         color="white"
       />
 
-      <Text style={styles.header}> {balance.toLocaleString()} </Text>
+      <Text style={styles.header}> {Math.floor(balance).toLocaleString()} </Text>
       <Text style={styles.subHeader}>sats</Text>
 
       <TouchableOpacity
