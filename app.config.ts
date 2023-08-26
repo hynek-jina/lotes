@@ -1,5 +1,5 @@
-const VERSION_CODE = 1
-const VERSION = '1.0.0'
+const VERSION_CODE = 2
+const VERSION = '23.8.1'
 
 
 const versionString = `${VERSION} (${VERSION_CODE})`
