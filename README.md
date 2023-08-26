@@ -19,6 +19,10 @@ The application serves as a validator for these lotes.
 
 _At this point, you are assured that no previous owner of the note, or anyone who may have previously scanned it, can claim the funds._
 
+## Download
+
+- [Join TestFlight to test app on iOS](https://testflight.apple.com/join/92K4nHPd)
+
 ## Setup
 
 - You will need to create an account on [LNbits](https://lnbits.com/) <br>
