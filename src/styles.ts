@@ -6,17 +6,29 @@ export const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    marginHorizontal: 20,
   },
   button: {
     marginVertical: 20,
     padding: 10,
     backgroundColor: "purple",
     borderRadius: 5,
+    flex: 1,
   },
   buttonText: {
     color: "#ffffff",
     fontWeight: "bold",
     textAlign: "center",
+  },
+  buttonLink: {
+    color: "purple",
+    fontWeight: "bold",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+  },
+  buttonSpace: {
+margin: 10
   },
   sectionHeader: {
     color: "010101",
@@ -30,12 +42,12 @@ export const styles = StyleSheet.create({
   right: {
     position: "absolute",
     top: 40,
-    right: 24,
+    right: 4,
   },
   left: {
     position: "absolute",
     top: 40,
-    left: 24,
+    left: 4,
   },
   header: {
     // height: 80,
