@@ -206,7 +206,7 @@ export function useApiCalls(): Api {
         );
       }
 
-      const json: RecordsApi = await result.json();
+      const json: RecordsApi['records'] = await result.json();
       return {records: json}
     }
   };

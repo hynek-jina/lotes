@@ -4,7 +4,7 @@
   "scripts": {
     "start": "expo start --dev-client",
     "android": "expo run:android",
-    "ios": "expo run:ios",
+    "ios": "expo run:ios -d",
     "web": "expo start --web",
     "format": "prettier src --write",
     "ios:build": "eas build --platform ios",

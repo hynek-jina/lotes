@@ -53,7 +53,10 @@ function Home({ navigation }: { navigation: any }) {
     if (balance >= allLotesValue) {
       return (
         <View>
-          <Text>{Math.floor(balance - allLotesValue).toLocaleString()} sats available</Text>
+          <Text>
+            {Math.floor(balance - allLotesValue).toLocaleString()} sats
+            available
+          </Text>
         </View>
       );
     }
@@ -79,6 +82,11 @@ function Home({ navigation }: { navigation: any }) {
     );
     setAllLotesValue(totalAmount);
   };
+
+  const handleBurnButtornPress =async () => {
+    const lnurlFromNfc = await readNfc();
+      const scanResultJson = await scanLnurl(lnurlFromNfc);
+  }
 
   const handleValidateButtonPress = async () => {
     try {
@@ -121,20 +129,40 @@ function Home({ navigation }: { navigation: any }) {
         color="white"
       />
 
-      <Text style={styles.header}> {Math.floor(balance).toLocaleString()} </Text>
+      <Text style={styles.header}>
+        {" "}
+        {Math.floor(balance).toLocaleString()}{" "}
+      </Text>
       <Text style={styles.subHeader}>sats</Text>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handleValidateButtonPress}
-      >
-        <Text style={styles.buttonText}>Validate 🦄</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Issue")}
+        >
+          <Text style={styles.buttonText}>✍️ Issue</Text>
+        </TouchableOpacity>
+        <View
+        style={styles.buttonSpace}></View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleBurnButtornPress}
+        >
+          <Text style={styles.buttonText}>🔥 Burn</Text>
+        </TouchableOpacity>
+      </View>
       <View>
         <Text style={styles.sectionHeader}>Your Lotes</Text>
         <RecordsList data={records} />
       </View>
       {returnAvailableBalance()}
+
+      <TouchableOpacity
+        //style={styles.button}
+        onPress={handleValidateButtonPress}
+      >
+        <Text style={styles.buttonLink}>🦄 Validate</Text>
+      </TouchableOpacity>
     </View>
   );
 }

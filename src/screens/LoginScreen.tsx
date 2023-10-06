@@ -42,12 +42,14 @@ function Login(): JSX.Element {
           onChangeText={setTemporaryServer}
           placeholder={temporaryServer}
         />
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => handleButtonClick()}
-        >
-          <Text style={styles.buttonText}>Save settings</Text>
-        </TouchableOpacity>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => handleButtonClick()}
+          >
+            <Text style={styles.buttonText}>Save settings</Text>
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
     </View>
   );
