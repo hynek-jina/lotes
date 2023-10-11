@@ -3,12 +3,12 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "./src/screens/LoginScreen";
 import Home from "./src/screens/HomeScreen";
 import { atom, useAtom, useAtomValue } from "jotai";
-import { apiKeyAtom } from "./src/atoms";
+import { adminKeyAtom } from "./src/atoms";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const apiKey = useAtomValue(apiKeyAtom);
+  const apiKey = useAtomValue(adminKeyAtom);
 
   return (
     <NavigationContainer>

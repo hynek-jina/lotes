@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { atom, useAtom } from "jotai";
-import { apiKeyAtom, serverAtom } from "../atoms";
+import { adminKeyAtom, domainAtom } from "../atoms";
 
 import { readNfc, writeNdef } from "../nfc";
 
@@ -12,8 +12,8 @@ import { Feather } from "@expo/vector-icons";
 import { styles } from "../styles";
 
 function Home({ navigation }: { navigation: any }) {
-  const [apiKey, setApiKey] = useAtom(apiKeyAtom);
-  const [server, setServer] = useAtom(serverAtom);
+  const [apiKey, setApiKey] = useAtom(adminKeyAtom);
+  const [domain, setDomain] = useAtom(domainAtom);
   const [balance, setBalance] = useState(0);
   const [refreshCounter, setRefreshCounter] = useState(0);
 
@@ -47,7 +47,7 @@ function Home({ navigation }: { navigation: any }) {
     fetchData();
 
     return () => clearInterval(intervalId);
-  }, [apiKey, server, refreshCounter]);
+  }, [apiKey, domain, refreshCounter]);
 
   const returnAvailableBalance = () => {
     if (balance >= allLotesValue) {

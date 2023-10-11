@@ -10,8 +10,6 @@ import { styles } from "../styles";
 import { useEffect, useState } from "react";
 import { atom, useAtom } from "jotai";
 import {
-  apiKeyAtom,
-  serverAtom,
   lnbitsUrlAtom,
   domainAtom,
   userAtom,
@@ -22,9 +20,6 @@ import URLParse from "url-parse";
 import axios from "axios";
 
 function Login(): JSX.Element {
-  const [apiKey, setApiKey] = useAtom(apiKeyAtom);
-  const [temporaryApiKey, setTemporaryApiKey] = useState(apiKey);
-
   // Preparation for parsing the server url
   const [lnbitsUrl, setLnbitsUrl] = useAtom(lnbitsUrlAtom);
   const [domain, setDomain] = useAtom(domainAtom);
@@ -63,40 +58,23 @@ function Login(): JSX.Element {
     Linking.openURL(lnbitsUrl);
   };
 
-  const defaultServer = (): string => {
-    if (server) {
-      return server;
-    } else return "https://legend.lnbits.com/";
-  };
-  const [server, setServer] = useAtom(serverAtom);
-  const [temporaryServer, setTemporaryServer] = useState(defaultServer);
+  const handleButtonClick = async () => {
+    try {
+      await fetchAdminKey(lnbitsUrl);
 
-  const handleButtonClick = () => {
-    setApiKey(temporaryApiKey);
-    setServer(temporaryServer);
+      const parsedData = parseUrl(lnbitsUrl);
+
+      setDomain(parsedData.domain || "");
+      setUser(parsedData.user || "");
+      setWallet(parsedData.wallet || "");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <View style={styles.container}>
       <SafeAreaView>
-        <Text>Your LNbits apikey:</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={setTemporaryApiKey}
-          placeholder={temporaryApiKey}
-        />
-        <Text>Your LNbits server:</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={setTemporaryServer}
-          placeholder={temporaryServer}
-        />
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => handleButtonClick()}
-        >
-          <Text style={styles.buttonText}>Save settings</Text>
-        </TouchableOpacity>
         <Text>LNbits URL:</Text>
         <TextInput
           style={styles.input}
@@ -108,18 +86,12 @@ function Login(): JSX.Element {
           <Text style={styles.link}>Open wallet</Text>
         </TouchableOpacity>
 
-        <Text>domain: {domain}</Text>
-        <Text>user: {user}</Text>
-        <Text>wallet: {wallet}</Text>
-
         <TouchableOpacity
           style={styles.button}
-          onPress={() => fetchAdminKey(lnbitsUrl)}
+          onPress={() => handleButtonClick()}
         >
-          <Text style={styles.buttonText}>Fetch admin key</Text>
+          <Text style={styles.buttonText}>Save settings</Text>
         </TouchableOpacity>
-
-        <Text>admin key: {adminKey}</Text>
       </SafeAreaView>
     </View>
   );
