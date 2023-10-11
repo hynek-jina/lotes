@@ -206,8 +206,8 @@ export function useApiCalls(): Api {
         );
       }
 
-      const json: RecordsApi = await result.json();
-      return {records: json}
+      const json: RecordApi[] = await result.json();
+      return { records: json };
     }
   };
 }

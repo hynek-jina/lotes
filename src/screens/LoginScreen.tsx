@@ -16,8 +16,10 @@ import {
   domainAtom,
   userAtom,
   walletAtom,
+  adminKeyAtom,
 } from "../atoms";
 import URLParse from "url-parse";
+import axios from "axios";
 
 function Login(): JSX.Element {
   const [apiKey, setApiKey] = useAtom(apiKeyAtom);
@@ -28,6 +30,7 @@ function Login(): JSX.Element {
   const [domain, setDomain] = useAtom(domainAtom);
   const [user, setUser] = useAtom(userAtom);
   const [wallet, setWallet] = useAtom(walletAtom);
+  const [adminKey, setAdminKey] = useAtom(adminKeyAtom);
 
   useEffect(() => {
     const parsedData = parseUrl(lnbitsUrl);
@@ -47,9 +50,18 @@ function Login(): JSX.Element {
     return { domain, user, wallet };
   }
 
+  async function fetchAdminKey(lnbitsUrl: string) {
+    const response = await axios.get(lnbitsUrl);
+    const parsedApiKey = response.data.match(
+      /<strong>Admin key: <\/strong><em>([\da-fA-F]{32})<\/em><br \/>/
+    )[1];
+
+    setAdminKey(parsedApiKey);
+  }
+
   const handleOpenWallet = () => {
     Linking.openURL(lnbitsUrl);
-  }
+  };
 
   const defaultServer = (): string => {
     if (server) {
@@ -92,13 +104,22 @@ function Login(): JSX.Element {
           placeholder={lnbitsUrl}
         />
 
-      <TouchableOpacity onPress={handleOpenWallet}>
-        <Text style={styles.link}>Open wallet</Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={handleOpenWallet}>
+          <Text style={styles.link}>Open wallet</Text>
+        </TouchableOpacity>
+
         <Text>domain: {domain}</Text>
         <Text>user: {user}</Text>
         <Text>wallet: {wallet}</Text>
 
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => fetchAdminKey(lnbitsUrl)}
+        >
+          <Text style={styles.buttonText}>Fetch admin key</Text>
+        </TouchableOpacity>
+
+        <Text>admin key: {adminKey}</Text>
       </SafeAreaView>
     </View>
   );
