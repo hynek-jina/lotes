@@ -2,6 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "./src/screens/LoginScreen";
 import Home from "./src/screens/HomeScreen";
+import Issue from "./src/screens/IssueScreen";
 import { atom, useAtom, useAtomValue } from "jotai";
 import { adminKeyAtom } from "./src/atoms";
 
@@ -27,6 +28,7 @@ export default function App() {
           />
         )}
         <Stack.Screen name="Settings" component={Login} />
+        <Stack.Screen name="Issue" options={{title:"Issue New Lote"}} component={Issue} />
         {/*<Stack.Screen name="Playground" component={PlaygroundScreen} /> */}
       </Stack.Navigator>
     </NavigationContainer>
