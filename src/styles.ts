@@ -18,6 +18,10 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
+  link: {
+    color: "blue",
+    textAlign: "center",
+  },
   sectionHeader: {
     color: "010101",
     fontWeight: "bold",

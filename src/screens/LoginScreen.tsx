@@ -4,15 +4,52 @@ import {
   TextInput,
   Text,
   View,
+  Linking,
 } from "react-native";
 import { styles } from "../styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { atom, useAtom } from "jotai";
-import { apiKeyAtom, serverAtom } from "../atoms";
+import {
+  apiKeyAtom,
+  serverAtom,
+  lnbitsUrlAtom,
+  domainAtom,
+  userAtom,
+  walletAtom,
+} from "../atoms";
+import URLParse from "url-parse";
 
 function Login(): JSX.Element {
   const [apiKey, setApiKey] = useAtom(apiKeyAtom);
   const [temporaryApiKey, setTemporaryApiKey] = useState(apiKey);
+
+  // Preparation for parsing the server url
+  const [lnbitsUrl, setLnbitsUrl] = useAtom(lnbitsUrlAtom);
+  const [domain, setDomain] = useAtom(domainAtom);
+  const [user, setUser] = useAtom(userAtom);
+  const [wallet, setWallet] = useAtom(walletAtom);
+
+  useEffect(() => {
+    const parsedData = parseUrl(lnbitsUrl);
+
+    setDomain(parsedData.domain || "");
+    setUser(parsedData.user || "");
+    setWallet(parsedData.wallet || "");
+  }, [lnbitsUrl]);
+
+  function parseUrl(url: string) {
+    const fullUrl = new URLParse(url, true);
+
+    const domain = fullUrl.origin;
+    const user = fullUrl.query.usr;
+    const wallet = fullUrl.query.wal;
+
+    return { domain, user, wallet };
+  }
+
+  const handleOpenWallet = () => {
+    Linking.openURL(lnbitsUrl);
+  }
 
   const defaultServer = (): string => {
     if (server) {
@@ -48,6 +85,20 @@ function Login(): JSX.Element {
         >
           <Text style={styles.buttonText}>Save settings</Text>
         </TouchableOpacity>
+        <Text>LNbits URL:</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={setLnbitsUrl}
+          placeholder={lnbitsUrl}
+        />
+
+      <TouchableOpacity onPress={handleOpenWallet}>
+        <Text style={styles.link}>Open wallet</Text>
+      </TouchableOpacity>
+        <Text>domain: {domain}</Text>
+        <Text>user: {user}</Text>
+        <Text>wallet: {wallet}</Text>
+
       </SafeAreaView>
     </View>
   );
