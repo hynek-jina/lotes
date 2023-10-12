@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "center",
-    // alignItems: "center",
+    alignItems: "center",
     marginHorizontal: 20,
   },
   button: {
@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: "purple",
     borderRadius: 5,
-    // flex: 1,
+    flex: 1,
   },
   buttonText: {
     color: "#ffffff",
@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
   },
   buttonSpace: {
-margin: 10
+    margin: 10,
   },
   sectionHeader: {
     color: "010101",
@@ -67,10 +67,8 @@ margin: 10
   },
   input: {
     height: 40,
-    margin: 12,
     borderWidth: 1,
     padding: 10,
-    alignSelf: "stretch",
+    width: 340,
   },
-
 });

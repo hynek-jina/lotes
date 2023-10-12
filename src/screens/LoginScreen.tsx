@@ -11,7 +11,7 @@ import { useAtom, useSetAtom } from "jotai";
 import { lnbitsUrlAtom, adminKeyAtom } from "../atoms";
 import axios from "axios";
 
-function Login(): JSX.Element {
+const Login = ({ navigation }: { navigation: any }): JSX.Element => {
   const [lnbitsUrl, setLnbitsUrl] = useAtom(lnbitsUrlAtom);
   const setAdminKey = useSetAtom(adminKeyAtom);
 
@@ -32,6 +32,7 @@ function Login(): JSX.Element {
     if (!lnbitsUrl) return;
     try {
       await fetchAdminKey(lnbitsUrl);
+      navigation.navigate("Home")
     } catch (error) {
       console.log(error);
     }
@@ -53,12 +54,14 @@ function Login(): JSX.Element {
           </TouchableOpacity>
         )}
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => handleButtonClick()}
-        >
-          <Text style={styles.buttonText}>Save settings</Text>
-        </TouchableOpacity>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => handleButtonClick()}
+          >
+            <Text style={styles.buttonText}>Save settings</Text>
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
     </View>
   );

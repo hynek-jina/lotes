@@ -1,10 +1,10 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "./src/screens/LoginScreen";
-import Home from "./src/screens/HomeScreen";
 import Issue from "./src/screens/IssueScreen";
 import { useAtomValue } from "jotai";
 import { lnbitsUrlAtom } from "./src/atoms";
+import Welcome from "./src/screens/WelcomeScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -13,7 +13,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="Home">
         {!lnbitsUrl ? (
           <Stack.Screen
             name="Login"
@@ -22,8 +22,8 @@ export default function App() {
           />
         ) : (
           <Stack.Screen
-            name="Home"
-            component={Home}
+            name="Welcome"
+            component={Welcome}
             options={{ headerShown: false }}
           />
         )}
