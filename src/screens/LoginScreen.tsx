@@ -7,43 +7,13 @@ import {
   Linking,
 } from "react-native";
 import { styles } from "../styles";
-import { useEffect, useState } from "react";
-import { atom, useAtom } from "jotai";
-import {
-  lnbitsUrlAtom,
-  domainAtom,
-  userAtom,
-  walletAtom,
-  adminKeyAtom,
-} from "../atoms";
-import URLParse from "url-parse";
+import { useAtom, useSetAtom } from "jotai";
+import { lnbitsUrlAtom, adminKeyAtom } from "../atoms";
 import axios from "axios";
 
 function Login(): JSX.Element {
-  // Preparation for parsing the server url
   const [lnbitsUrl, setLnbitsUrl] = useAtom(lnbitsUrlAtom);
-  const [domain, setDomain] = useAtom(domainAtom);
-  const [user, setUser] = useAtom(userAtom);
-  const [wallet, setWallet] = useAtom(walletAtom);
-  const [adminKey, setAdminKey] = useAtom(adminKeyAtom);
-
-  useEffect(() => {
-    const parsedData = parseUrl(lnbitsUrl);
-
-    setDomain(parsedData.domain || "");
-    setUser(parsedData.user || "");
-    setWallet(parsedData.wallet || "");
-  }, [lnbitsUrl]);
-
-  function parseUrl(url: string) {
-    const fullUrl = new URLParse(url, true);
-
-    const domain = fullUrl.origin;
-    const user = fullUrl.query.usr;
-    const wallet = fullUrl.query.wal;
-
-    return { domain, user, wallet };
-  }
+  const setAdminKey = useSetAtom(adminKeyAtom);
 
   async function fetchAdminKey(lnbitsUrl: string) {
     const response = await axios.get(lnbitsUrl);
@@ -55,18 +25,13 @@ function Login(): JSX.Element {
   }
 
   const handleOpenWallet = () => {
-    Linking.openURL(lnbitsUrl);
+    if (lnbitsUrl) Linking.openURL(lnbitsUrl);
   };
 
   const handleButtonClick = async () => {
+    if (!lnbitsUrl) return;
     try {
       await fetchAdminKey(lnbitsUrl);
-
-      const parsedData = parseUrl(lnbitsUrl);
-
-      setDomain(parsedData.domain || "");
-      setUser(parsedData.user || "");
-      setWallet(parsedData.wallet || "");
     } catch (error) {
       console.log(error);
     }
@@ -79,12 +44,14 @@ function Login(): JSX.Element {
         <TextInput
           style={styles.input}
           onChangeText={setLnbitsUrl}
-          placeholder={lnbitsUrl}
+          value={lnbitsUrl ?? ""}
         />
 
-        <TouchableOpacity onPress={handleOpenWallet}>
-          <Text style={styles.link}>Open wallet</Text>
-        </TouchableOpacity>
+        {lnbitsUrl && (
+          <TouchableOpacity onPress={handleOpenWallet}>
+            <Text style={styles.link}>Open wallet</Text>
+          </TouchableOpacity>
+        )}
 
         <TouchableOpacity
           style={styles.button}

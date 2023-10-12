@@ -1,6 +1,6 @@
-import { adminKeyAtom, domainAtom } from "./atoms";
+import { adminKeyAtom, userInfoAtom } from "./atoms";
 import { useAtomValue } from "jotai";
-import urlJoin from "url-join"
+import urlJoin from "url-join";
 
 interface Api {
   getBalance: () => Promise<number>;
@@ -64,7 +64,8 @@ export interface RecordsApi {
 
 export function useApiCalls(): Api {
   const apiKey = useAtomValue(adminKeyAtom);
-  const domain = useAtomValue(domainAtom);
+  const userInfo = useAtomValue(userInfoAtom);
+  const domain = userInfo?.domain ?? "";
 
   return {
     getBalance: async (): ReturnType<Api["getBalance"]> => {
@@ -72,7 +73,7 @@ export function useApiCalls(): Api {
         throw new Error("API key not found");
       }
 
-      const result: Response = await fetch(urlJoin(domain,"/api/v1/wallet"), {
+      const result: Response = await fetch(urlJoin(domain, "/api/v1/wallet"), {
         method: "GET",
         headers: {
           "X-Api-Key": apiKey,
@@ -94,14 +95,17 @@ export function useApiCalls(): Api {
         throw new Error("API key not found");
       }
 
-      const result: Response = await fetch(urlJoin(domain,"/api/v1/payments"), {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-          "X-Api-Key": apiKey,
-        },
-        body: JSON.stringify({ out: false, amount: amount, memo: "Lotes" }),
-      });
+      const result: Response = await fetch(
+        urlJoin(domain, "/api/v1/payments"),
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+            "X-Api-Key": apiKey,
+          },
+          body: JSON.stringify({ out: false, amount: amount, memo: "Lotes" }),
+        }
+      );
 
       if (!result.ok) {
         throw new Error(
@@ -119,7 +123,7 @@ export function useApiCalls(): Api {
       }
 
       const result: Response = await fetch(
-        urlJoin(domain,"/api/v1/lnurlscan/", lnurl),
+        urlJoin(domain, "/api/v1/lnurlscan/", lnurl),
         {
           method: "GET",
           headers: {
@@ -162,21 +166,24 @@ export function useApiCalls(): Api {
         throw new Error("API key not found");
       }
 
-      const result: Response = await fetch(urlJoin(domain,"/withdraw/api/v1/links"), {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-          "X-Api-Key": apiKey,
-        },
-        body: JSON.stringify({
-          title: "Lotes",
-          min_withdrawable: amount,
-          max_withdrawable: amount,
-          uses: 1,
-          wait_time: 1,
-          is_unique: true,
-        }),
-      });
+      const result: Response = await fetch(
+        urlJoin(domain, "/withdraw/api/v1/links"),
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+            "X-Api-Key": apiKey,
+          },
+          body: JSON.stringify({
+            title: "Lotes",
+            min_withdrawable: amount,
+            max_withdrawable: amount,
+            uses: 1,
+            wait_time: 1,
+            is_unique: true,
+          }),
+        }
+      );
 
       if (!result.ok) {
         throw new Error(
@@ -192,12 +199,15 @@ export function useApiCalls(): Api {
       if (!apiKey) {
         throw new Error("API key not found");
       }
-      const result: Response = await fetch(urlJoin(domain,"/withdraw/api/v1/links"), {
-        method: "GET",
-        headers: {
-          "X-Api-Key": apiKey,
-        },
-      });
+      const result: Response = await fetch(
+        urlJoin(domain, "/withdraw/api/v1/links"),
+        {
+          method: "GET",
+          headers: {
+            "X-Api-Key": apiKey,
+          },
+        }
+      );
 
       if (!result.ok) {
         throw new Error(

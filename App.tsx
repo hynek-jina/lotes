@@ -3,18 +3,18 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "./src/screens/LoginScreen";
 import Home from "./src/screens/HomeScreen";
 import Issue from "./src/screens/IssueScreen";
-import { atom, useAtom, useAtomValue } from "jotai";
-import { adminKeyAtom } from "./src/atoms";
+import { useAtomValue } from "jotai";
+import { lnbitsUrlAtom } from "./src/atoms";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const apiKey = useAtomValue(adminKeyAtom);
+  const lnbitsUrl = useAtomValue(lnbitsUrlAtom);
 
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
-        {!apiKey ? (
+        {!lnbitsUrl ? (
           <Stack.Screen
             name="Login"
             component={Login}

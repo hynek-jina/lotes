@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import { atom, useAtom } from "jotai";
-import { adminKeyAtom, domainAtom } from "../atoms";
+import { atom, useAtom, useAtomValue } from "jotai";
+import { adminKeyAtom, userInfoAtom } from "../atoms";
 
 import { readNfc, writeNdef } from "../nfc";
 
@@ -12,10 +12,12 @@ import { Feather } from "@expo/vector-icons";
 import { styles } from "../styles";
 
 function Home({ navigation }: { navigation: any }) {
-  const [apiKey, setApiKey] = useAtom(adminKeyAtom);
-  const [domain, setDomain] = useAtom(domainAtom);
+  const apiKey = useAtom(adminKeyAtom);
+  const userInfo = useAtomValue(userInfoAtom);
   const [balance, setBalance] = useState(0);
   const [refreshCounter, setRefreshCounter] = useState(0);
+
+  const domain = userInfo?.domain ?? "";
 
   const {
     getBalance,
@@ -47,7 +49,7 @@ function Home({ navigation }: { navigation: any }) {
     fetchData();
 
     return () => clearInterval(intervalId);
-  }, [apiKey, domain, refreshCounter]);
+  }, [domain, refreshCounter]);
 
   const returnAvailableBalance = () => {
     if (balance >= allLotesValue) {
@@ -83,10 +85,10 @@ function Home({ navigation }: { navigation: any }) {
     setAllLotesValue(totalAmount);
   };
 
-  const handleBurnButtornPress =async () => {
+  const handleBurnButtornPress = async () => {
     const lnurlFromNfc = await readNfc();
-      const scanResultJson = await scanLnurl(lnurlFromNfc);
-  }
+    const scanResultJson = await scanLnurl(lnurlFromNfc);
+  };
 
   const handleValidateButtonPress = async () => {
     try {
@@ -142,8 +144,7 @@ function Home({ navigation }: { navigation: any }) {
         >
           <Text style={styles.buttonText}>✍️ Issue</Text>
         </TouchableOpacity>
-        <View
-        style={styles.buttonSpace}></View>
+        <View style={styles.buttonSpace}></View>
         <TouchableOpacity
           style={styles.button}
           onPress={handleBurnButtornPress}
