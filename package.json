@@ -25,6 +25,7 @@
     "react-native-nfc-manager": "^3.14.1",
     "react-native-safe-area-context": "4.4.1",
     "react-native-screens": "~3.18.0",
+    "url-join": "^5.0.0",
     "url-parse": "^1.5.10"
   },
   "devDependencies": {

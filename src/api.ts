@@ -1,5 +1,6 @@
 import { adminKeyAtom, domainAtom } from "./atoms";
 import { useAtomValue } from "jotai";
+import urlJoin from "url-join"
 
 interface Api {
   getBalance: () => Promise<number>;
@@ -63,7 +64,7 @@ export interface RecordsApi {
 
 export function useApiCalls(): Api {
   const apiKey = useAtomValue(adminKeyAtom);
-  const server = useAtomValue(domainAtom);
+  const domain = useAtomValue(domainAtom);
 
   return {
     getBalance: async (): ReturnType<Api["getBalance"]> => {
@@ -71,7 +72,7 @@ export function useApiCalls(): Api {
         throw new Error("API key not found");
       }
 
-      const result: Response = await fetch(server + "/api/v1/wallet", {
+      const result: Response = await fetch(urlJoin(domain,"/api/v1/wallet"), {
         method: "GET",
         headers: {
           "X-Api-Key": apiKey,
@@ -93,7 +94,7 @@ export function useApiCalls(): Api {
         throw new Error("API key not found");
       }
 
-      const result: Response = await fetch(server + "/api/v1/payments", {
+      const result: Response = await fetch(urlJoin(domain,"/api/v1/payments"), {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -118,7 +119,7 @@ export function useApiCalls(): Api {
       }
 
       const result: Response = await fetch(
-        server + "/api/v1/lnurlscan/" + lnurl,
+        urlJoin(domain,"/api/v1/lnurlscan/", lnurl),
         {
           method: "GET",
           headers: {
@@ -161,7 +162,7 @@ export function useApiCalls(): Api {
         throw new Error("API key not found");
       }
 
-      const result: Response = await fetch(server + "/withdraw/api/v1/links", {
+      const result: Response = await fetch(urlJoin(domain,"/withdraw/api/v1/links"), {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -191,7 +192,7 @@ export function useApiCalls(): Api {
       if (!apiKey) {
         throw new Error("API key not found");
       }
-      const result: Response = await fetch(server + "/withdraw/api/v1/links", {
+      const result: Response = await fetch(urlJoin(domain,"/withdraw/api/v1/links"), {
         method: "GET",
         headers: {
           "X-Api-Key": apiKey,
