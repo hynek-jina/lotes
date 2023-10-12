@@ -4,52 +4,61 @@ import {
   TextInput,
   Text,
   View,
+  Linking,
 } from "react-native";
 import { styles } from "../styles";
-import { useState } from "react";
-import { atom, useAtom } from "jotai";
-import { apiKeyAtom, serverAtom } from "../atoms";
+import { useAtom, useSetAtom } from "jotai";
+import { lnbitsUrlAtom, adminKeyAtom } from "../atoms";
+import axios from "axios";
 
 function Login(): JSX.Element {
-  const [apiKey, setApiKey] = useAtom(apiKeyAtom);
-  const [temporaryApiKey, setTemporaryApiKey] = useState(apiKey);
+  const [lnbitsUrl, setLnbitsUrl] = useAtom(lnbitsUrlAtom);
+  const setAdminKey = useSetAtom(adminKeyAtom);
 
-  const defaultServer = (): string => {
-    if (server) {
-      return server;
-    } else return "https://legend.lnbits.com/";
+  async function fetchAdminKey(lnbitsUrl: string) {
+    const response = await axios.get(lnbitsUrl);
+    const parsedApiKey = response.data.match(
+      /<strong>Admin key: <\/strong><em>([\da-fA-F]{32})<\/em><br \/>/
+    )[1];
+
+    setAdminKey(parsedApiKey);
+  }
+
+  const handleOpenWallet = () => {
+    if (lnbitsUrl) Linking.openURL(lnbitsUrl);
   };
-  const [server, setServer] = useAtom(serverAtom);
-  const [temporaryServer, setTemporaryServer] = useState(defaultServer);
 
-  const handleButtonClick = () => {
-    setApiKey(temporaryApiKey);
-    setServer(temporaryServer);
+  const handleButtonClick = async () => {
+    if (!lnbitsUrl) return;
+    try {
+      await fetchAdminKey(lnbitsUrl);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <View style={styles.container}>
       <SafeAreaView>
-        <Text>Your LNbits apikey:</Text>
+        <Text>LNbits URL:</Text>
         <TextInput
           style={styles.input}
-          onChangeText={setTemporaryApiKey}
-          placeholder={temporaryApiKey}
+          onChangeText={setLnbitsUrl}
+          value={lnbitsUrl ?? ""}
         />
-        <Text>Your LNbits server:</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={setTemporaryServer}
-          placeholder={temporaryServer}
-        />
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => handleButtonClick()}
-          >
-            <Text style={styles.buttonText}>Save settings</Text>
+
+        {lnbitsUrl && (
+          <TouchableOpacity onPress={handleOpenWallet}>
+            <Text style={styles.link}>Open wallet</Text>
           </TouchableOpacity>
-        </View>
+        )}
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => handleButtonClick()}
+        >
+          <Text style={styles.buttonText}>Save settings</Text>
+        </TouchableOpacity>
       </SafeAreaView>
     </View>
   );

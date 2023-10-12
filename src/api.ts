@@ -1,5 +1,6 @@
-import { apiKeyAtom, serverAtom } from "./atoms";
+import { adminKeyAtom, userInfoAtom } from "./atoms";
 import { useAtomValue } from "jotai";
+import urlJoin from "url-join";
 
 interface Api {
   getBalance: () => Promise<number>;
@@ -9,8 +10,6 @@ interface Api {
   requestPayment: (scanCallback: string, invoice: string) => Promise<boolean>;
   createLnurl: (amount: number) => Promise<string>;
 }
-
-
 
 interface getBalanceApiResponse {
   id: string;
@@ -64,8 +63,9 @@ export interface RecordsApi {
 }
 
 export function useApiCalls(): Api {
-  const apiKey = useAtomValue(apiKeyAtom);
-  const server = useAtomValue(serverAtom);
+  const apiKey = useAtomValue(adminKeyAtom);
+  const userInfo = useAtomValue(userInfoAtom);
+  const domain = userInfo?.domain ?? "";
 
   return {
     getBalance: async (): ReturnType<Api["getBalance"]> => {
@@ -73,7 +73,7 @@ export function useApiCalls(): Api {
         throw new Error("API key not found");
       }
 
-      const result: Response = await fetch(server + "api/v1/wallet", {
+      const result: Response = await fetch(urlJoin(domain, "/api/v1/wallet"), {
         method: "GET",
         headers: {
           "X-Api-Key": apiKey,
@@ -95,14 +95,17 @@ export function useApiCalls(): Api {
         throw new Error("API key not found");
       }
 
-      const result: Response = await fetch(server + "api/v1/payments", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-          "X-Api-Key": apiKey,
-        },
-        body: JSON.stringify({ out: false, amount: amount, memo: "Lotes" }),
-      });
+      const result: Response = await fetch(
+        urlJoin(domain, "/api/v1/payments"),
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+            "X-Api-Key": apiKey,
+          },
+          body: JSON.stringify({ out: false, amount: amount, memo: "Lotes" }),
+        }
+      );
 
       if (!result.ok) {
         throw new Error(
@@ -120,7 +123,7 @@ export function useApiCalls(): Api {
       }
 
       const result: Response = await fetch(
-        server + "api/v1/lnurlscan/" + lnurl,
+        urlJoin(domain, "/api/v1/lnurlscan/", lnurl),
         {
           method: "GET",
           headers: {
@@ -163,21 +166,24 @@ export function useApiCalls(): Api {
         throw new Error("API key not found");
       }
 
-      const result: Response = await fetch(server + "withdraw/api/v1/links", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-          "X-Api-Key": apiKey,
-        },
-        body: JSON.stringify({
-          title: "Lotes",
-          min_withdrawable: amount,
-          max_withdrawable: amount,
-          uses: 1,
-          wait_time: 1,
-          is_unique: true,
-        }),
-      });
+      const result: Response = await fetch(
+        urlJoin(domain, "/withdraw/api/v1/links"),
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+            "X-Api-Key": apiKey,
+          },
+          body: JSON.stringify({
+            title: "Lotes",
+            min_withdrawable: amount,
+            max_withdrawable: amount,
+            uses: 1,
+            wait_time: 1,
+            is_unique: true,
+          }),
+        }
+      );
 
       if (!result.ok) {
         throw new Error(
@@ -193,12 +199,15 @@ export function useApiCalls(): Api {
       if (!apiKey) {
         throw new Error("API key not found");
       }
-      const result: Response = await fetch(server + "withdraw/api/v1/links", {
-        method: "GET",
-        headers: {
-          "X-Api-Key": apiKey,
-        },
-      });
+      const result: Response = await fetch(
+        urlJoin(domain, "/withdraw/api/v1/links"),
+        {
+          method: "GET",
+          headers: {
+            "X-Api-Key": apiKey,
+          },
+        }
+      );
 
       if (!result.ok) {
         throw new Error(
@@ -206,29 +215,8 @@ export function useApiCalls(): Api {
         );
       }
 
-      const json: RecordsApi['records'] = await result.json();
-      return {records: json}
-    }
+      const json: RecordApi[] = await result.json();
+      return { records: json };
+    },
   };
 }
-
-// export const getRecords = async (key) => {
-//   const result = await fetch(serverDomain + "withdraw/api/v1/links", {
-//     method: "GET",
-//     headers: {
-//       "X-Api-Key": key,
-//     },
-//   });
-//   const json = await result.json();
-//   console.log("records: ", json);
-//   return json;
-// };
-
-// export const deleteRecord = async (loteId) => {
-//   const result = await fetch(serverDomain + "withdraw/api/v1/links/" + loteId, {
-//     method: "DELETE",
-//     headers: {
-//       "X-Api-Key": apiKey,
-//     },
-//   });
-// };
