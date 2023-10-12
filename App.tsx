@@ -5,6 +5,7 @@ import Issue from "./src/screens/IssueScreen";
 import { useAtomValue } from "jotai";
 import { lnbitsUrlAtom } from "./src/atoms";
 import Welcome from "./src/screens/WelcomeScreen";
+import Home from "./src/screens/HomeScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -16,14 +17,14 @@ export default function App() {
       <Stack.Navigator initialRouteName="Home">
         {!lnbitsUrl ? (
           <Stack.Screen
-            name="Login"
-            component={Login}
+            name="Welcome"
+            component={Welcome}
             options={{ headerShown: false }}
           />
         ) : (
           <Stack.Screen
-            name="Welcome"
-            component={Welcome}
+            name="Home"
+            component={Home}
             options={{ headerShown: false }}
           />
         )}

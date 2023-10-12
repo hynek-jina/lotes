@@ -62,6 +62,27 @@ export interface RecordsApi {
   records: RecordApi[];
 }
 
+export async function createUser(): Promise<string> {
+  try {
+  const result: Response = await fetch(urlJoin("https://lnbits.cz","usermanager/api/v1/users"), {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({ admin_id: "", user_name: "User name", wallet_name: "Wallet name"}),
+  });
+if (!result.ok) {
+  throw new Error(
+    `Failed to create a new user. Status: ${result.status} - ${result.statusText}`
+  );
+}
+
+const data = await result.json();
+return data
+} catch (error) {
+  throw new Error('API call error: ${error.message}');
+}}
+
 export function useApiCalls(): Api {
   const apiKey = useAtomValue(adminKeyAtom);
   const userInfo = useAtomValue(userInfoAtom);

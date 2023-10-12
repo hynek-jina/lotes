@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { colors } from "./colors";
 
 export const styles = StyleSheet.create({
   container: {
@@ -11,21 +12,28 @@ export const styles = StyleSheet.create({
   button: {
     marginVertical: 20,
     padding: 10,
-    backgroundColor: "purple",
+    backgroundColor: colors.primary,
     borderRadius: 5,
     flex: 1,
   },
+  secondaryButton: {
+    marginVertical: 20,
+    padding: 10,
+    backgroundColor: colors.secondary,
+    borderRadius: 5,
+    flex: 1,
+  },  
   buttonText: {
     color: "#ffffff",
     fontWeight: "bold",
     textAlign: "center",
   },
   link: {
-    color: "blue",
+    color: colors.secondary,
     textAlign: "center",
   },
   buttonLink: {
-    color: "purple",
+    color: colors.primary,
     fontWeight: "bold",
   },
   buttonContainer: {
@@ -35,13 +43,13 @@ export const styles = StyleSheet.create({
     margin: 10,
   },
   sectionHeader: {
-    color: "010101",
+    color: colors.text,
     fontWeight: "bold",
     textAlign: "center",
     height: 24,
   },
   redText: {
-    color: "#F00",
+    color: colors.alert,
   },
   right: {
     position: "absolute",
@@ -57,7 +65,7 @@ export const styles = StyleSheet.create({
     // height: 80,
     width: "100%",
     borderBottomColor: "#333",
-    color: "#000",
+    color: colors.primary,
     fontSize: 36,
     fontWeight: "bold",
     textAlign: "center",
