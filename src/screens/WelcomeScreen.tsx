@@ -1,18 +1,23 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { styles } from "../styles";
-import { useState } from "react";
+
 import { createUser } from "../api";
+import constructLnbitsUrl from "../utils/constructLnbitsUrl";
 
 function Welcome({ navigation }: { navigation: any }) {
-  const [result, setResult] = useState("Welcome to Lotes!");
-
   const handleNewUserButton = async () => {
     try {
       const newUser = await createUser();
-      setResult(newUser);
+      console.log("NEW USER response: ", newUser);
+      const newLnbitsUrl = constructLnbitsUrl(
+        "https://lnbits.cz",
+        newUser.id,
+        newUser.wallets[0].id
+      );
+      console.log("LNbits URL: ", newLnbitsUrl);
     } catch (error) {
-      setResult("Failed to create user: ${error.message}");
+      console.log(error);
     }
   };
 
@@ -36,7 +41,6 @@ function Welcome({ navigation }: { navigation: any }) {
           <Text style={styles.buttonText}>🥷 I have my LNbits</Text>
         </TouchableOpacity>
       </View>
-      <Text>{result}</Text>
     </View>
   );
 }

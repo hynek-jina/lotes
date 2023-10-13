@@ -14,7 +14,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Welcome">
         {!lnbitsUrl ? (
           <Stack.Screen
             name="Welcome"
@@ -28,9 +28,13 @@ export default function App() {
             options={{ headerShown: false }}
           />
         )}
+
         <Stack.Screen name="Settings" component={Login} />
-        <Stack.Screen name="Issue" options={{title:"Issue New Lote"}} component={Issue} />
-        {/*<Stack.Screen name="Playground" component={PlaygroundScreen} /> */}
+        <Stack.Screen
+          name="Issue"
+          options={{ title: "Issue New Lote" }}
+          component={Issue}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

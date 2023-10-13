@@ -7,22 +7,13 @@ import {
   Linking,
 } from "react-native";
 import { styles } from "../styles";
-import { useAtom, useSetAtom } from "jotai";
-import { lnbitsUrlAtom, adminKeyAtom } from "../atoms";
-import axios from "axios";
+import { useAtom } from "jotai";
+import { adminKeyAtom, lnbitsUrlAtom } from "../atoms";
+import fetchAdminKey from "../utils/fetchAdminKey";
 
 const Login = ({ navigation }: { navigation: any }): JSX.Element => {
   const [lnbitsUrl, setLnbitsUrl] = useAtom(lnbitsUrlAtom);
-  const setAdminKey = useSetAtom(adminKeyAtom);
-
-  async function fetchAdminKey(lnbitsUrl: string) {
-    const response = await axios.get(lnbitsUrl);
-    const parsedApiKey = response.data.match(
-      /<strong>Admin key: <\/strong><em>([\da-fA-F]{32})<\/em><br \/>/
-    )[1];
-
-    setAdminKey(parsedApiKey);
-  }
+  const [key, setKey] = useAtom(adminKeyAtom);
 
   const handleOpenWallet = () => {
     if (lnbitsUrl) Linking.openURL(lnbitsUrl);
@@ -32,7 +23,7 @@ const Login = ({ navigation }: { navigation: any }): JSX.Element => {
     if (!lnbitsUrl) return;
     try {
       await fetchAdminKey(lnbitsUrl);
-      navigation.navigate("Home")
+      navigation.navigate("Home");
     } catch (error) {
       console.log(error);
     }
@@ -65,6 +56,6 @@ const Login = ({ navigation }: { navigation: any }): JSX.Element => {
       </SafeAreaView>
     </View>
   );
-}
+};
 
 export default Login;
