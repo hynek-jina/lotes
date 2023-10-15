@@ -25,7 +25,7 @@ function Welcome({ navigation }: { navigation: any }) {
   interface CarouselData {
     id: number;
     name: string;
-    url: string;
+    image: any; // what should be here?
   }
 
   const SLIDER_WIDTH = Dimensions.get('window').width + 30;
@@ -34,18 +34,18 @@ function Welcome({ navigation }: { navigation: any }) {
   const data: CarouselData[] = [
     {
       id: 1,
-      name: 'React JS',
-      url: 'https://icon-library.com/images/react-icon/react-icon-29.jpg',
+      name: 'Upload your Lightning nOTE to an NFC card',
+      image: require('../assets/Carousel1.png')
     },
     {
       id: 2,
-      name: 'JavaScript',
-      url: 'https://upload.wikimedia.org/wikipedia/commons/3/3b/Javascript_Logo.png',
+      name: 'Physically hand the card to someone',
+      image: require('../assets/Carousel2.png')
     },
     {
       id: 3,
-      name: 'Node JS',
-      url: 'https://upload.wikimedia.org/wikipedia/commons/6/67/NodeJS.png',
+      name: 'The recipient can claim the funds anytime',
+      image: require('../assets/Carousel3.png')
     },
   ];
 
@@ -53,13 +53,13 @@ const renderItem = ({ item }: { item: CarouselData }) => {
   return (
     <View
       style={{
-        borderWidth: 1,
+        // borderWidth: 1,
         padding: 20,
         borderRadius: 20,
         alignItems: 'center',
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
       }}>
-      <Image source={{uri: item.url}} style={{width: 200, height: 200}} />
+      <Image source={item.image} style={{ width: 200, height: 200 }} />
       <Text style={{marginVertical: 10, fontSize: 20, fontWeight: 'bold'}}>
         {item.name}
       </Text>

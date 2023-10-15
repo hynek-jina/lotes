@@ -11,35 +11,37 @@
     "ios:submit": "eas submit --platform ios"
   },
   "dependencies": {
+    "@babel/preset-env": "^7.23.2",
     "@react-native-async-storage/async-storage": "^1.17.11",
     "@react-navigation/native": "^6.1.5",
     "@react-navigation/native-stack": "^6.9.11",
     "axios": "^1.5.1",
-    "expo": "~47.0.14",
-    "expo-splash-screen": "~0.17.5",
-    "expo-status-bar": "~1.4.2",
+    "expo": "^49.0.13",
+    "expo-splash-screen": "~0.22.0",
+    "expo-status-bar": "~1.7.1",
     "jotai": "^2.0.3",
-    "react": "18.1.0",
-    "react-native": "0.70.8",
+    "jscodeshift": "^0.15.0",
+    "react": "18.2.0",
+    "react-native": "0.72.6",
     "react-native-mmkv": "^2.6.3",
     "react-native-nfc-manager": "^3.14.1",
-    "react-native-safe-area-context": "4.4.1",
-    "react-native-screens": "~3.18.0",
+    "react-native-safe-area-context": "4.7.2",
+    "react-native-screens": "~3.25.0",
     "react-native-snap-carousel": "^3.9.1",
     "url-join": "^5.0.0",
     "url-parse": "^1.5.10"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
-    "@tsconfig/react-native": "^2.0.3",
+    "@tsconfig/react-native": "^3.0.2",
     "@types/jest": "^29.4.2",
     "@types/react": "^18.0.28",
-    "@types/react-native": "^0.71.3",
+    "@types/react-native": "^0.72.3",
     "@types/react-native-snap-carousel": "^3.8.6",
     "@types/react-test-renderer": "^18.0.0",
     "@types/url-parse": "^1.4.9",
-    "prettier": "2.8.5",
-    "typescript": "^4.9.5"
+    "prettier": "3.0.3",
+    "typescript": "^5.2.2"
   },
   "private": true
 }

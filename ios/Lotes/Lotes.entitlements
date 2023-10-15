@@ -6,8 +6,8 @@
     <string>development</string>
     <key>com.apple.developer.nfc.readersession.formats</key>
     <array>
-      <string>TAG</string>
       <string>NDEF</string>
+      <string>TAG</string>
     </array>
   </dict>
 </plist>
