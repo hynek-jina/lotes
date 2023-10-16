@@ -11,6 +11,29 @@ interface Api {
   createLnurl: (amount: number) => Promise<string>;
 }
 
+interface CreateUser {
+  id: string;
+  name: string;
+  admin: string;
+  email: string;
+  password: string;
+  extra: {
+    additionalProp1: string;
+    additionalProp2: string;
+    additionalProp3: string;
+  };
+  wallets: [
+    {
+      id: string;
+      admin: string;
+      name: string;
+      user: string;
+      adminkey: string;
+      inkey: string;
+    }
+  ];
+}
+
 interface getBalanceApiResponse {
   id: string;
   name: string;
@@ -60,6 +83,35 @@ export interface RecordApi {
 
 export interface RecordsApi {
   records: RecordApi[];
+}
+
+export async function createUser(): Promise<CreateUser> {
+  try {
+    const result: Response = await fetch(
+      urlJoin("https://lnbits.cz", "usermanager/api/v1/users"),
+      {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          admin_id: "",
+          user_name: "User name",
+          wallet_name: "Wallet name",
+        }),
+      }
+    );
+    if (!result.ok) {
+      throw new Error(
+        `Failed to create a new user. Status: ${result.status} - ${result.statusText}`
+      );
+    }
+
+    const data = await result.json();
+    return data;
+  } catch (error) {
+    throw new Error("API call error: ${error.message}");
+  }
 }
 
 export function useApiCalls(): Api {

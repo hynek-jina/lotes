@@ -1,9 +1,7 @@
 import { selectAtom } from "jotai/utils";
 import { atomWithMMKV } from "./atomWithMMKV";
 import parseLnbitsUrl from "./utils/parseLnbitsUrl";
-
-export const apiKeyAtom = atomWithMMKV("apiKey", "");
-export const serverAtom = atomWithMMKV("server", "");
+import fetchAdminKey from "./utils/fetchAdminKey";
 
 interface UserInfo {
   domain: string;
@@ -15,14 +13,19 @@ export const lnbitsUrlAtom = atomWithMMKV<string | null>("lnbitsurl", null);
 
 export const userInfoAtom = selectAtom(
   lnbitsUrlAtom,
-  (url): UserInfo | null => {
-    if (!url) return null;
-    return parseLnbitsUrl(url);
+  (lnbitsUrl): UserInfo | null => {
+    if (!lnbitsUrl) return null;
+    return parseLnbitsUrl(lnbitsUrl);
   }
 );
 
-// export const domainAtom = selectAtom(userInfoAtom, (info) => info?.domain ?? "");
-
-export const adminKeyAtom = atomWithMMKV("adminKey", "");
-
+export const adminKeyAtom = selectAtom(
+  lnbitsUrlAtom,
+  async (lnbitsUrl): Promise<string | null> => {
+    if (!lnbitsUrl) return null;
+    const adminKey = await fetchAdminKey(lnbitsUrl);
+    return adminKey
+  }
+)
+// export const adminKeyAtom = atomWithMMKV("adminKey", "");
 export const loteAmountAtom = atomWithMMKV("loteAmount", 0);

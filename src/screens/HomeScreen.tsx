@@ -142,14 +142,14 @@ function Home({ navigation }: { navigation: any }) {
           style={styles.button}
           onPress={() => navigation.navigate("Issue")}
         >
-          <Text style={styles.buttonText}>✍️ Issue</Text>
+          <Text style={styles.buttonText}>✍️ Issue Lote</Text>
         </TouchableOpacity>
         <View style={styles.buttonSpace}></View>
         <TouchableOpacity
           style={styles.button}
           onPress={handleBurnButtornPress}
         >
-          <Text style={styles.buttonText}>🔥 Burn</Text>
+          <Text style={styles.buttonText}>🫳 Claim Lote</Text>
         </TouchableOpacity>
       </View>
       <View>
@@ -159,7 +159,6 @@ function Home({ navigation }: { navigation: any }) {
       {returnAvailableBalance()}
 
       <TouchableOpacity
-        //style={styles.button}
         onPress={handleValidateButtonPress}
       >
         <Text style={styles.buttonLink}>🦄 Validate</Text>

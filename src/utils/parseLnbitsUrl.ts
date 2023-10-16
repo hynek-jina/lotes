@@ -1,7 +1,7 @@
 import URLParse from "url-parse";
 
-export default function parseLnbitsUrl(url: string) {
-  const fullUrl = new URLParse(url, true);
+export default function parseLnbitsUrl(lnbitsUrl: string) {
+  const fullUrl = new URLParse(lnbitsUrl, true);
 
   const domain = fullUrl.origin;
   const user = fullUrl.query.usr;
