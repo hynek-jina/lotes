@@ -21,8 +21,8 @@ export const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: colors.secondary,
     borderRadius: 5,
-    flex: 1,
-  },  
+    flex: 1,  
+  },
   buttonText: {
     color: "#ffffff",
     fontWeight: "bold",
@@ -78,5 +78,27 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     width: 340,
+  },
+  carouselRenderView: {
+    padding: 20,
+    borderRadius: 20,
+    alignItems: "center",
+  },
+  carouselImageSize: {
+    width: 200,
+    height: 200,
+  },
+  carouselDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginHorizontal: 8,
+    backgroundColor: colors.secondary,
+  },
+  carouselDotInactive: {
+    backgroundColor: "black",
+  },
+  carouselViewFix: {
+    height: '50%'
   },
 });
