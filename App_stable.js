@@ -1,11 +1,11 @@
-import * as React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "./screens/HomeScreen";
-import SettingsScreen from "./screens/SettingsScreen";
-import PlaygroundScreen from "./screens/PlaygroundScreen"
+import * as React from 'react'
+import {NavigationContainer} from '@react-navigation/native'
+import {createNativeStackNavigator} from '@react-navigation/native-stack'
+import HomeScreen from './screens/HomeScreen'
+import SettingsScreen from './screens/SettingsScreen'
+import PlaygroundScreen from './screens/PlaygroundScreen'
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator()
 
 function App() {
   return (
@@ -14,13 +14,13 @@ function App() {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
         <Stack.Screen name="Settings" component={SettingsScreen} />
         <Stack.Screen name="Playground" component={PlaygroundScreen} />
       </Stack.Navigator>
     </NavigationContainer>
-  );
+  )
 }
 
-export default App;
+export default App

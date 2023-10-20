@@ -1,23 +1,23 @@
-import { atomWithStorage, createJSONStorage } from "jotai/utils";
-import { MMKV } from "react-native-mmkv";
+import {atomWithStorage, createJSONStorage} from 'jotai/utils'
+import {MMKV} from 'react-native-mmkv'
 
-const storage = new MMKV();
+const storage = new MMKV()
 
 function getItem<T>(key: string): T | null {
-  const value = storage.getString(key);
-  return value ? JSON.parse(value) : null;
+  const value = storage.getString(key)
+  return value ? JSON.parse(value) : null
 }
 
 function setItem<T>(key: string, value: T): void {
-  storage.set(key, JSON.stringify(value));
+  storage.set(key, JSON.stringify(value))
 }
 
 function removeItem(key: string): void {
-  storage.delete(key);
+  storage.delete(key)
 }
 
 function clearAll(): void {
-  storage.clearAll();
+  storage.clearAll()
 }
 
 export const atomWithMMKV = <T>(key: string, initialValue: T) =>
@@ -30,4 +30,4 @@ export const atomWithMMKV = <T>(key: string, initialValue: T) =>
       removeItem,
       clearAll,
     }))
-  );
+  )

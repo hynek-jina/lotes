@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import { atom, useAtom } from "jotai";
-import { apiKeyAtom, serverAtom } from "../atoms";
+import React, {useState, useEffect} from 'react'
+import {View, Text, TouchableOpacity} from 'react-native'
+import {atom, useAtom} from 'jotai'
+import {apiKeyAtom, serverAtom} from '../atoms'
 
-import { readNfc, writeNdef } from "../nfc";
+import {readNfc, writeNdef} from '../nfc'
 
-import { RecordsList } from "../components/Lotes";
-import { useApiCalls, RecordsApi } from "../api";
+import {RecordsList} from '../components/Lotes'
+import {useApiCalls, RecordsApi} from '../api'
 
-import { Feather } from "@expo/vector-icons";
-import { styles } from "../styles";
+import {Feather} from '@expo/vector-icons'
+import {styles} from '../styles'
 
-function Home({ navigation }: { navigation: any }) {
-  const [apiKey, setApiKey] = useAtom(apiKeyAtom);
-  const [server, setServer] = useAtom(serverAtom);
-  const [balance, setBalance] = useState(0);
-  const [refreshCounter, setRefreshCounter] = useState(0);
+function Home({navigation}: {navigation: any}) {
+  const [apiKey, setApiKey] = useAtom(apiKeyAtom)
+  const [server, setServer] = useAtom(serverAtom)
+  const [balance, setBalance] = useState(0)
+  const [refreshCounter, setRefreshCounter] = useState(0)
 
   const {
     getBalance,
@@ -24,38 +24,41 @@ function Home({ navigation }: { navigation: any }) {
     requestPayment,
     createLnurl,
     getRecords,
-  } = useApiCalls();
+  } = useApiCalls()
 
-  const [records, setRecords] = useState<RecordsApi>({ records: [] });
-  const [allLotesValue, setAllLotesValue] = useState(0);
+  const [records, setRecords] = useState<RecordsApi>({records: []})
+  const [allLotesValue, setAllLotesValue] = useState(0)
 
   useEffect(() => {
     const fetchData = async () => {
-      setBalance(await getBalance());
-      const data = await getRecords();
-      setRecords(data);
+      setBalance(await getBalance())
+      const data = await getRecords()
+      setRecords(data)
       const filteredRecords = data.records.filter(
         (record) => record.uses - record.used >= 1
-      );
+      )
       const totalAmount = filteredRecords.reduce(
         (sum, record) => sum + record.max_withdrawable,
         0
-      );
-      setAllLotesValue(totalAmount);
-    };
-    const intervalId = setInterval(fetchData, 60000); // Update every 60 seconds
-    fetchData();
+      )
+      setAllLotesValue(totalAmount)
+    }
+    const intervalId = setInterval(fetchData, 60000) // Update every 60 seconds
+    fetchData()
 
-    return () => clearInterval(intervalId);
-  }, [apiKey, server, refreshCounter]);
+    return () => clearInterval(intervalId)
+  }, [apiKey, server, refreshCounter])
 
   const returnAvailableBalance = () => {
     if (balance >= allLotesValue) {
       return (
         <View>
-          <Text>{Math.floor(balance - allLotesValue).toLocaleString()} sats available</Text>
+          <Text>
+            {Math.floor(balance - allLotesValue).toLocaleString()} sats
+            available
+          </Text>
         </View>
-      );
+      )
     }
     return (
       <View>
@@ -63,50 +66,50 @@ function Home({ navigation }: { navigation: any }) {
           Your lotes aren't covered.. ({allLotesValue - balance} sats missing)
         </Text>
       </View>
-    );
-  };
+    )
+  }
 
   const handleRefreshButtonPress = async () => {
-    setBalance(await getBalance());
-    const data = await getRecords();
-    setRecords(data);
+    setBalance(await getBalance())
+    const data = await getRecords()
+    setRecords(data)
     const filteredRecords = data.records.filter(
       (record) => record.uses - record.used >= 1
-    );
+    )
     const totalAmount = filteredRecords.reduce(
       (sum, record) => sum + record.max_withdrawable,
       0
-    );
-    setAllLotesValue(totalAmount);
-  };
+    )
+    setAllLotesValue(totalAmount)
+  }
 
   const handleValidateButtonPress = async () => {
     try {
-      const lnurlFromNfc = await readNfc();
-      const scanResultJson = await scanLnurl(lnurlFromNfc);
-      let temporaryAmount = scanResultJson.maxWithdrawable / 1000;
-      const createdInvoice = await getInvoice(temporaryAmount);
+      const lnurlFromNfc = await readNfc()
+      const scanResultJson = await scanLnurl(lnurlFromNfc)
+      let temporaryAmount = scanResultJson.maxWithdrawable / 1000
+      const createdInvoice = await getInvoice(temporaryAmount)
       const paymentReceived = await requestPayment(
         scanResultJson.callback,
         createdInvoice
-      );
-      const createdLnurl = await createLnurl(temporaryAmount);
+      )
+      const createdLnurl = await createLnurl(temporaryAmount)
       setTimeout(async () => {
         await writeNdef(
           createdLnurl,
           `Store ${temporaryAmount.toLocaleString()} sats`
-        );
-      }, 3000);
-      setRefreshCounter(refreshCounter + 1);
+        )
+      }, 3000)
+      setRefreshCounter(refreshCounter + 1)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   return (
     <View style={styles.container}>
       <Feather
-        onPress={() => navigation.navigate("Settings")}
+        onPress={() => navigation.navigate('Settings')}
         style={styles.right}
         name="settings"
         size={26}
@@ -121,7 +124,10 @@ function Home({ navigation }: { navigation: any }) {
         color="white"
       />
 
-      <Text style={styles.header}> {Math.floor(balance).toLocaleString()} </Text>
+      <Text style={styles.header}>
+        {' '}
+        {Math.floor(balance).toLocaleString()}{' '}
+      </Text>
       <Text style={styles.subHeader}>sats</Text>
 
       <TouchableOpacity
@@ -136,7 +142,7 @@ function Home({ navigation }: { navigation: any }) {
       </View>
       {returnAvailableBalance()}
     </View>
-  );
+  )
 }
 
-export default Home;
+export default Home

@@ -4,28 +4,28 @@ import {
   TextInput,
   Text,
   View,
-} from "react-native";
-import { styles } from "../styles";
-import { useState } from "react";
-import { atom, useAtom } from "jotai";
-import { apiKeyAtom, serverAtom } from "../atoms";
+} from 'react-native'
+import {styles} from '../styles'
+import {useState} from 'react'
+import {atom, useAtom} from 'jotai'
+import {apiKeyAtom, serverAtom} from '../atoms'
 
 function Login(): JSX.Element {
-  const [apiKey, setApiKey] = useAtom(apiKeyAtom);
-  const [temporaryApiKey, setTemporaryApiKey] = useState(apiKey);
+  const [apiKey, setApiKey] = useAtom(apiKeyAtom)
+  const [temporaryApiKey, setTemporaryApiKey] = useState(apiKey)
 
   const defaultServer = (): string => {
     if (server) {
-      return server;
-    } else return "https://legend.lnbits.com/";
-  };
-  const [server, setServer] = useAtom(serverAtom);
-  const [temporaryServer, setTemporaryServer] = useState(defaultServer);
+      return server
+    } else return 'https://legend.lnbits.com/'
+  }
+  const [server, setServer] = useAtom(serverAtom)
+  const [temporaryServer, setTemporaryServer] = useState(defaultServer)
 
   const handleButtonClick = () => {
-    setApiKey(temporaryApiKey);
-    setServer(temporaryServer);
-  };
+    setApiKey(temporaryApiKey)
+    setServer(temporaryServer)
+  }
 
   return (
     <View style={styles.container}>
@@ -50,7 +50,7 @@ function Login(): JSX.Element {
         </TouchableOpacity>
       </SafeAreaView>
     </View>
-  );
+  )
 }
 
-export default Login;
+export default Login

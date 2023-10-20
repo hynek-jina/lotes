@@ -1,14 +1,14 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Login from "./src/screens/LoginScreen";
-import Home from "./src/screens/HomeScreen";
-import { atom, useAtom, useAtomValue } from "jotai";
-import { apiKeyAtom } from "./src/atoms";
+import {NavigationContainer} from '@react-navigation/native'
+import {createNativeStackNavigator} from '@react-navigation/native-stack'
+import Login from './src/screens/LoginScreen'
+import Home from './src/screens/HomeScreen'
+import {atom, useAtom, useAtomValue} from 'jotai'
+import {apiKeyAtom} from './src/atoms'
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator()
 
 export default function App() {
-  const apiKey = useAtomValue(apiKeyAtom);
+  const apiKey = useAtomValue(apiKeyAtom)
 
   return (
     <NavigationContainer>
@@ -17,18 +17,18 @@ export default function App() {
           <Stack.Screen
             name="Login"
             component={Login}
-            options={{ headerShown: false }}
+            options={{headerShown: false}}
           />
         ) : (
           <Stack.Screen
             name="Home"
             component={Home}
-            options={{ headerShown: false }}
+            options={{headerShown: false}}
           />
         )}
         <Stack.Screen name="Settings" component={Login} />
         {/*<Stack.Screen name="Playground" component={PlaygroundScreen} /> */}
       </Stack.Navigator>
     </NavigationContainer>
-  );
+  )
 }
