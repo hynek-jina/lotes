@@ -1,13 +1,15 @@
-import URLParse from "url-parse";
+import URLParse from 'url-parse'
 
-export default function parseLnbitsUrl(lnbitsUrl: string) {
-  const fullUrl = new URLParse(lnbitsUrl, true);
+export default function parseLnbitsUrl(
+  lnbitsUrl: string
+): {domain: string; user: string; wallet: string} | null {
+  const fullUrl = new URLParse(lnbitsUrl, true)
 
-  const domain = fullUrl.origin;
-  const user = fullUrl.query.usr;
-  const wallet = fullUrl.query.wal;
+  const domain = fullUrl.origin
+  const user = fullUrl.query.usr
+  const wallet = fullUrl.query.wal
 
-  if (!domain || !user || !wallet) return null;
+  if (!domain || !user || !wallet) return null
 
-  return { domain, user, wallet };
+  return {domain, user, wallet}
 }

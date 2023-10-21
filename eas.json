@@ -9,7 +9,8 @@
     },
     "preview": {
       "ios": {
-        "simulator": true}
+        "simulator": true
+      }
     },
     "production": {}
   },

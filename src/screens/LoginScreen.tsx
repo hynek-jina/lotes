@@ -1,33 +1,34 @@
+import {useAtom} from 'jotai'
 import {
-  TouchableOpacity,
-  SafeAreaView,
-  TextInput,
-  Text,
-  View,
   Linking,
-} from "react-native";
-import { styles } from "../styles";
-import { useAtom } from "jotai";
-import { adminKeyAtom, lnbitsUrlAtom } from "../atoms";
-import fetchAdminKey from "../utils/fetchAdminKey";
+  SafeAreaView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native'
+import {lnbitsUrlAtom} from '../state/atoms'
+import {styles} from '../theme'
+import fetchAdminKey from '../utils/fetchAdminKey'
 
-const Login = ({ navigation }: { navigation: any }): JSX.Element => {
-  const [lnbitsUrl, setLnbitsUrl] = useAtom(lnbitsUrlAtom);
-  const [key, setKey] = useAtom(adminKeyAtom);
+const Login = ({navigation}: {navigation: any}): JSX.Element => {
+  const [lnbitsUrl, setLnbitsUrl] = useAtom(lnbitsUrlAtom)
 
-  const handleOpenWallet = () => {
-    if (lnbitsUrl) Linking.openURL(lnbitsUrl);
-  };
+  const handleOpenWallet = (): void => {
+    if (lnbitsUrl) void Linking.openURL(lnbitsUrl)
+  }
 
-  const handleButtonClick = async () => {
-    if (!lnbitsUrl) return;
-    try {
-      await fetchAdminKey(lnbitsUrl);
-      navigation.navigate("Home");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const handleButtonClick = (): void => {
+    void (async () => {
+      if (!lnbitsUrl) return
+      try {
+        await fetchAdminKey(lnbitsUrl)
+        navigation.navigate('Home')
+      } catch (error) {
+        console.log(error)
+      }
+    })()
+  }
 
   return (
     <View style={styles.container}>
@@ -36,7 +37,7 @@ const Login = ({ navigation }: { navigation: any }): JSX.Element => {
         <TextInput
           style={styles.input}
           onChangeText={setLnbitsUrl}
-          value={lnbitsUrl ?? ""}
+          value={lnbitsUrl ?? ''}
         />
 
         {lnbitsUrl && (
@@ -46,16 +47,13 @@ const Login = ({ navigation }: { navigation: any }): JSX.Element => {
         )}
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => handleButtonClick()}
-          >
+          <TouchableOpacity style={styles.button} onPress={handleButtonClick}>
             <Text style={styles.buttonText}>Save settings</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
     </View>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login
