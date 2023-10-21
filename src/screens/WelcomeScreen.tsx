@@ -2,10 +2,14 @@ import React from 'react'
 import {Text, TouchableOpacity, View} from 'react-native'
 import {styles} from '../theme'
 
+import {useSetAtom} from 'jotai'
 import {createUser} from '../api'
+import {lnbitsUrlAtom} from '../state/atoms'
 import constructLnbitsUrl from '../utils/constructLnbitsUrl'
 
 function Welcome({navigation}: {navigation: any}): JSX.Element {
+  const setLnbitsUrl = useSetAtom(lnbitsUrlAtom)
+
   const handleNewUserButton = async (): Promise<void> => {
     try {
       const newUser = await createUser()
@@ -16,6 +20,7 @@ function Welcome({navigation}: {navigation: any}): JSX.Element {
         newUser.wallets[0].id
       )
       console.log('LNbits URL: ', newLnbitsUrl)
+      setLnbitsUrl(newLnbitsUrl)
     } catch (error) {
       console.log(error)
     }
