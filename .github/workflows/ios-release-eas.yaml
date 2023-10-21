@@ -1,4 +1,4 @@
-name: '[Release] build eas production'
+name: '[Release] build and release iOS production'
 on: workflow_dispatch
 jobs:
   build:
@@ -18,4 +18,4 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Build on EAS
-        run: eas build --platform all --profile production --auto-submit --non-interactive --no-wait
+        run: eas build --platform ios --profile production --auto-submit --non-interactive --no-wait
