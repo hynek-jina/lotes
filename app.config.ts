@@ -8,7 +8,7 @@ export default {
     'slug': 'lotes',
     'version': VERSION,
     'orientation': 'portrait',
-    'plugins': ['react-native-nfc-manager'],
+    'plugins': [['react-native-nfc-manager', {includeNdefEntitlement: false}]],
     'icon': './assets/icon.png',
     'userInterfaceStyle': 'light',
     'splash': {
