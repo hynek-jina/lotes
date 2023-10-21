@@ -1,19 +1,19 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-export type ApiKey = string | null;
+export type ApiKey = string | null
 
-let apiKey: ApiKey | undefined = null;
+let apiKey: ApiKey | undefined = null
 
 export async function getApiKey(): Promise<ApiKey> {
   if (apiKey === undefined) {
-    const newApiKey = (await AsyncStorage.getItem("apiKey")) ?? null;
-    apiKey = newApiKey;
-    return newApiKey;
+    const newApiKey = (await AsyncStorage.getItem('apiKey')) ?? null
+    apiKey = newApiKey
+    return newApiKey
   }
-  return apiKey;
+  return apiKey
 }
 
 export function setApiKey(newApiKey: string): void {
-  void AsyncStorage.setItem("apiKey", newApiKey);
-  apiKey = newApiKey;
+  void AsyncStorage.setItem('apiKey', newApiKey)
+  apiKey = newApiKey
 }

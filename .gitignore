@@ -16,3 +16,6 @@ config.js
 
 # macOS
 .DS_Store
+
+ios/
+android/

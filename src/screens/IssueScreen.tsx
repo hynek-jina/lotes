@@ -1,34 +1,35 @@
+import {useNavigation} from '@react-navigation/native'
+import {useAtom} from 'jotai'
 import {
-  TouchableOpacity,
   SafeAreaView,
-  TextInput,
   Text,
+  TextInput,
+  TouchableOpacity,
   View,
-} from "react-native";
-import { styles } from "../styles";
-import { useState } from "react";
-import { atom, useAtom } from "jotai";
-import { loteAmountAtom } from "../atoms";
-import { useApiCalls, RecordsApi } from "../api";
-import { writeNdef } from "../nfc";
-import { useNavigation } from "@react-navigation/native";
+} from 'react-native'
+import {useApiCalls} from '../api'
+import {loteAmountAtom} from '../state/atoms'
+import {styles} from '../theme'
+import {writeNdef} from '../utils/nfc'
 
 function Issue(): JSX.Element {
-  const [temporaryLoteAmount, setTemporaryLoteAmount] = useAtom(loteAmountAtom);
-  const navigation = useNavigation();
+  const [temporaryLoteAmount, setTemporaryLoteAmount] = useAtom(loteAmountAtom)
+  const navigation = useNavigation()
 
-  const { createLnurl } = useApiCalls();
+  const {createLnurl} = useApiCalls()
 
-  const handleButtonClick = async () => {
-    const createdLnurl = await createLnurl(temporaryLoteAmount);
-    setTimeout(async () => {
-      await writeNdef(
-        createdLnurl,
-        `Store ${temporaryLoteAmount.toLocaleString()} sats`
-      );
-      navigation.goBack();
-    }, 3000);
-  };
+  const handleButtonClick = (): void => {
+    setTimeout(() => {
+      void (async () => {
+        const createdLnurl = await createLnurl(temporaryLoteAmount)
+        await writeNdef(
+          createdLnurl,
+          `Store ${temporaryLoteAmount.toLocaleString()} sats`
+        )
+        navigation.goBack()
+      })()
+    }, 3000)
+  }
 
   return (
     <View style={styles.container}>
@@ -38,7 +39,7 @@ function Issue(): JSX.Element {
           style={styles.input}
           onChangeText={(text) => {
             const parsedNumber = Number(text)
-            if(isNaN(parsedNumber)) return
+            if (isNaN(parsedNumber)) return
 
             setTemporaryLoteAmount(parsedNumber)
           }}
@@ -48,16 +49,13 @@ function Issue(): JSX.Element {
         />
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleButtonClick}
-          >
+          <TouchableOpacity style={styles.button} onPress={handleButtonClick}>
             <Text style={styles.buttonText}>✍️ Issue Lote</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
     </View>
-  );
+  )
 }
 
-export default Issue;
+export default Issue
