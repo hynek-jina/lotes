@@ -30,7 +30,7 @@ interface CreateUser {
       user: string
       adminkey: string
       inkey: string
-    }
+    },
   ]
 }
 
