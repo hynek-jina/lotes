@@ -28,13 +28,6 @@ _At this point, you are assured that no previous owner of the note, or anyone wh
 - You will need to create an account on [LNbits](https://lnbits.com/) <br>
   _It is recommended to run your own instance of LNbits but If you are not ready, you can use [Demo server](https://legend.lnbits.com/)_
 
-### Running the app
-
-1. Clone this repository
-2. Run `yarn intstall``
-3. Run `npx expo prebuild`
-4. run `npx expo run:ios` or `npx expo run:android`
-
 | Open LNbits                                                                            |                                                                                                                                                                            |
 | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Insert name for your wallet and click on `ADD A NEW WALLET`                            | <img width="306" alt="Snímek obrazovky 2023-03-25 v 18 20 14" src="https://user-images.githubusercontent.com/26002916/227732136-44a1fc22-b356-430b-b2be-2e313e4cc98e.png"> |
@@ -63,3 +56,10 @@ Donate address:
 ```
 lnurl1dp68gurn8ghj7ampd3kx2ar0veekzar0wd5xjtnrdakj7tnhv4kxctttdehhwm30d3h82unvwqhhxur9v4j8jumtd95kuee4xqqp6h25
 ```
+
+## Run the app as a developer
+
+1. Clone this repository
+2. Run `yarn install`
+3. Run `npx expo prebuild`
+4. run `npx expo run:ios` or `npx expo run:android`
