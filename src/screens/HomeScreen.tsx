@@ -92,10 +92,14 @@ function Home({navigation}: {navigation: any}): JSX.Element {
     })()
   }
 
-  const handleBurnButtornPress = (): void => {
+  const handleClaimButtornPress = (): void => {
     void (async () => {
-      const lnurlFromNfc = await readNfc()
-      await scanLnurl(lnurlFromNfc)
+      try {
+        const lnurlFromNfc = await readNfc()
+        await scanLnurl(lnurlFromNfc)
+      } catch (error) {
+        console.error(error)
+      }
     })()
   }
 
@@ -155,7 +159,7 @@ function Home({navigation}: {navigation: any}): JSX.Element {
         <View style={styles.buttonSpace}></View>
         <TouchableOpacity
           style={styles.button}
-          onPress={handleBurnButtornPress}
+          onPress={handleClaimButtornPress}
         >
           <Text style={styles.buttonText}>🫳 Claim Lote</Text>
         </TouchableOpacity>
