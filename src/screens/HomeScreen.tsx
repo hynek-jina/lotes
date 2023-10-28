@@ -1,15 +1,15 @@
-import { useAtomValue } from 'jotai'
-import React, { useEffect, useState } from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
-import { userInfoAtom } from '../state/atoms'
+import {useAtomValue} from 'jotai'
+import React, {useEffect, useState} from 'react'
+import {Text, TouchableOpacity, View} from 'react-native'
+import {userInfoAtom} from '../state/atoms'
 
-import { readNfc, writeNdef } from '../utils/nfc'
+import {readNfc, writeNdef} from '../utils/nfc'
 
-import { useApiCalls, type RecordsApi } from '../api'
-import { RecordsList } from '../components/Lotes'
+import {useApiCalls, type RecordsApi} from '../api'
+import {RecordsList} from '../components/Lotes'
 
-import { Feather } from '@expo/vector-icons'
-import { styles } from '../theme'
+import {Feather} from '@expo/vector-icons'
+import {styles} from '../theme'
 
 function Home({navigation}: {navigation: any}): JSX.Element {
   const userInfo = useAtomValue(userInfoAtom)
@@ -92,7 +92,8 @@ function Home({navigation}: {navigation: any}): JSX.Element {
     })()
   }
 
-  const handleClaimButtonPress = (): void => { // test Claim
+  const handleClaimButtonPress = (): void => {
+    // test Claim
     void (async () => {
       try {
         const lnurlFromNfc = await readNfc()
