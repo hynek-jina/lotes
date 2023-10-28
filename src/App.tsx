@@ -36,7 +36,11 @@ export default function App(): JSX.Element {
           options={{title: 'Issue New Lote'}}
           component={Issue}
         />
-        <Stack.Screen name="LoteDetail" component={LoteDetail} />
+        <Stack.Screen
+          name="LoteDetail"
+          options={{title: 'Lote detail'}}
+          component={LoteDetail}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   )

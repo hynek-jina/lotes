@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native'
-import {colors} from './colors'
+import { StyleSheet } from 'react-native'
+import { colors } from './colors'
 
 export const styles = StyleSheet.create({
   container: {
@@ -27,6 +27,16 @@ export const styles = StyleSheet.create({
     color: '#ffffff',
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  alertButtonText: {
+    color: colors.alert,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  secondaryText:{
+    fontSize: 10,
+    fontWeight: "100",
+    fontStyle: "italic",
   },
   link: {
     color: colors.secondary,
