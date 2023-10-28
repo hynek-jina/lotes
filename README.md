@@ -1,42 +1,26 @@
 ## Lotes
 
-**Lightning notes Validator**
+**Issue and Claim physical lightning notes
 
 Lotes are bitcoin physical notes running on LNbits and Lightning Network. <br>
-The application serves as a validator for these lotes.
-
-**Proof of concept video:** <br>
-[![Lotes app - proof of concept](https://raw.githubusercontent.com/hynek-jina/lotes/main/assets/video%20preview.webp)](https://youtu.be/_cQutic0CX0)
 
 ## Users flow
 
-- You receive a lote and you want to be sure it’s valid
-- So you open the Lotes app and click on Vefify button
-- App opens nfc scanner
-- You hover the mobile over the lote
-- On the background bitcoin from the chip is transfered to your account, new bank note is issued and recorded on the same chip
-- So you know that the lote is valid and the satoshis are safely stored on your account
+- Paste url of your LNbits wallet or generate new one with one click on `New User`
+- Click on `Issue Lote` button
+- Specified amount of sats
+- Reccord this Lote (LNURLw) to physical NFC chip (NTAG216)
 
-_At this point, you are assured that no previous owner of the note, or anyone who may have previously scanned it, can claim the funds._
+- Receiver opens his app
+- Hit `Claim Lote` 
+- Scan received Lote (NFC card)
+- Sats will arrive to his LNbits wallet
+
 
 ## Download
 
 - [Join TestFlight to test app on iOS](https://testflight.apple.com/join/92K4nHPd)
 
-## Setup
-
-- You will need to create an account on [LNbits](https://lnbits.com/) <br>
-  _It is recommended to run your own instance of LNbits but If you are not ready, you can use [Demo server](https://legend.lnbits.com/)_
-
-| Open LNbits                                                                            |                                                                                                                                                                            |
-| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Insert name for your wallet and click on `ADD A NEW WALLET`                            | <img width="306" alt="Snímek obrazovky 2023-03-25 v 18 20 14" src="https://user-images.githubusercontent.com/26002916/227732136-44a1fc22-b356-430b-b2be-2e313e4cc98e.png"> |
-| On right panel about api information click on `API info` and copy your `Admin key`     | <img width="434" alt="Snímek obrazovky 2023-03-25 v 18 21 12" src="https://user-images.githubusercontent.com/26002916/227732213-ab1159f8-eb21-40eb-9ba9-69d6d60bf8e3.png"> |
-| Click on `Extensions` on left panel, find `LNURLw`, and enable it by click on `ENABLE` | <img width="350" alt="Snímek obrazovky 2023-03-25 v 18 20 49" src="https://user-images.githubusercontent.com/26002916/227732266-75561ad5-87ce-403f-b2c4-afbb4b0f2452.png"> |
-| Open Lotes app                                                                         |                                                                                                                                                                            |
-| Insert your `Admin key` and `server`                                                   | <img src="https://user-images.githubusercontent.com/26002916/227718908-3675e2ff-9614-459d-ad19-8d93bdd24b28.PNG" width="60%" height="60%">                                 |
-| Click on `Save settings`                                                               |                                                                                                                                                                            |
-| You should appear at Home screen                                                       | <img src="https://user-images.githubusercontent.com/26002916/227718907-662bf30c-7bcd-4076-b1e6-1328d7ad8384.PNG" width="60%" height="60%">                                 |
 
 ## Project and bounty program
 
