@@ -1,15 +1,15 @@
-import {useAtomValue} from 'jotai'
-import React, {useEffect, useState} from 'react'
-import {Text, TouchableOpacity, View} from 'react-native'
-import {userInfoAtom} from '../state/atoms'
+import { useAtomValue } from 'jotai'
+import React, { useEffect, useState } from 'react'
+import { Text, TouchableOpacity, View } from 'react-native'
+import { userInfoAtom } from '../state/atoms'
 
-import {readNfc, writeNdef} from '../utils/nfc'
+import { readNfc, writeNdef } from '../utils/nfc'
 
-import {useApiCalls, type RecordsApi} from '../api'
-import {RecordsList} from '../components/Lotes'
+import { useApiCalls, type RecordsApi } from '../api'
+import { RecordsList } from '../components/Lotes'
 
-import {Feather} from '@expo/vector-icons'
-import {styles} from '../theme'
+import { Feather } from '@expo/vector-icons'
+import { styles } from '../theme'
 
 function Home({navigation}: {navigation: any}): JSX.Element {
   const userInfo = useAtomValue(userInfoAtom)
@@ -92,11 +92,15 @@ function Home({navigation}: {navigation: any}): JSX.Element {
     })()
   }
 
-  const handleClaimButtornPress = (): void => {
+  const handleClaimButtonPress = (): void => { // test Claim
     void (async () => {
       try {
         const lnurlFromNfc = await readNfc()
-        await scanLnurl(lnurlFromNfc)
+        const scanResultJson = await scanLnurl(lnurlFromNfc)
+        const temporaryAmount = scanResultJson.maxWithdrawable / 1000
+        const createdInvoice = await getInvoice(temporaryAmount)
+        await requestPayment(scanResultJson.callback, createdInvoice)
+        setRefreshCounter(refreshCounter + 1)
       } catch (error) {
         console.error(error)
       }
@@ -159,7 +163,7 @@ function Home({navigation}: {navigation: any}): JSX.Element {
         <View style={styles.buttonSpace}></View>
         <TouchableOpacity
           style={styles.button}
-          onPress={handleClaimButtornPress}
+          onPress={handleClaimButtonPress}
         >
           <Text style={styles.buttonText}>🫳 Claim Lote</Text>
         </TouchableOpacity>
