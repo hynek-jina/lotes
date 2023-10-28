@@ -92,10 +92,19 @@ function Home({navigation}: {navigation: any}): JSX.Element {
     })()
   }
 
-  const handleBurnButtornPress = (): void => {
+  const handleClaimButtonPress = (): void => {
+    // test Claim
     void (async () => {
-      const lnurlFromNfc = await readNfc()
-      await scanLnurl(lnurlFromNfc)
+      try {
+        const lnurlFromNfc = await readNfc()
+        const scanResultJson = await scanLnurl(lnurlFromNfc)
+        const temporaryAmount = scanResultJson.maxWithdrawable / 1000
+        const createdInvoice = await getInvoice(temporaryAmount)
+        await requestPayment(scanResultJson.callback, createdInvoice)
+        setRefreshCounter(refreshCounter + 1)
+      } catch (error) {
+        console.error(error)
+      }
     })()
   }
 
@@ -155,7 +164,7 @@ function Home({navigation}: {navigation: any}): JSX.Element {
         <View style={styles.buttonSpace}></View>
         <TouchableOpacity
           style={styles.button}
-          onPress={handleBurnButtornPress}
+          onPress={handleClaimButtonPress}
         >
           <Text style={styles.buttonText}>🫳 Claim Lote</Text>
         </TouchableOpacity>
