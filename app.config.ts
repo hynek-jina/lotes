@@ -1,5 +1,5 @@
-const VERSION_CODE = 6
-const VERSION = '23.10.2'
+const VERSION_CODE = 7
+const VERSION = '23.10.3'
 
 const versionString = `${VERSION} (${VERSION_CODE})`
 export default {
