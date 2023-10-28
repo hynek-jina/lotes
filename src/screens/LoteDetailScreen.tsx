@@ -15,7 +15,7 @@ function LoteDetail({route, navigation}: any): JSX.Element {
           record.lnurl,
           `Store ${
             record.title
-          } ${record.max_withdrawable.toLocaleString()} sats`
+          } with ${record.max_withdrawable.toLocaleString()} sats`
         )
 
         navigation.navigate('Home')
