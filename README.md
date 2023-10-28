@@ -1,6 +1,6 @@
 ## Lotes
 
-**Issue and Claim physical lightning notes
+**Issue and Claim physical lightning notes**
 
 Lotes are bitcoin physical notes running on LNbits and Lightning Network. <br>
 
