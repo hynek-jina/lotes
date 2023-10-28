@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
-import { useApiCalls } from '../api'
-import { styles } from '../theme'
-import { writeNdef } from '../utils/nfc'
+import React, {useState} from 'react'
+import {Text, TouchableOpacity, View} from 'react-native'
+import {useApiCalls} from '../api'
+import {styles} from '../theme'
+import {writeNdef} from '../utils/nfc'
 
 function LoteDetail({route, navigation}: any): JSX.Element {
   const {record} = route.params

@@ -1,6 +1,6 @@
-import { useAtomValue } from 'jotai'
+import {useAtomValue} from 'jotai'
 import urlJoin from 'url-join'
-import { adminKeyAtom, userInfoAtom } from './state/atoms'
+import {adminKeyAtom, userInfoAtom} from './state/atoms'
 
 interface Api {
   getBalance: () => Promise<number>
@@ -295,6 +295,6 @@ export function useApiCalls(): Api {
       }
 
       return true
-    }
+    },
   }
 }
