@@ -93,7 +93,6 @@ function Home({navigation}: {navigation: any}): JSX.Element {
   }
 
   const handleClaimButtonPress = (): void => {
-    // test Claim
     void (async () => {
       try {
         const lnurlFromNfc = await readNfc()
@@ -171,8 +170,9 @@ function Home({navigation}: {navigation: any}): JSX.Element {
       </View>
       <View>
         <Text style={styles.sectionHeader}>Your Lotes</Text>
-        <RecordsList data={records} />
+        <RecordsList data={records} navigation={navigation} />
       </View>
+      <Text>{'\n'} </Text>
       {returnAvailableBalance()}
 
       <TouchableOpacity onPress={handleValidateButtonPress}>

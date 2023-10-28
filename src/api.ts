@@ -9,6 +9,7 @@ interface Api {
   scanLnurl: (lnurl: string) => Promise<scanLnurlApiResponse>
   requestPayment: (scanCallback: string, invoice: string) => Promise<boolean>
   createLnurl: (amount: number) => Promise<string>
+  deleteLnurl: (id: string) => Promise<boolean>
 }
 
 interface CreateUser {
@@ -269,6 +270,31 @@ export function useApiCalls(): Api {
 
       const json: RecordApi[] = await result.json()
       return {records: json}
+    },
+
+    deleteLnurl: async (id: string): Promise<boolean> => {
+      if (!apiKey) {
+        throw new Error('API key not found')
+      }
+
+      const result: Response = await fetch(
+        urlJoin(domain, '/withdraw/api/v1/links/', id),
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-type': 'application/json',
+            'X-Api-Key': apiKey,
+          },
+        }
+      )
+
+      if (!result.ok) {
+        throw new Error(
+          `Failed to delete lnurl. Status: ${result.status} - ${result.statusText}`
+        )
+      }
+
+      return true
     },
   }
 }

@@ -28,6 +28,16 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  alertButtonText: {
+    color: colors.alert,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  secondaryText: {
+    fontSize: 10,
+    fontWeight: '100',
+    fontStyle: 'italic',
+  },
   link: {
     color: colors.secondary,
     textAlign: 'center',

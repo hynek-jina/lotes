@@ -4,6 +4,7 @@ import {useAtomValue} from 'jotai'
 import Home from './screens/HomeScreen'
 import Issue from './screens/IssueScreen'
 import Login from './screens/LoginScreen'
+import LoteDetail from './screens/LoteDetailScreen'
 import Welcome from './screens/WelcomeScreen'
 import {lnbitsUrlAtom} from './state/atoms'
 
@@ -34,6 +35,11 @@ export default function App(): JSX.Element {
           name="Issue"
           options={{title: 'Issue New Lote'}}
           component={Issue}
+        />
+        <Stack.Screen
+          name="LoteDetail"
+          options={{title: 'Lote detail'}}
+          component={LoteDetail}
         />
       </Stack.Navigator>
     </NavigationContainer>
