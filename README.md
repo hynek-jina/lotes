@@ -12,15 +12,13 @@ Lotes are bitcoin physical notes running on LNbits and Lightning Network. <br>
 - Reccord this Lote (LNURLw) to physical NFC chip (NTAG216)
 
 - Receiver opens his app
-- Hit `Claim Lote` 
+- Hit `Claim Lote`
 - Scan received Lote (NFC card)
 - Sats will arrive to his LNbits wallet
-
 
 ## Download
 
 - [Join TestFlight to test app on iOS](https://testflight.apple.com/join/92K4nHPd)
-
 
 ## Project and bounty program
 
