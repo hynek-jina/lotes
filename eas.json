@@ -13,7 +13,14 @@
         "simulator": true
       }
     },
-    "production": {}
+    "production": {},
+    "productionApk": {
+      "android": {
+        "image": "ubuntu-18.04-jdk-11-ndk-r19c",
+        "credentialsSource": "remote",
+        "buildType": "apk"
+      }
+    }
   },
   "submit": {
     "production": {
