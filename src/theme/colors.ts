@@ -4,4 +4,5 @@ export const colors = {
   background: 'white',
   alert: 'red',
   text: 'black',
+  disabled: 'grey',
 }

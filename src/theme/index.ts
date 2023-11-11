@@ -16,6 +16,13 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     flex: 1,
   },
+  buttonDisabled: {
+    marginVertical: 20,
+    padding: 10,
+    backgroundColor: colors.disabled,
+    borderRadius: 5,
+    flex: 1,
+  },
   secondaryButton: {
     marginVertical: 20,
     padding: 10,
