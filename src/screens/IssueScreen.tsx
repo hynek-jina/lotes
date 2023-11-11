@@ -1,5 +1,6 @@
-import {useNavigation} from '@react-navigation/native'
-import {useAtom} from 'jotai'
+import { useNavigation } from '@react-navigation/native'
+import { useAtom } from 'jotai'
+import { useState } from 'react'
 import {
   SafeAreaView,
   Text,
@@ -7,18 +8,21 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import {useApiCalls} from '../api'
-import {loteAmountAtom} from '../state/atoms'
-import {styles} from '../theme'
-import {writeNdef} from '../utils/nfc'
+import { useApiCalls } from '../api'
+import { loteAmountAtom } from '../state/atoms'
+import { styles } from '../theme'
+import { writeNdef } from '../utils/nfc'
 
 function Issue(): JSX.Element {
   const [temporaryLoteAmount, setTemporaryLoteAmount] = useAtom(loteAmountAtom)
   const navigation = useNavigation()
 
+  const [activeButton, setActiveButton] = useState(true)
+
   const {createLnurl} = useApiCalls()
 
   const handleButtonClick = (): void => {
+    setActiveButton(false)
     setTimeout(() => {
       void (async () => {
         const createdLnurl = await createLnurl(temporaryLoteAmount)
@@ -27,6 +31,7 @@ function Issue(): JSX.Element {
           `Store ${temporaryLoteAmount.toLocaleString()} sats`
         )
         navigation.goBack()
+        setActiveButton(true)
       })()
     }, 3000)
   }
@@ -49,9 +54,15 @@ function Issue(): JSX.Element {
         />
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={handleButtonClick}>
-            <Text style={styles.buttonText}>✍️ Issue Lote</Text>
-          </TouchableOpacity>
+          {activeButton ? (
+            <TouchableOpacity style={styles.button} onPress={handleButtonClick}>
+              <Text style={styles.buttonText}>✍️ Issue Lote</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity style={styles.buttonDisabled}>
+              <Text style={styles.buttonText}>... Issuing Lote</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </SafeAreaView>
     </View>
