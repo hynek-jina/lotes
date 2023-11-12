@@ -97,7 +97,6 @@ export const styles = StyleSheet.create({
     width: 340,
   },
   callout: {
-    // backgroundColor: colors.background,
     position: 'absolute',
     bottom: 0,
     height: 40,
@@ -106,4 +105,11 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  nfcModal: {
+    backgroundColor: colors.background,
+    position: 'absolute',
+    bottom: 0,
+    height: 200,
+    width: 100%- 40,
+  }
 })

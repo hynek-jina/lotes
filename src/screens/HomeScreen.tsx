@@ -11,12 +11,15 @@ import { RecordsList } from '../components/Lotes'
 import { Feather } from '@expo/vector-icons'
 import NfcManager from 'react-native-nfc-manager'
 import { Callout } from '../components/Callout'
+import { NfcModal } from '../components/ScanNfcModal'
 import { styles } from '../theme'
 
 function Home({navigation}: {navigation: any}): JSX.Element {
   const userInfo = useAtomValue(userInfoAtom)
   const [balance, setBalance] = useState(0)
   const [refreshCounter, setRefreshCounter] = useState(0)
+
+  const [modalVisible, setModalVisible] = useState(false)
 
   const domain = userInfo?.domain ?? ''
 
@@ -40,8 +43,8 @@ function Home({navigation}: {navigation: any}): JSX.Element {
   }
 
   useEffect(() => {
-    checkNfcAvailability(); // TODO: Ask Dejv about the warning
-  }, []);
+    checkNfcAvailability() // TODO: Ask Dejv about the warning
+  }, [])
 
   useEffect(() => {
     async function fetchData(): Promise<void> {
@@ -60,7 +63,7 @@ function Home({navigation}: {navigation: any}): JSX.Element {
 
     const intervalId = setInterval(() => {
       void fetchData()
-    }, 60_000) // Update every 60 seconds
+    }, 60_000)
     void fetchData()
 
     return () => {
@@ -87,6 +90,10 @@ function Home({navigation}: {navigation: any}): JSX.Element {
         </Text>
       </View>
     )
+  }
+
+const handleSandboxPress = (): void => {
+    setModalVisible(true)
   }
 
   const handleRefreshButtonPress = (): void => {
@@ -191,7 +198,12 @@ function Home({navigation}: {navigation: any}): JSX.Element {
       <TouchableOpacity onPress={handleValidateButtonPress}>
         <Text style={styles.buttonLink}>🦄 Validate</Text>
       </TouchableOpacity>
-      
+
+      <TouchableOpacity onPress={handleSandboxPress}>
+        <Text style={styles.buttonLink}>Show modal</Text>
+      </TouchableOpacity>
+
+      <NfcModal modalVisible={modalVisible}/>
       {!hasNfc ? <Callout icon="x-octagon" copy="No NFC available" /> : null}
     </View>
   )
