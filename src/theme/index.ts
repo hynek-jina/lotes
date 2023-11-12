@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native'
-import {colors} from './colors'
+import { StyleSheet } from 'react-native'
+import { colors } from './colors'
 
 export const styles = StyleSheet.create({
   container: {
@@ -95,5 +95,15 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     width: 340,
+  },
+  callout: {
+    // backgroundColor: colors.background,
+    position: 'absolute',
+    bottom: 0,
+    height: 40,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })

@@ -1,26 +1,27 @@
-import {Platform} from 'react-native'
-import NfcManager, {Ndef, NfcTech} from 'react-native-nfc-manager'
+import { Platform } from 'react-native'
+import NfcManager, { Ndef, NfcTech } from 'react-native-nfc-manager'
 
 export const readNfc = async (): Promise<string> => {
   let text = ''
   let resp: number[] | string | null = null
   try {
     const tech = Platform.OS === 'ios' ? NfcTech.MifareIOS : NfcTech.NfcA
+    console.log("HEY")
     resp = await NfcManager.requestTechnology(tech, {
       alertMessage: 'Scan the Lote',
     })
-
+    console.log("HEY2")
     const cmd =
       Platform.OS === 'ios'
         ? NfcManager.sendMifareCommandIOS
         : NfcManager.transceive
-
+        console.log("HEY3")
     resp = await cmd([0x3a, 4, 4])
     const payloadLength = parseInt(resp.toString().split(',')[1])
     const payloadPages = Math.ceil(payloadLength / 4)
     const startPage = 5
     const endPage = startPage + payloadPages - 1
-
+    console.log("HEY4")
     resp = await cmd([0x3a, startPage, endPage])
     const bytes = resp.toString().split(',')
 
