@@ -1,18 +1,18 @@
-import { useAtomValue, useSetAtom } from 'jotai'
-import React, { useEffect, useState } from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
-import { nfcModalVisibilityAtom, userInfoAtom } from '../state/atoms'
+import {useAtomValue, useSetAtom} from 'jotai'
+import React, {useEffect, useState} from 'react'
+import {Platform, Text, TouchableOpacity, View} from 'react-native'
+import {nfcModalVisibilityAtom, userInfoAtom} from '../state/atoms'
 
-import { readNfc, writeNdef } from '../utils/nfc'
+import {readNfc, writeNdef} from '../utils/nfc'
 
-import { useApiCalls, type RecordsApi } from '../api'
-import { RecordsList } from '../components/Lotes'
+import {useApiCalls, type RecordsApi} from '../api'
+import {RecordsList} from '../components/Lotes'
 
-import { Feather } from '@expo/vector-icons'
+import {Feather} from '@expo/vector-icons'
 import NfcManager from 'react-native-nfc-manager'
-import { Callout } from '../components/Callout'
-import { NfcModal } from '../components/ScanNfcModal'
-import { styles } from '../theme'
+import {Callout} from '../components/Callout'
+import {NfcModal} from '../components/ScanNfcModal'
+import {styles} from '../theme'
 
 function Home({navigation}: {navigation: any}): JSX.Element {
   const userInfo = useAtomValue(userInfoAtom)
@@ -43,7 +43,7 @@ function Home({navigation}: {navigation: any}): JSX.Element {
   }
 
   useEffect(() => {
-    void checkNfcAvailability() // TODO: Ask Dejv about the warning
+    void checkNfcAvailability()
   }, [])
 
   useEffect(() => {
@@ -92,7 +92,7 @@ function Home({navigation}: {navigation: any}): JSX.Element {
     )
   }
 
-const handleSandboxPress = (): void => {
+  const handleSandboxPress = (): void => {
     setModalVisible(true)
   }
 
@@ -203,10 +203,16 @@ const handleSandboxPress = (): void => {
         <Text style={styles.buttonLink}>Show modal</Text>
       </TouchableOpacity>
 
-      <NfcModal modalCopy="Test modal copy"/>
+      {Platform.OS === 'android' ? (
+        <NfcModal modalCopy="Test modal copy" />
+      ) : null}
       {!hasNfc ? <Callout icon="x-octagon" copy="No NFC available" /> : null}
     </View>
   )
 }
 
 export default Home
+
+//TODO:smazat validate function
+//TODO:smazat sandbox function
+//TODO:prolinkovat NFC modal s NFC cally

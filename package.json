@@ -20,6 +20,7 @@
     "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
     "jotai": "^2.0.3",
+    "lottie-react-native": "^6.4.0",
     "react": "18.2.0",
     "react-native": "0.72.6",
     "react-native-mmkv": "^2.6.3",
