@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { Dimensions, StyleSheet } from 'react-native'
 import { colors } from './colors'
 
 export const styles = StyleSheet.create({
@@ -109,7 +109,15 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.background,
     position: 'absolute',
     bottom: 0,
+    left: 20,
+    right: 20,
     height: 200,
-    width: 100%- 40,
-  }
+    padding: 20,
+    paddingVertical: 60,
+    paddingHorizontal: 20,
+    alignItems: `center`,
+    justifyContent: `center`,
+    width: Dimensions.get(`window`).width - 40,
+    borderRadius: 5,
+  },
 })

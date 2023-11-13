@@ -1,7 +1,7 @@
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import React, { useEffect, useState } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
-import { userInfoAtom } from '../state/atoms'
+import { nfcModalVisibilityAtom, userInfoAtom } from '../state/atoms'
 
 import { readNfc, writeNdef } from '../utils/nfc'
 
@@ -19,7 +19,7 @@ function Home({navigation}: {navigation: any}): JSX.Element {
   const [balance, setBalance] = useState(0)
   const [refreshCounter, setRefreshCounter] = useState(0)
 
-  const [modalVisible, setModalVisible] = useState(false)
+  const setModalVisible = useSetAtom(nfcModalVisibilityAtom)
 
   const domain = userInfo?.domain ?? ''
 
@@ -43,7 +43,7 @@ function Home({navigation}: {navigation: any}): JSX.Element {
   }
 
   useEffect(() => {
-    checkNfcAvailability() // TODO: Ask Dejv about the warning
+    void checkNfcAvailability() // TODO: Ask Dejv about the warning
   }, [])
 
   useEffect(() => {
@@ -203,7 +203,7 @@ const handleSandboxPress = (): void => {
         <Text style={styles.buttonLink}>Show modal</Text>
       </TouchableOpacity>
 
-      <NfcModal modalVisible={modalVisible}/>
+      <NfcModal modalCopy="Test modal copy"/>
       {!hasNfc ? <Callout icon="x-octagon" copy="No NFC available" /> : null}
     </View>
   )
