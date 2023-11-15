@@ -1,5 +1,5 @@
-import { Dimensions, StyleSheet } from 'react-native'
-import { colors } from './colors'
+import {Dimensions, StyleSheet} from 'react-native'
+import {colors} from './colors'
 
 export const styles = StyleSheet.create({
   container: {
@@ -27,13 +27,6 @@ export const styles = StyleSheet.create({
     marginVertical: 20,
     padding: 10,
     backgroundColor: colors.secondary,
-    borderRadius: 5,
-    flex: 1,
-  },
-  test: {
-    marginVertical: 20,
-    backgroundColor: colors.secondary,
-    padding: 10,
     borderRadius: 5,
     flex: 1,
   },
@@ -86,7 +79,6 @@ export const styles = StyleSheet.create({
     left: 4,
   },
   header: {
-    // height: 80,
     width: '100%',
     borderBottomColor: '#333',
     color: colors.primary,

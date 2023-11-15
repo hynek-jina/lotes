@@ -1,27 +1,31 @@
-import { Platform } from 'react-native'
-import NfcManager, { Ndef, NfcTech } from 'react-native-nfc-manager'
+import {getDefaultStore} from 'jotai'
+import {Platform} from 'react-native'
+import NfcManager, {Ndef, NfcTech} from 'react-native-nfc-manager'
+import {nfcModalVisibilityAtom} from '../state/atoms'
 
-export const readNfc = async (): Promise<string> => {
+export async function readNfc(): Promise<string> {
+  getDefaultStore().set(nfcModalVisibilityAtom, true)
   let text = ''
   let resp: number[] | string | null = null
+
   try {
     const tech = Platform.OS === 'ios' ? NfcTech.MifareIOS : NfcTech.NfcA
-    console.log("HEY")
+
     resp = await NfcManager.requestTechnology(tech, {
       alertMessage: 'Scan the Lote',
     })
-    console.log("HEY2")
+
     const cmd =
       Platform.OS === 'ios'
         ? NfcManager.sendMifareCommandIOS
         : NfcManager.transceive
-        console.log("HEY3")
+
     resp = await cmd([0x3a, 4, 4])
     const payloadLength = parseInt(resp.toString().split(',')[1])
     const payloadPages = Math.ceil(payloadLength / 4)
     const startPage = 5
     const endPage = startPage + payloadPages - 1
-    console.log("HEY4")
+
     resp = await cmd([0x3a, startPage, endPage])
     const bytes = resp.toString().split(',')
 
@@ -40,9 +44,11 @@ export const readNfc = async (): Promise<string> => {
     await NfcManager.cancelTechnologyRequest()
   } catch (ex: any) {
     console.log(ex.toString())
-  }
-  if (resp) {
-    await NfcManager.cancelTechnologyRequest()
+  } finally {
+    if (resp) {
+      await NfcManager.cancelTechnologyRequest()
+    }
+    getDefaultStore().set(nfcModalVisibilityAtom, false)
   }
 
   return text
@@ -52,6 +58,7 @@ export const writeNdef = async (
   message: string,
   alert: string
 ): Promise<boolean> => {
+  getDefaultStore().set(nfcModalVisibilityAtom, true)
   try {
     await NfcManager.requestTechnology(NfcTech.Ndef, {
       alertMessage: alert,
@@ -67,5 +74,7 @@ export const writeNdef = async (
   } catch (error: any) {
     console.log(error)
     return false
+  } finally {
+    getDefaultStore().set(nfcModalVisibilityAtom, false)
   }
 }

@@ -6,12 +6,27 @@ import Issue from './screens/IssueScreen'
 import Login from './screens/LoginScreen'
 import LoteDetail from './screens/LoteDetailScreen'
 import Welcome from './screens/WelcomeScreen'
-import {lnbitsUrlAtom} from './state/atoms'
+import {lnbitsUrlAtom, nfcModalMessageAtom} from './state/atoms'
+import {Platform} from 'react-native'
+import {NfcModal} from './components/ScanNfcModal'
+import {useEffect, useState} from 'react'
+import NfcManager from 'react-native-nfc-manager'
+import {Callout} from './components/Callout'
 
 const Stack = createNativeStackNavigator()
 
 export default function App(): JSX.Element {
   const lnbitsUrl = useAtomValue(lnbitsUrlAtom)
+  const [hasNfc, setHasNfc] = useState(false)
+  const modalMessage = useAtomValue(nfcModalMessageAtom)
+
+  const checkNfcAvailability = async (): Promise<void> => {
+    const supported = await NfcManager.isSupported()
+    setHasNfc(supported)
+  }
+  useEffect(() => {
+    void checkNfcAvailability()
+  }, [])
 
   return (
     <NavigationContainer>
@@ -42,6 +57,9 @@ export default function App(): JSX.Element {
           component={LoteDetail}
         />
       </Stack.Navigator>
+
+      {Platform.OS === 'android' ? <NfcModal modalCopy={modalMessage} /> : null}
+      {!hasNfc ? <Callout icon="x-octagon" copy="No NFC available" /> : null}
     </NavigationContainer>
   )
 }

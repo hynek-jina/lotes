@@ -1,5 +1,5 @@
-import { selectAtom } from 'jotai/utils'
-import { atomWithMMKV } from '../utils/atomWithMMKV'
+import {selectAtom} from 'jotai/utils'
+import {atomWithMMKV} from '../utils/atomWithMMKV'
 import fetchAdminKey from '../utils/fetchAdminKey'
 import parseLnbitsUrl from '../utils/parseLnbitsUrl'
 
@@ -27,6 +27,9 @@ export const adminKeyAtom = selectAtom(
     return adminKey
   }
 )
-// export const adminKeyAtom = atomWithMMKV("adminKey", "");
 export const loteAmountAtom = atomWithMMKV('loteAmount', 0)
-export const nfcModalVisibilityAtom = atomWithMMKV('nfcModalVisibility',false)
+export const nfcModalVisibilityAtom = atomWithMMKV('nfcModalVisibility', false)
+export const nfcModalMessageAtom = atomWithMMKV(
+  'nfcModalMessage',
+  'Scan the Lote'
+)
