@@ -17,10 +17,10 @@ function LoteDetail({route, navigation}: any): JSX.Element {
             record.title
           } with ${record.max_withdrawable.toLocaleString()} sats`
         )
-
-        navigation.navigate('Home')
       } catch (error) {
         console.error(error)
+      } finally {
+        navigation.navigate('Home')
       }
     })()
   }

@@ -1,6 +1,6 @@
-import { useNavigation } from '@react-navigation/native'
-import { useAtom } from 'jotai'
-import { useState } from 'react'
+import {useNavigation} from '@react-navigation/native'
+import {useAtom} from 'jotai'
+import {useState} from 'react'
 import {
   SafeAreaView,
   Text,
@@ -8,10 +8,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import { useApiCalls } from '../api'
-import { loteAmountAtom } from '../state/atoms'
-import { styles } from '../theme'
-import { writeNdef } from '../utils/nfc'
+import {useApiCalls} from '../api'
+import {loteAmountAtom} from '../state/atoms'
+import {styles} from '../theme'
+import {writeNdef} from '../utils/nfc'
 
 function Issue(): JSX.Element {
   const [temporaryLoteAmount, setTemporaryLoteAmount] = useAtom(loteAmountAtom)

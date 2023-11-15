@@ -1,12 +1,14 @@
 import {useAtom} from 'jotai'
 import {
   Linking,
+  Platform,
   SafeAreaView,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native'
+import appConfig from '../../app.config'
 import {lnbitsUrlAtom} from '../state/atoms'
 import {styles} from '../theme'
 import fetchAdminKey from '../utils/fetchAdminKey'
@@ -17,6 +19,13 @@ const Login = ({navigation}: {navigation: any}): JSX.Element => {
   const handleOpenWallet = (): void => {
     if (lnbitsUrl) void Linking.openURL(lnbitsUrl)
   }
+
+  const buildNumber =
+    Platform.OS === 'ios'
+      ? appConfig.expo.ios.buildNumber
+      : appConfig.expo.android.versionCode
+
+  const appVersion = `${appConfig.expo.version} (${buildNumber})`
 
   const handleButtonClick = (): void => {
     void (async () => {
@@ -51,6 +60,9 @@ const Login = ({navigation}: {navigation: any}): JSX.Element => {
             <Text style={styles.buttonText}>Save settings</Text>
           </TouchableOpacity>
         </View>
+        <Text style={[styles.secondaryText, {textAlign: 'center'}]}>
+          App version: {appVersion}
+        </Text>
       </SafeAreaView>
     </View>
   )

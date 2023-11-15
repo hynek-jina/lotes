@@ -2,12 +2,9 @@ import {useAtomValue} from 'jotai'
 import React, {useEffect, useState} from 'react'
 import {Text, TouchableOpacity, View} from 'react-native'
 import {userInfoAtom} from '../state/atoms'
-
-import {readNfc, writeNdef} from '../utils/nfc'
-
+import {readNfc} from '../utils/nfc'
 import {useApiCalls, type RecordsApi} from '../api'
 import {RecordsList} from '../components/Lotes'
-
 import {Feather} from '@expo/vector-icons'
 import {styles} from '../theme'
 
@@ -18,14 +15,8 @@ function Home({navigation}: {navigation: any}): JSX.Element {
 
   const domain = userInfo?.domain ?? ''
 
-  const {
-    getBalance,
-    getInvoice,
-    scanLnurl,
-    requestPayment,
-    createLnurl,
-    getRecords,
-  } = useApiCalls()
+  const {getBalance, getInvoice, scanLnurl, requestPayment, getRecords} =
+    useApiCalls()
 
   const [records, setRecords] = useState<RecordsApi>({records: []})
   const [allLotesValue, setAllLotesValue] = useState(0)
@@ -47,7 +38,7 @@ function Home({navigation}: {navigation: any}): JSX.Element {
 
     const intervalId = setInterval(() => {
       void fetchData()
-    }, 60_000) // Update every 60 seconds
+    }, 60_000)
     void fetchData()
 
     return () => {
@@ -107,28 +98,6 @@ function Home({navigation}: {navigation: any}): JSX.Element {
     })()
   }
 
-  const handleValidateButtonPress = (): void => {
-    void (async () => {
-      try {
-        const lnurlFromNfc = await readNfc()
-        const scanResultJson = await scanLnurl(lnurlFromNfc)
-        const temporaryAmount = scanResultJson.maxWithdrawable / 1000
-        const createdInvoice = await getInvoice(temporaryAmount)
-        await requestPayment(scanResultJson.callback, createdInvoice)
-        const createdLnurl = await createLnurl(temporaryAmount)
-        setTimeout(() => {
-          void writeNdef(
-            createdLnurl,
-            `Store ${temporaryAmount.toLocaleString()} sats`
-          )
-        }, 3000)
-        setRefreshCounter(refreshCounter + 1)
-      } catch (error) {
-        console.error(error)
-      }
-    })()
-  }
-
   return (
     <View style={styles.container}>
       <Feather
@@ -174,10 +143,6 @@ function Home({navigation}: {navigation: any}): JSX.Element {
       </View>
       <Text>{'\n'} </Text>
       {returnAvailableBalance()}
-
-      <TouchableOpacity onPress={handleValidateButtonPress}>
-        <Text style={styles.buttonLink}>🦄 Validate</Text>
-      </TouchableOpacity>
     </View>
   )
 }

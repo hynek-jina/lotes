@@ -5,4 +5,5 @@ export const colors = {
   alert: 'red',
   text: 'black',
   disabled: 'grey',
+  buttonText: 'white',
 }

@@ -27,5 +27,9 @@ export const adminKeyAtom = selectAtom(
     return adminKey
   }
 )
-// export const adminKeyAtom = atomWithMMKV("adminKey", "");
 export const loteAmountAtom = atomWithMMKV('loteAmount', 0)
+export const nfcModalVisibilityAtom = atomWithMMKV('nfcModalVisibility', false)
+export const nfcModalMessageAtom = atomWithMMKV(
+  'nfcModalMessage',
+  'Scan the Lote'
+)

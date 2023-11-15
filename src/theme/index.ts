@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native'
+import {Dimensions, StyleSheet} from 'react-native'
 import {colors} from './colors'
 
 export const styles = StyleSheet.create({
@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   buttonText: {
-    color: '#ffffff',
+    color: colors.buttonText,
     fontWeight: 'bold',
     textAlign: 'center',
   },
@@ -79,12 +79,16 @@ export const styles = StyleSheet.create({
     left: 4,
   },
   header: {
-    // height: 80,
     width: '100%',
     borderBottomColor: '#333',
     color: colors.primary,
     fontSize: 36,
     fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  nfcHeader: {
+    color: 'grey',
+    fontSize: 24,
     textAlign: 'center',
   },
   subHeader: {
@@ -95,5 +99,25 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     width: 340,
+  },
+  callout: {
+    position: 'absolute',
+    bottom: 0,
+    height: 40,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  nfcModal: {
+    backgroundColor: colors.background,
+    position: 'absolute',
+    bottom: 0,
+    left: 20,
+    padding: 20,
+    alignItems: `center`,
+    justifyContent: `center`,
+    width: Dimensions.get(`window`).width - 40,
+    borderRadius: 5,
   },
 })
