@@ -1,4 +1,4 @@
-name: '[Release] build and release iOS production'
+name: '[Release] build and release Android and iOS production'
 on: workflow_dispatch
 jobs:
   build:
@@ -17,5 +17,5 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-      - name: Build on EAS
-        run: eas build --platform ios --profile production --auto-submit --non-interactive --no-wait
+      - name: Build and subnmit on EAS
+        run: eas build --platform all --profile production --auto-submit --non-interactive --no-wait
