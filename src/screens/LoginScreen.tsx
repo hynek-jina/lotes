@@ -9,12 +9,13 @@ import {
   View,
 } from 'react-native'
 import appConfig from '../../app.config'
-import {lnbitsUrlAtom} from '../state/atoms'
+import {lnbitsUrlAtom, isFetchingAtom} from '../state/atoms'
 import {styles} from '../theme'
 import fetchAdminKey from '../utils/fetchAdminKey'
 
 const Login = ({navigation}: {navigation: any}): JSX.Element => {
   const [lnbitsUrl, setLnbitsUrl] = useAtom(lnbitsUrlAtom)
+  const [isFetching, setIsFetching] = useAtom(isFetchingAtom)
 
   const handleOpenWallet = (): void => {
     if (lnbitsUrl) void Linking.openURL(lnbitsUrl)
@@ -28,6 +29,7 @@ const Login = ({navigation}: {navigation: any}): JSX.Element => {
   const appVersion = `${appConfig.expo.version} (${buildNumber})`
 
   const handleButtonClick = (): void => {
+    setIsFetching(true)
     void (async () => {
       if (!lnbitsUrl) return
       try {
@@ -35,6 +37,8 @@ const Login = ({navigation}: {navigation: any}): JSX.Element => {
         navigation.navigate('Home')
       } catch (error) {
         console.log(error)
+      } finally {
+        setIsFetching(false)
       }
     })()
   }
@@ -56,8 +60,15 @@ const Login = ({navigation}: {navigation: any}): JSX.Element => {
         )}
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={handleButtonClick}>
-            <Text style={styles.buttonText}>Save settings</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleButtonClick}
+            disabled={isFetching}
+          >
+            <Text style={styles.buttonText}>
+              {' '}
+              {isFetching ? 'Saving ...' : 'Save settings'}
+            </Text>
           </TouchableOpacity>
         </View>
         <Text style={[styles.secondaryText, {textAlign: 'center'}]}>

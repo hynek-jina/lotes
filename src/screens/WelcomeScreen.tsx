@@ -2,15 +2,17 @@ import React from 'react'
 import {Text, TouchableOpacity, View} from 'react-native'
 import {styles} from '../theme'
 
-import {useSetAtom} from 'jotai'
+import {useSetAtom, useAtom} from 'jotai'
 import {createUser} from '../api'
-import {lnbitsUrlAtom} from '../state/atoms'
+import {lnbitsUrlAtom, isFetchingAtom} from '../state/atoms'
 import constructLnbitsUrl from '../utils/constructLnbitsUrl'
 
 function Welcome({navigation}: {navigation: any}): JSX.Element {
   const setLnbitsUrl = useSetAtom(lnbitsUrlAtom)
+  const [isFetching, setIsFetching] = useAtom(isFetchingAtom)
 
   const handleNewUserButton = async (): Promise<void> => {
+    setIsFetching(true)
     try {
       const newUser = await createUser()
       console.log('NEW USER response: ', newUser)
@@ -23,6 +25,8 @@ function Welcome({navigation}: {navigation: any}): JSX.Element {
       setLnbitsUrl(newLnbitsUrl)
     } catch (error) {
       console.log(error)
+    } finally {
+      setIsFetching(false)
     }
   }
 
@@ -36,8 +40,11 @@ function Welcome({navigation}: {navigation: any}): JSX.Element {
           onPress={() => {
             void handleNewUserButton()
           }}
+          disabled={isFetching}
         >
-          <Text style={styles.buttonText}>👋 New User</Text>
+          <Text style={styles.buttonText}>
+            {isFetching ? '👋 Creating New User ...' : '👋 New User'}
+          </Text>
         </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>

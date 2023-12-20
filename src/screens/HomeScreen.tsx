@@ -1,7 +1,7 @@
-import {useAtomValue} from 'jotai'
+import {useAtomValue, useAtom} from 'jotai'
+import {isFetchingAtom, userInfoAtom} from '../state/atoms'
 import React, {useEffect, useState} from 'react'
 import {Text, TouchableOpacity, View} from 'react-native'
-import {userInfoAtom} from '../state/atoms'
 import {readNfc} from '../utils/nfc'
 import {useApiCalls, type RecordsApi} from '../api'
 import {RecordsList} from '../components/Lotes'
@@ -9,6 +9,7 @@ import {Feather} from '@expo/vector-icons'
 import {styles} from '../theme'
 
 function Home({navigation}: {navigation: any}): JSX.Element {
+  const [isFetching, setIsFetching] = useAtom(isFetchingAtom)
   const userInfo = useAtomValue(userInfoAtom)
   const [balance, setBalance] = useState(0)
   const [refreshCounter, setRefreshCounter] = useState(0)
@@ -84,6 +85,7 @@ function Home({navigation}: {navigation: any}): JSX.Element {
   }
 
   const handleClaimButtonPress = (): void => {
+    setIsFetching(true)
     void (async () => {
       try {
         const lnurlFromNfc = await readNfc()
@@ -94,6 +96,8 @@ function Home({navigation}: {navigation: any}): JSX.Element {
         setRefreshCounter(refreshCounter + 1)
       } catch (error) {
         console.error(error)
+      } finally {
+        setIsFetching(false)
       }
     })()
   }
@@ -110,6 +114,7 @@ function Home({navigation}: {navigation: any}): JSX.Element {
 
       <Feather
         onPress={handleRefreshButtonPress}
+        disabled={isFetching}
         style={styles.left}
         name="refresh-ccw"
         size={26}
@@ -133,8 +138,11 @@ function Home({navigation}: {navigation: any}): JSX.Element {
         <TouchableOpacity
           style={styles.button}
           onPress={handleClaimButtonPress}
+          disabled={isFetching}
         >
-          <Text style={styles.buttonText}>🫳 Claim Lote</Text>
+          <Text style={styles.buttonText}>
+            {isFetching ? '🫳 Claiming ...' : '🫳 Claim Lote'}
+          </Text>
         </TouchableOpacity>
       </View>
       <View>
