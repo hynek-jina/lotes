@@ -4,15 +4,17 @@ import {styles} from '../theme'
 
 import {useSetAtom, useAtom} from 'jotai'
 import {createUser} from '../api'
-import {lnbitsUrlAtom, isFetchingAtom} from '../state/atoms'
+import {lnbitsUrlAtom, isFetchingAtom, lastFetchedAtom} from '../state/atoms'
 import constructLnbitsUrl from '../utils/constructLnbitsUrl'
 
 function Welcome({navigation}: {navigation: any}): JSX.Element {
   const setLnbitsUrl = useSetAtom(lnbitsUrlAtom)
   const [isFetching, setIsFetching] = useAtom(isFetchingAtom)
+  const setLastFetched = useSetAtom(lastFetchedAtom)
 
   const handleNewUserButton = async (): Promise<void> => {
     setIsFetching(true)
+    setLastFetched("handleNewUserButton")
     try {
       const newUser = await createUser()
       console.log('NEW USER response: ', newUser)

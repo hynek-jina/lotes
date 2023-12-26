@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native'
-import {useAtom} from 'jotai'
+import {useAtom, useAtomValue} from 'jotai'
 import {
   SafeAreaView,
   Text,
@@ -13,14 +13,13 @@ import {styles} from '../theme'
 import {writeNdef} from '../utils/nfc'
 
 function Issue(): JSX.Element {
-  const [isFetching, setIsFetching] = useAtom(isFetchingAtom)
+  const isFetching = useAtomValue(isFetchingAtom)
   const [temporaryLoteAmount, setTemporaryLoteAmount] = useAtom(loteAmountAtom)
   const navigation = useNavigation()
 
   const {createLnurl} = useApiCalls()
 
   const handleButtonClick = (): void => {
-    setIsFetching(true)
     setTimeout(() => {
       void (async () => {
         const createdLnurl = await createLnurl(temporaryLoteAmount)
@@ -29,7 +28,6 @@ function Issue(): JSX.Element {
           `Store ${temporaryLoteAmount.toLocaleString()} sats`
         )
         navigation.goBack()
-        setIsFetching(false)
       })()
     }, 3000)
   }

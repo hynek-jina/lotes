@@ -1,15 +1,16 @@
-import {useAtomValue, useAtom} from 'jotai'
-import {isFetchingAtom, userInfoAtom} from '../state/atoms'
-import React, {useEffect, useState} from 'react'
-import {Text, TouchableOpacity, View} from 'react-native'
-import {readNfc} from '../utils/nfc'
-import {useApiCalls, type RecordsApi} from '../api'
-import {RecordsList} from '../components/Lotes'
-import {Feather} from '@expo/vector-icons'
-import {styles} from '../theme'
+import { Feather } from '@expo/vector-icons'
+import { useAtom, useAtomValue } from 'jotai'
+import React, { useState, useEffect } from 'react'
+import { Text, TouchableOpacity, View } from 'react-native'
+import { useApiCalls, type RecordsApi } from '../api'
+import { RecordsList } from '../components/Lotes'
+import { isFetchingAtom, lastFetchedAtom, userInfoAtom } from '../state/atoms'
+import { styles } from '../theme'
+import { readNfc } from '../utils/nfc'
 
 function Home({navigation}: {navigation: any}): JSX.Element {
   const [isFetching, setIsFetching] = useAtom(isFetchingAtom)
+  const lastFetched = useAtomValue(lastFetchedAtom)
   const userInfo = useAtomValue(userInfoAtom)
   const [balance, setBalance] = useState(0)
   const [refreshCounter, setRefreshCounter] = useState(0)
@@ -85,7 +86,6 @@ function Home({navigation}: {navigation: any}): JSX.Element {
   }
 
   const handleClaimButtonPress = (): void => {
-    setIsFetching(true)
     void (async () => {
       try {
         const lnurlFromNfc = await readNfc()
@@ -96,8 +96,6 @@ function Home({navigation}: {navigation: any}): JSX.Element {
         setRefreshCounter(refreshCounter + 1)
       } catch (error) {
         console.error(error)
-      } finally {
-        setIsFetching(false)
       }
     })()
   }
@@ -141,10 +139,18 @@ function Home({navigation}: {navigation: any}): JSX.Element {
           disabled={isFetching}
         >
           <Text style={styles.buttonText}>
-            {isFetching ? '🫳 Claiming ...' : '🫳 Claim Lote'}
+            {isFetching ? '🫳 Fetching ...' : '🫳 Claim Lote'}
           </Text>
         </TouchableOpacity>
       </View>
+      <Text>Last fetched: {lastFetched}</Text>
+      <TouchableOpacity
+        onPress={() => {
+          setIsFetching(false)
+        }}
+      >
+        <Text>Vypnout fetching</Text>
+      </TouchableOpacity>
       <View>
         <Text style={styles.sectionHeader}>Your Lotes</Text>
         <RecordsList data={records} navigation={navigation} />

@@ -1,6 +1,6 @@
-import {useAtomValue} from 'jotai'
+import {useAtomValue, useSetAtom} from 'jotai'
 import urlJoin from 'url-join'
-import {adminKeyAtom, userInfoAtom} from './state/atoms'
+import {adminKeyAtom, isFetchingAtom, userInfoAtom, lastFetchedAtom} from './state/atoms'
 
 interface Api {
   getBalance: () => Promise<number>
@@ -116,6 +116,8 @@ export async function createUser(): Promise<CreateUser> {
 }
 
 export function useApiCalls(): Api {
+  const setIsFetching = useSetAtom(isFetchingAtom)
+  const setLastFetched = useSetAtom(lastFetchedAtom)
   const apiKey = useAtomValue(adminKeyAtom)
   const userInfo = useAtomValue(userInfoAtom)
   const domain = userInfo?.domain ?? ''
@@ -126,6 +128,8 @@ export function useApiCalls(): Api {
         throw new Error('API key not found')
       }
 
+      setIsFetching(true)
+      setLastFetched("getBalance")
       const result: Response = await fetch(urlJoin(domain, '/api/v1/wallet'), {
         method: 'GET',
         headers: {
@@ -134,13 +138,14 @@ export function useApiCalls(): Api {
       })
 
       if (!result.ok) {
+        setIsFetching(false)
         throw new Error(
           `Failed to fetch wallet balance. Status: ${result.status} - ${result.statusText}`
         )
       }
 
       const json: getBalanceApiResponse = await result.json()
-
+      setIsFetching(false)
       return json.balance / 1000
     },
     getInvoice: async (amount: number): ReturnType<Api['getInvoice']> => {
@@ -148,6 +153,8 @@ export function useApiCalls(): Api {
         throw new Error('API key not found')
       }
 
+      setIsFetching(true)
+      setLastFetched("getInvoice")
       const result: Response = await fetch(
         urlJoin(domain, '/api/v1/payments'),
         {
@@ -161,12 +168,14 @@ export function useApiCalls(): Api {
       )
 
       if (!result.ok) {
+        setIsFetching(false)
         throw new Error(
           `Failed to generate an invoice. Status: ${result.status} - ${result.statusText}`
         )
       }
 
       const json: getInvoiceApiResponse = await result.json()
+      setIsFetching(false)
 
       return json.payment_request
     },
@@ -175,6 +184,8 @@ export function useApiCalls(): Api {
         throw new Error('API key not found')
       }
 
+      setIsFetching(true)
+      setLastFetched("scanLnurl")
       const result: Response = await fetch(
         urlJoin(domain, '/api/v1/lnurlscan/', lnurl),
         {
@@ -187,12 +198,14 @@ export function useApiCalls(): Api {
       )
 
       if (!result.ok) {
+        setIsFetching(false)
         throw new Error(
           `Failed to scan lnurl. Status: ${result.status} - ${result.statusText}`
         )
       }
 
       const json: scanLnurlApiResponse = await result.json()
+      setIsFetching(false)
 
       return json
     },
@@ -204,14 +217,17 @@ export function useApiCalls(): Api {
         throw new Error('API key not found')
       }
 
+      setIsFetching(true)
+      setLastFetched("requestPayment")
       const result: Response = await fetch(`${scanCallback}&pr=${invoice}`)
 
       if (!result.ok) {
+        setIsFetching(false)
         throw new Error(
           `Failed to scan lnurl. Status: ${result.status} - ${result.statusText}`
         )
       }
-
+      setIsFetching(false)
       return true
     },
     createLnurl: async (amount: number): ReturnType<Api['createLnurl']> => {
@@ -219,6 +235,8 @@ export function useApiCalls(): Api {
         throw new Error('API key not found')
       }
 
+      setIsFetching(true)
+      setLastFetched("createLnurl")
       const result: Response = await fetch(
         urlJoin(domain, '/withdraw/api/v1/links'),
         {
@@ -239,12 +257,14 @@ export function useApiCalls(): Api {
       )
 
       if (!result.ok) {
+        setIsFetching(false)
         throw new Error(
           `Failed to create lnurl. Status: ${result.status} - ${result.statusText}`
         )
       }
 
       const json: RecordApi = await result.json()
+      setIsFetching(false)
 
       return json.lnurl
     },
@@ -252,6 +272,8 @@ export function useApiCalls(): Api {
       if (!apiKey) {
         throw new Error('API key not found')
       }
+      setIsFetching(true)
+      setLastFetched("getRecords")
       const result: Response = await fetch(
         urlJoin(domain, '/withdraw/api/v1/links'),
         {
@@ -263,12 +285,14 @@ export function useApiCalls(): Api {
       )
 
       if (!result.ok) {
+        setIsFetching(false)
         throw new Error(
           `Failed to create lnurl. Status: ${result.status} - ${result.statusText}`
         )
       }
 
       const json: RecordApi[] = await result.json()
+      setIsFetching(false)
       return {records: json}
     },
 
@@ -277,6 +301,8 @@ export function useApiCalls(): Api {
         throw new Error('API key not found')
       }
 
+      setIsFetching(true)
+      setLastFetched("getRecords")
       const result: Response = await fetch(
         urlJoin(domain, '/withdraw/api/v1/links/', id),
         {
@@ -287,13 +313,13 @@ export function useApiCalls(): Api {
           },
         }
       )
+      setIsFetching(false)
 
       if (!result.ok) {
         throw new Error(
           `Failed to delete lnurl. Status: ${result.status} - ${result.statusText}`
         )
       }
-
       return true
     },
   }
