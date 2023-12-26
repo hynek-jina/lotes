@@ -1,4 +1,4 @@
-import { useAtom, useAtomValue } from 'jotai'
+import {useAtom, useAtomValue} from 'jotai'
 import {
   Linking,
   Platform,
@@ -9,8 +9,8 @@ import {
   View,
 } from 'react-native'
 import appConfig from '../../app.config'
-import { adminKeyAtom, isFetchingAtom, lnbitsUrlAtom } from '../state/atoms'
-import { styles } from '../theme'
+import {adminKeyAtom, isFetchingAtom, lnbitsUrlAtom} from '../state/atoms'
+import {styles} from '../theme'
 import fetchAdminKey from '../utils/fetchAdminKey'
 
 const Login = ({navigation}: {navigation: any}): JSX.Element => {

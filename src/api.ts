@@ -1,6 +1,11 @@
 import {useAtomValue, useSetAtom} from 'jotai'
 import urlJoin from 'url-join'
-import {adminKeyAtom, isFetchingAtom, userInfoAtom, lastFetchedAtom} from './state/atoms'
+import {
+  adminKeyAtom,
+  isFetchingAtom,
+  userInfoAtom,
+  lastFetchedAtom,
+} from './state/atoms'
 
 interface Api {
   getBalance: () => Promise<number>
@@ -129,7 +134,7 @@ export function useApiCalls(): Api {
       }
 
       setIsFetching(true)
-      setLastFetched("getBalance")
+      setLastFetched('getBalance')
       const result: Response = await fetch(urlJoin(domain, '/api/v1/wallet'), {
         method: 'GET',
         headers: {
@@ -154,7 +159,7 @@ export function useApiCalls(): Api {
       }
 
       setIsFetching(true)
-      setLastFetched("getInvoice")
+      setLastFetched('getInvoice')
       const result: Response = await fetch(
         urlJoin(domain, '/api/v1/payments'),
         {
@@ -185,7 +190,7 @@ export function useApiCalls(): Api {
       }
 
       setIsFetching(true)
-      setLastFetched("scanLnurl")
+      setLastFetched('scanLnurl')
       const result: Response = await fetch(
         urlJoin(domain, '/api/v1/lnurlscan/', lnurl),
         {
@@ -218,7 +223,7 @@ export function useApiCalls(): Api {
       }
 
       setIsFetching(true)
-      setLastFetched("requestPayment")
+      setLastFetched('requestPayment')
       const result: Response = await fetch(`${scanCallback}&pr=${invoice}`)
 
       if (!result.ok) {
@@ -236,7 +241,7 @@ export function useApiCalls(): Api {
       }
 
       setIsFetching(true)
-      setLastFetched("createLnurl")
+      setLastFetched('createLnurl')
       const result: Response = await fetch(
         urlJoin(domain, '/withdraw/api/v1/links'),
         {
@@ -273,7 +278,7 @@ export function useApiCalls(): Api {
         throw new Error('API key not found')
       }
       setIsFetching(true)
-      setLastFetched("getRecords")
+      setLastFetched('getRecords')
       const result: Response = await fetch(
         urlJoin(domain, '/withdraw/api/v1/links'),
         {
@@ -302,7 +307,7 @@ export function useApiCalls(): Api {
       }
 
       setIsFetching(true)
-      setLastFetched("getRecords")
+      setLastFetched('getRecords')
       const result: Response = await fetch(
         urlJoin(domain, '/withdraw/api/v1/links/', id),
         {

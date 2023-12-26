@@ -29,7 +29,7 @@ export function NfcModal({modalCopy}: {modalCopy: string}): JSX.Element {
         <Text> {modalCopy}</Text>
         <Pressable
           style={styles.secondaryButton}
-          onPress={handleCancelButtonPress}
+          onPress={() => handleCancelButtonPress}
         >
           <Text style={styles.buttonText}>Cancel</Text>
         </Pressable>

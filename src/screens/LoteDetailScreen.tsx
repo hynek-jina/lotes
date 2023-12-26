@@ -62,9 +62,7 @@ function LoteDetail({route, navigation}: any): JSX.Element {
           onPress={handleWriteButtonPress}
           disabled={isFetching}
         >
-          <Text style={styles.buttonText}>
-            👉 Write to NFC
-          </Text>
+          <Text style={styles.buttonText}>👉 Write to NFC</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>
