@@ -1,5 +1,5 @@
-import {useNavigation} from '@react-navigation/native'
-import {useAtom, useAtomValue} from 'jotai'
+import { useNavigation } from '@react-navigation/native'
+import { useAtom, useAtomValue } from 'jotai'
 import {
   SafeAreaView,
   Text,
@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import {useApiCalls} from '../api'
-import {loteAmountAtom, isFetchingAtom} from '../state/atoms'
-import {styles} from '../theme'
-import {writeNdef} from '../utils/nfc'
+import { useApiCalls } from '../api'
+import { isFetchingAtom, loteAmountAtom } from '../state/atoms'
+import { styles } from '../theme'
+import { writeNdef } from '../utils/nfc'
 
 function Issue(): JSX.Element {
   const isFetching = useAtomValue(isFetchingAtom)
@@ -19,17 +19,18 @@ function Issue(): JSX.Element {
 
   const {createLnurl} = useApiCalls()
 
+  // TODO: proč tady je to čekání?
   const handleButtonClick = (): void => {
-    setTimeout(() => {
-      void (async () => {
-        const createdLnurl = await createLnurl(temporaryLoteAmount)
-        await writeNdef(
-          createdLnurl,
-          `Store ${temporaryLoteAmount.toLocaleString()} sats`
-        )
-        navigation.goBack()
-      })()
-    }, 3000)
+    // setTimeout(() => {
+    void (async () => {
+      const createdLnurl = await createLnurl(temporaryLoteAmount)
+      await writeNdef(
+        createdLnurl,
+        `Store ${temporaryLoteAmount.toLocaleString()} sats`
+      )
+      navigation.goBack()
+    })()
+    // }, 3000)
   }
 
   return (
@@ -54,9 +55,7 @@ function Issue(): JSX.Element {
             onPress={handleButtonClick}
             disabled={isFetching}
           >
-            <Text style={styles.buttonText}>
-              {isFetching ? '✍️ Issuing ...' : '✍️ Issue Lote'}
-            </Text>
+            <Text style={styles.buttonText}>✍️ Issue Lote</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>

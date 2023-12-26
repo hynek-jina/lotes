@@ -14,7 +14,7 @@ function Welcome({navigation}: {navigation: any}): JSX.Element {
 
   const handleNewUserButton = async (): Promise<void> => {
     setIsFetching(true)
-    setLastFetched("handleNewUserButton")
+    setLastFetched('handleNewUserButton')
     try {
       const newUser = await createUser()
       console.log('NEW USER response: ', newUser)
@@ -35,7 +35,7 @@ function Welcome({navigation}: {navigation: any}): JSX.Element {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Welcome</Text>
-      <Text style={styles.subHeader}>What is Lotes... actually..</Text>
+      <Text style={styles.subHeader}>Lotes is lightning cash</Text>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
@@ -44,9 +44,7 @@ function Welcome({navigation}: {navigation: any}): JSX.Element {
           }}
           disabled={isFetching}
         >
-          <Text style={styles.buttonText}>
-            {isFetching ? '👋 Creating New User ...' : '👋 New User'}
-          </Text>
+          <Text style={styles.buttonText}>👋 New User</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>

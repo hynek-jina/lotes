@@ -63,7 +63,7 @@ function LoteDetail({route, navigation}: any): JSX.Element {
           disabled={isFetching}
         >
           <Text style={styles.buttonText}>
-            {isFetching ? '👉 Writing ...' : '👉 Write to NFC'}
+            👉 Write to NFC
           </Text>
         </TouchableOpacity>
       </View>
