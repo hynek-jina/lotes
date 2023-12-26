@@ -1,6 +1,7 @@
 import {useAtom} from 'jotai'
 import LottieView from 'lottie-react-native'
 import {Modal, Pressable, Text, View} from 'react-native'
+import NfcManager from 'react-native-nfc-manager'
 import nfcAnimation from '../animations/nfcAnimation.json'
 import {nfcModalVisibilityAtom} from '../state/atoms'
 import {styles} from '../theme'
@@ -8,7 +9,8 @@ import {styles} from '../theme'
 export function NfcModal({modalCopy}: {modalCopy: string}): JSX.Element {
   const [modalVisible, setModalVisible] = useAtom(nfcModalVisibilityAtom)
 
-  const handleCancelButtonPress = (): void => {
+  const handleCancelButtonPress = async (): Promise<void> => {
+    await NfcManager.cancelTechnologyRequest()
     setModalVisible(false)
   }
 
