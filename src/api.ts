@@ -1,10 +1,11 @@
-import {useAtomValue, useSetAtom} from 'jotai'
+import {useAtomValue, useSetAtom, useAtom} from 'jotai'
 import urlJoin from 'url-join'
 import {
   adminKeyAtom,
   isFetchingAtom,
   userInfoAtom,
   lastFetchedAtom,
+  refreshCounterAtom,
 } from './state/atoms'
 
 interface Api {
@@ -123,6 +124,7 @@ export async function createUser(): Promise<CreateUser> {
 export function useApiCalls(): Api {
   const setIsFetching = useSetAtom(isFetchingAtom)
   const setLastFetched = useSetAtom(lastFetchedAtom)
+  const [refreshCounter, setRefreshCounter] = useAtom(refreshCounterAtom)
   const apiKey = useAtomValue(adminKeyAtom)
   const userInfo = useAtomValue(userInfoAtom)
   const domain = userInfo?.domain ?? ''
@@ -228,6 +230,7 @@ export function useApiCalls(): Api {
 
       if (!result.ok) {
         setIsFetching(false)
+        setRefreshCounter(refreshCounter + 1)
         throw new Error(
           `Failed to scan lnurl. Status: ${result.status} - ${result.statusText}`
         )
@@ -270,6 +273,7 @@ export function useApiCalls(): Api {
 
       const json: RecordApi = await result.json()
       setIsFetching(false)
+      setRefreshCounter(refreshCounter + 1)
 
       return json.lnurl
     },
@@ -319,6 +323,7 @@ export function useApiCalls(): Api {
         }
       )
       setIsFetching(false)
+      setRefreshCounter(refreshCounter + 1)
 
       if (!result.ok) {
         throw new Error(

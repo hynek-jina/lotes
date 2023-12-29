@@ -1,52 +1,30 @@
 import {Feather} from '@expo/vector-icons'
-import {useAtomValue} from 'jotai'
-import React, {useState} from 'react'
+import {useAtom, useAtomValue, useSetAtom} from 'jotai'
+import React, {useEffect} from 'react'
 import {Text, TouchableOpacity, View} from 'react-native'
-import {useApiCalls, type RecordsApi} from '../api'
+import {useApiCalls} from '../api'
 import {RecordsList} from '../components/Lotes'
-import {isFetchingAtom} from '../state/atoms'
+import {
+  allLotesValueAtom,
+  balanceAtom,
+  filteredRecordsAtom,
+  isFetchingAtom,
+  recordsAtom,
+  refreshCounterAtom,
+} from '../state/atoms'
 import {styles} from '../theme'
 import {readNfc} from '../utils/nfc'
 
 function Home({navigation}: {navigation: any}): JSX.Element {
   const isFetching = useAtomValue(isFetchingAtom)
-  // const lastFetched = useAtomValue(lastFetchedAtom)
-  // const userInfo = useAtomValue(userInfoAtom)
-  const [balance, setBalance] = useState(0)
-  const [refreshCounter, setRefreshCounter] = useState(0)
+  const [refreshCounter, setRefreshCounter] = useAtom(refreshCounterAtom)
+  const [balance, setBalance] = useAtom(balanceAtom)
+  const setRecords = useSetAtom(recordsAtom)
+  const filteredRecords = useAtomValue(filteredRecordsAtom)
+  const allLotesValue = useAtomValue(allLotesValueAtom)
 
-  // const domain = userInfo?.domain ?? ''
-
-  const {getBalance, getInvoice, scanLnurl, requestPayment, getRecords} =
+  const {getInvoice, scanLnurl, requestPayment, getBalance, getRecords} =
     useApiCalls()
-
-  const [records, setRecords] = useState<RecordsApi>({records: []})
-  const [allLotesValue, setAllLotesValue] = useState(0)
-
-  // useEffect(() => {
-  //   async function fetchData(): Promise<void> {
-  //     setBalance(await getBalance())
-  //     const data = await getRecords()
-  //     setRecords(data)
-  //     const filteredRecords = data.records.filter(
-  //       (record) => record.uses - record.used >= 1
-  //     )
-  //     const totalAmount = filteredRecords.reduce(
-  //       (sum, record) => sum + record.max_withdrawable,
-  //       0
-  //     )
-  //     setAllLotesValue(totalAmount)
-  //   }
-
-  //   const intervalId = setInterval(() => {
-  //     void fetchData()
-  //   }, 60_000)
-  //   void fetchData()
-
-  //   return () => {
-  //     clearInterval(intervalId)
-  //   }
-  // }, [domain, getBalance, getRecords, refreshCounter])
 
   const returnAvailableBalance = (): JSX.Element => {
     if (balance >= allLotesValue) {
@@ -69,21 +47,22 @@ function Home({navigation}: {navigation: any}): JSX.Element {
     )
   }
 
-  const handleRefreshButtonPress = (): void => {
-    void (async () => {
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
       setBalance(await getBalance())
-      const data = await getRecords()
-      setRecords(data)
-      const filteredRecords = data.records.filter(
-        (record) => record.uses - record.used >= 1
-      )
-      const totalAmount = filteredRecords.reduce(
-        (sum, record) => sum + record.max_withdrawable,
-        0
-      )
-      setAllLotesValue(totalAmount)
-    })()
-  }
+      setRecords(await getRecords())
+    }
+
+    const intervalId = setInterval(() => {
+      fetchData().catch((error) => {
+        console.error(error)
+      })
+    }, 10000)
+
+    return () => {
+      clearInterval(intervalId)
+    }
+  }, [getBalance, getRecords, setBalance, setRecords, refreshCounter])
 
   const handleClaimButtonPress = (): void => {
     void (async () => {
@@ -108,15 +87,6 @@ function Home({navigation}: {navigation: any}): JSX.Element {
         name="settings"
         size={26}
         color="black"
-      />
-
-      <Feather
-        onPress={handleRefreshButtonPress}
-        disabled={isFetching}
-        style={styles.left}
-        name="refresh-ccw"
-        size={26}
-        color="white"
       />
 
       <Text style={styles.header}>
@@ -144,7 +114,10 @@ function Home({navigation}: {navigation: any}): JSX.Element {
 
       <View>
         <Text style={styles.sectionHeader}>Your Lotes:</Text>
-        <RecordsList data={records} navigation={navigation} />
+        <RecordsList
+          data={{records: filteredRecords}}
+          navigation={navigation}
+        />
       </View>
       <Text>{'\n'} </Text>
       {returnAvailableBalance()}
