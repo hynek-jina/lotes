@@ -27,6 +27,8 @@ export const adminKeyAtom = selectAtom(
     return adminKey
   }
 )
+export const isFetchingAtom = atomWithMMKV('isFetching', false)
+export const lastFetchedAtom = atomWithMMKV('lastFetched', '')
 export const loteAmountAtom = atomWithMMKV('loteAmount', 0)
 export const nfcModalVisibilityAtom = atomWithMMKV('nfcModalVisibility', false)
 export const nfcModalMessageAtom = atomWithMMKV(

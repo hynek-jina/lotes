@@ -1,14 +1,19 @@
 import React, {useState} from 'react'
 import {Text, TouchableOpacity, View} from 'react-native'
+import {useAtom} from 'jotai'
+import {isFetchingAtom} from '../state/atoms'
 import {useApiCalls} from '../api'
 import {styles} from '../theme'
 import {writeNdef} from '../utils/nfc'
 
 function LoteDetail({route, navigation}: any): JSX.Element {
+  const [isFetching, setIsFetching] = useAtom(isFetchingAtom)
+
   const {record} = route.params
   const {deleteLnurl} = useApiCalls()
 
   const handleWriteButtonPress = (): void => {
+    setIsFetching(true)
     void (async () => {
       try {
         void writeNdef(
@@ -21,6 +26,7 @@ function LoteDetail({route, navigation}: any): JSX.Element {
         console.error(error)
       } finally {
         navigation.navigate('Home')
+        setIsFetching(false)
       }
     })()
   }
@@ -35,11 +41,14 @@ function LoteDetail({route, navigation}: any): JSX.Element {
   }
 
   const handleDeleteConfirmButtonPress = async (): Promise<void> => {
+    setIsFetching(true)
     try {
       await deleteLnurl(record.id)
       navigation.navigate('Home')
     } catch (error) {
       console.error(error)
+    } finally {
+      setIsFetching(false)
     }
   }
 
@@ -51,6 +60,7 @@ function LoteDetail({route, navigation}: any): JSX.Element {
         <TouchableOpacity
           style={styles.button}
           onPress={handleWriteButtonPress}
+          disabled={isFetching}
         >
           <Text style={styles.buttonText}>👉 Write to NFC</Text>
         </TouchableOpacity>
@@ -70,8 +80,11 @@ function LoteDetail({route, navigation}: any): JSX.Element {
             onPress={() => {
               void handleDeleteConfirmButtonPress()
             }}
+            disabled={isFetching}
           >
-            <Text style={styles.buttonText}>🗑️ Really delete</Text>
+            <Text style={styles.buttonText}>
+              {isFetching ? '🗑️ Deleting ...' : '🗑️ Really delete'}
+            </Text>
           </TouchableOpacity>
         )}
       </View>

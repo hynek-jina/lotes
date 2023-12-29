@@ -1,19 +1,21 @@
+import {Feather} from '@expo/vector-icons'
 import {useAtomValue} from 'jotai'
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {Text, TouchableOpacity, View} from 'react-native'
-import {userInfoAtom} from '../state/atoms'
-import {readNfc} from '../utils/nfc'
 import {useApiCalls, type RecordsApi} from '../api'
 import {RecordsList} from '../components/Lotes'
-import {Feather} from '@expo/vector-icons'
+import {isFetchingAtom} from '../state/atoms'
 import {styles} from '../theme'
+import {readNfc} from '../utils/nfc'
 
 function Home({navigation}: {navigation: any}): JSX.Element {
-  const userInfo = useAtomValue(userInfoAtom)
+  const isFetching = useAtomValue(isFetchingAtom)
+  // const lastFetched = useAtomValue(lastFetchedAtom)
+  // const userInfo = useAtomValue(userInfoAtom)
   const [balance, setBalance] = useState(0)
   const [refreshCounter, setRefreshCounter] = useState(0)
 
-  const domain = userInfo?.domain ?? ''
+  // const domain = userInfo?.domain ?? ''
 
   const {getBalance, getInvoice, scanLnurl, requestPayment, getRecords} =
     useApiCalls()
@@ -21,30 +23,30 @@ function Home({navigation}: {navigation: any}): JSX.Element {
   const [records, setRecords] = useState<RecordsApi>({records: []})
   const [allLotesValue, setAllLotesValue] = useState(0)
 
-  useEffect(() => {
-    async function fetchData(): Promise<void> {
-      setBalance(await getBalance())
-      const data = await getRecords()
-      setRecords(data)
-      const filteredRecords = data.records.filter(
-        (record) => record.uses - record.used >= 1
-      )
-      const totalAmount = filteredRecords.reduce(
-        (sum, record) => sum + record.max_withdrawable,
-        0
-      )
-      setAllLotesValue(totalAmount)
-    }
+  // useEffect(() => {
+  //   async function fetchData(): Promise<void> {
+  //     setBalance(await getBalance())
+  //     const data = await getRecords()
+  //     setRecords(data)
+  //     const filteredRecords = data.records.filter(
+  //       (record) => record.uses - record.used >= 1
+  //     )
+  //     const totalAmount = filteredRecords.reduce(
+  //       (sum, record) => sum + record.max_withdrawable,
+  //       0
+  //     )
+  //     setAllLotesValue(totalAmount)
+  //   }
 
-    const intervalId = setInterval(() => {
-      void fetchData()
-    }, 60_000)
-    void fetchData()
+  //   const intervalId = setInterval(() => {
+  //     void fetchData()
+  //   }, 60_000)
+  //   void fetchData()
 
-    return () => {
-      clearInterval(intervalId)
-    }
-  }, [domain, getBalance, getRecords, refreshCounter])
+  //   return () => {
+  //     clearInterval(intervalId)
+  //   }
+  // }, [domain, getBalance, getRecords, refreshCounter])
 
   const returnAvailableBalance = (): JSX.Element => {
     if (balance >= allLotesValue) {
@@ -110,6 +112,7 @@ function Home({navigation}: {navigation: any}): JSX.Element {
 
       <Feather
         onPress={handleRefreshButtonPress}
+        disabled={isFetching}
         style={styles.left}
         name="refresh-ccw"
         size={26}
@@ -133,12 +136,14 @@ function Home({navigation}: {navigation: any}): JSX.Element {
         <TouchableOpacity
           style={styles.button}
           onPress={handleClaimButtonPress}
+          disabled={isFetching}
         >
           <Text style={styles.buttonText}>🫳 Claim Lote</Text>
         </TouchableOpacity>
       </View>
+
       <View>
-        <Text style={styles.sectionHeader}>Your Lotes</Text>
+        <Text style={styles.sectionHeader}>Your Lotes:</Text>
         <RecordsList data={records} navigation={navigation} />
       </View>
       <Text>{'\n'} </Text>
