@@ -1,7 +1,7 @@
-import {getDefaultStore} from 'jotai'
-import {Platform} from 'react-native'
-import NfcManager, {Ndef, NfcTech} from 'react-native-nfc-manager'
-import {nfcModalVisibilityAtom} from '../state/atoms'
+import { getDefaultStore } from 'jotai'
+import { Platform } from 'react-native'
+import NfcManager, { Ndef, NfcTech } from 'react-native-nfc-manager'
+import { nfcModalVisibilityAtom } from '../state/atoms'
 
 export async function readNfc(): Promise<string> {
   getDefaultStore().set(nfcModalVisibilityAtom, true)
