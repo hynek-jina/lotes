@@ -1,6 +1,6 @@
-import { selectAtom } from 'jotai/utils'
-import { type RecordApi } from '../api'
-import { atomWithMMKV } from '../utils/atomWithMMKV'
+import {selectAtom} from 'jotai/utils'
+import {type RecordApi} from '../api'
+import {atomWithMMKV} from '../utils/atomWithMMKV'
 import fetchAdminKey from '../utils/fetchAdminKey'
 import parseLnbitsUrl from '../utils/parseLnbitsUrl'
 
@@ -29,7 +29,9 @@ export const adminKeyAtom = selectAtom(
   }
 )
 export const balanceAtom = atomWithMMKV('balance', 0)
-export const recordsAtom = atomWithMMKV('records', { records: [] } as { records: RecordApi[] });
+export const recordsAtom = atomWithMMKV('records', {records: []} as {
+  records: RecordApi[]
+})
 export const filteredRecordsAtom = selectAtom(recordsAtom, (records) => {
   const filteredRecords = records.records.filter(
     (record) => record.uses - record.used >= 1
@@ -41,7 +43,7 @@ export const allLotesValueAtom = selectAtom(filteredRecordsAtom, (records) => {
     (sum: number, record: RecordApi) => sum + record.max_withdrawable,
     0
   )
-  return totalAmount 
+  return totalAmount
 })
 
 export const refreshCounterAtom = atomWithMMKV('refreshCounter', 0)
