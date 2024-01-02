@@ -1,11 +1,11 @@
-import {useAtomValue, useSetAtom, useAtom} from 'jotai'
+import {useAtom, useAtomValue, useSetAtom} from 'jotai'
 import urlJoin from 'url-join'
 import {
   adminKeyAtom,
   isFetchingAtom,
-  userInfoAtom,
   lastFetchedAtom,
   refreshCounterAtom,
+  userInfoAtom,
 } from './state/atoms'
 
 interface Api {
@@ -21,24 +21,12 @@ interface Api {
 interface CreateUser {
   id: string
   name: string
-  admin: string
-  email: string
-  password: string
-  extra: {
-    additionalProp1: string
-    additionalProp2: string
-    additionalProp3: string
-  }
-  wallets: [
-    {
-      id: string
-      admin: string
-      name: string
-      user: string
-      adminkey: string
-      inkey: string
-    },
-  ]
+  user: string
+  adminkey: string
+  inkey: string
+  currency: null
+  balance_msat: number
+  deleted: boolean
 }
 
 interface getBalanceApiResponse {
@@ -94,20 +82,15 @@ export interface RecordsApi {
 
 export async function createUser(): Promise<CreateUser> {
   try {
-    const result: Response = await fetch(
-      urlJoin('https://lnbits.cz', 'usermanager/api/v1/users'),
-      {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          admin_id: '',
-          user_name: 'User name',
-          wallet_name: 'Wallet name',
-        }),
-      }
-    )
+    const result: Response = await fetch('https://lnbits.cz/api/v1/account', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: 'Lotes',
+      }),
+    })
     if (!result.ok) {
       throw new Error(
         `Failed to create a new user. Status: ${result.status} - ${result.statusText}`

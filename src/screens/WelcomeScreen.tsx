@@ -2,9 +2,9 @@ import React from 'react'
 import {Text, TouchableOpacity, View} from 'react-native'
 import {styles} from '../theme'
 
-import {useSetAtom, useAtom} from 'jotai'
+import {useAtom, useSetAtom} from 'jotai'
 import {createUser} from '../api'
-import {lnbitsUrlAtom, isFetchingAtom, lastFetchedAtom} from '../state/atoms'
+import {isFetchingAtom, lastFetchedAtom, lnbitsUrlAtom} from '../state/atoms'
 import constructLnbitsUrl from '../utils/constructLnbitsUrl'
 
 function Welcome({navigation}: {navigation: any}): JSX.Element {
@@ -20,8 +20,8 @@ function Welcome({navigation}: {navigation: any}): JSX.Element {
       console.log('NEW USER response: ', newUser)
       const newLnbitsUrl = constructLnbitsUrl(
         'https://lnbits.cz',
-        newUser.id,
-        newUser.wallets[0].id
+        newUser.user,
+        newUser.id
       )
       console.log('LNbits URL: ', newLnbitsUrl)
       setLnbitsUrl(newLnbitsUrl)
