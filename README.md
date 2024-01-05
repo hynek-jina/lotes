@@ -16,9 +16,10 @@ Lotes are bitcoin physical notes running on LNbits and Lightning Network. <br>
 - Scan received Lote (NFC card)
 - Sats will arrive to his LNbits wallet
 
-## Download
+## Downloads
 
-- [Join TestFlight to test app on iOS](https://testflight.apple.com/join/92K4nHPd)
+- [iPhone](https://testflight.apple.com/join/92K4nHPd) _(TestFlight version)_
+- [Android](https://play.google.com/store/apps/details?id=com.hynjin.lotesapp)
 
 ## Project and bounty program
 
