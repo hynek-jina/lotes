@@ -57,7 +57,7 @@ function Home({navigation}: {navigation: any}): JSX.Element {
       fetchData().catch((error) => {
         console.error(error)
       })
-    }, 10000)
+    }, 5000)
 
     return () => {
       clearInterval(intervalId)
@@ -78,6 +78,10 @@ function Home({navigation}: {navigation: any}): JSX.Element {
       }
     })()
   }
+
+  // const handleScannedLotePress = (): void => {
+  //   navigation.navigate('ScannedLote', {record: recordx})
+  // }
 
   return (
     <View style={styles.container}>
@@ -121,6 +125,9 @@ function Home({navigation}: {navigation: any}): JSX.Element {
       </View>
       <Text>{'\n'} </Text>
       {returnAvailableBalance()}
+      {/* <TouchableOpacity onPress={handleScannedLotePress} disabled={isFetching}>
+        <Text style={styles.link}>💡 Open Scanned Lote</Text>
+      </TouchableOpacity> */}
     </View>
   )
 }

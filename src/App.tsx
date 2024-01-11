@@ -5,6 +5,7 @@ import Home from './screens/HomeScreen'
 import Issue from './screens/IssueScreen'
 import Login from './screens/LoginScreen'
 import LoteDetail from './screens/LoteDetailScreen'
+import ScannedLote from './screens/ScannedLoteScreen'
 import Welcome from './screens/WelcomeScreen'
 import {lnbitsUrlAtom, nfcModalMessageAtom} from './state/atoms'
 import {Platform} from 'react-native'
@@ -55,6 +56,11 @@ export default function App(): JSX.Element {
           name="LoteDetail"
           options={{title: 'Lote detail'}}
           component={LoteDetail}
+        />
+        <Stack.Screen
+          name="ScannedLote"
+          options={{title: 'Scanned Lote'}}
+          component={ScannedLote}
         />
       </Stack.Navigator>
 
