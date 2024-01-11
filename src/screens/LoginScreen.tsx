@@ -1,4 +1,4 @@
-import {useAtom, useAtomValue} from 'jotai'
+import {useAtom} from 'jotai'
 import {
   Linking,
   Platform,
@@ -9,14 +9,13 @@ import {
   View,
 } from 'react-native'
 import appConfig from '../../app.config'
-import {adminKeyAtom, isFetchingAtom, lnbitsUrlAtom} from '../state/atoms'
+import {isFetchingAtom, lnbitsUrlAtom} from '../state/atoms'
 import {styles} from '../theme'
 import fetchAdminKey from '../utils/fetchAdminKey'
 
 const Login = ({navigation}: {navigation: any}): JSX.Element => {
   const [lnbitsUrl, setLnbitsUrl] = useAtom(lnbitsUrlAtom)
   const [isFetching, setIsFetching] = useAtom(isFetchingAtom)
-  const apiKey = useAtomValue(adminKeyAtom)
 
   const handleOpenWallet = (): void => {
     if (lnbitsUrl) void Linking.openURL(lnbitsUrl)
@@ -71,9 +70,6 @@ const Login = ({navigation}: {navigation: any}): JSX.Element => {
         </View>
         <Text style={[styles.secondaryText, {textAlign: 'center'}]}>
           App version: {appVersion}
-        </Text>
-        <Text style={[styles.secondaryText, {textAlign: 'center'}]}>
-          Api key: {apiKey}
         </Text>
       </SafeAreaView>
     </View>
