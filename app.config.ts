@@ -27,6 +27,10 @@ export default {
     },
     'android': {
       'versionCode': VERSION_CODE,
+      'adaptiveIcon': {
+        'foregroundImage': './assets/icon.png',
+        'backgroundColor': '#FFFFFF',
+      },
       'permissions': ['android.permission.NFC'],
       'package': 'com.hynjin.lotesapp',
     },
