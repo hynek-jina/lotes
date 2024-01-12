@@ -1,9 +1,9 @@
-import {Feather} from '@expo/vector-icons'
-import {useAtom, useAtomValue} from 'jotai'
-import React, {useEffect} from 'react'
-import {Text, TouchableOpacity, View} from 'react-native'
-import {useApiCalls} from '../api'
-import {RecordsList} from '../components/Lotes'
+import { Feather } from '@expo/vector-icons'
+import { useAtom, useAtomValue } from 'jotai'
+import React, { useEffect } from 'react'
+import { Text, TouchableOpacity, View } from 'react-native'
+import { useApiCalls } from '../api'
+import { RecordsList } from '../components/Lotes'
 import {
   allLotesValueAtom,
   balanceAtom,
@@ -12,9 +12,9 @@ import {
   recordsAtom,
   refreshCounterAtom,
 } from '../state/atoms'
-import {styles} from '../theme'
-import {readNfc} from '../utils/nfc'
+import { styles } from '../theme'
 import IsLoteInternal from '../utils/isLoteInternal'
+import { readNfc } from '../utils/nfc'
 
 function Home({navigation}: {navigation: any}): JSX.Element {
   const isFetching = useAtomValue(isFetchingAtom)
@@ -80,34 +80,22 @@ function Home({navigation}: {navigation: any}): JSX.Element {
     })()
   }
 
-  const recordx = {
-    'custom_url': null,
-    'id': 'A4gdJq',
-    'is_unique': true,
-    'k1': 'caXNX2YbiW74mZmVASTDCq',
-    'lnurl':
-      'LNURL1DP68GURN8GHJ7MRWVF5HGUEWVDAZ7AMFW35XGUNPWUHKZURF9AMRZTMVDE6HYMP0D5MKYM2GW4G9VVJP2AN9ZMTJWDN5WDFCTYEZ7KNWXETXYE2V2399VETRDP8XVJN6V3R5GDNCN793JH',
-    'max_withdrawable': 10,
-    'min_withdrawable': 10,
-    'number': 0,
-    'open_time': 1698471313,
-    'title': 'Lotes',
-    'unique_hash': 'm7bmHuPV2AWfQmrsgG58Y2',
-    'used': 1,
-    'uses': 1,
-    'usescsv': '',
-    'wait_time': 1,
-    'wallet': '361e12577aff4895826434540d807e18',
-    'webhook_body': null,
-    'webhook_headers': null,
-    'webhook_url': null,
-  }
-
   const handleScannedLotePress = (): void => {
-    IsLoteInternal(recordx.lnurl, records)
-      ? console.log('internal')
-      : console.log('external')
-    // navigation.navigate('ScannedLote', {record: recordx})
+    console.log('handleScannedLotePress')
+    void (async () => {
+      const lnurlFromNfc = await readNfc()
+      console.log('lnurlFromNfc: ', lnurlFromNfc)
+      if (IsLoteInternal(lnurlFromNfc, records)) {
+        navigation.navigate('LoteDetail', {
+          record: records.records.find(
+            (record) => record.lnurl === lnurlFromNfc
+          ),
+        })
+      } else {
+        const scannedData = await scanLnurl(lnurlFromNfc)
+        navigation.navigate('ScannedLote', {record: scannedData})
+      }
+    })()
   }
 
   return (
