@@ -1,9 +1,9 @@
-import { Feather } from '@expo/vector-icons'
-import { useAtom, useAtomValue } from 'jotai'
-import React, { useEffect } from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
-import { useApiCalls } from '../api'
-import { RecordsList } from '../components/Lotes'
+import {Feather} from '@expo/vector-icons'
+import {useAtom, useAtomValue} from 'jotai'
+import React, {useEffect} from 'react'
+import {Text, TouchableOpacity, View} from 'react-native'
+import {useApiCalls} from '../api'
+import {RecordsList} from '../components/Lotes'
 import {
   allLotesValueAtom,
   balanceAtom,
@@ -12,9 +12,9 @@ import {
   recordsAtom,
   refreshCounterAtom,
 } from '../state/atoms'
-import { styles } from '../theme'
+import {styles} from '../theme'
 import IsLoteInternal from '../utils/isLoteInternal'
-import { readNfc } from '../utils/nfc'
+import {readNfc} from '../utils/nfc'
 
 function Home({navigation}: {navigation: any}): JSX.Element {
   const isFetching = useAtomValue(isFetchingAtom)
@@ -81,11 +81,11 @@ function Home({navigation}: {navigation: any}): JSX.Element {
   }
 
   const handleScannedLotePress = (): void => {
-    console.log('handleScannedLotePress')
     void (async () => {
       const lnurlFromNfc = await readNfc()
       console.log('lnurlFromNfc: ', lnurlFromNfc)
-      if (IsLoteInternal(lnurlFromNfc, records)) {
+      const internalLote = IsLoteInternal(lnurlFromNfc, records)
+      if (internalLote) {
         navigation.navigate('LoteDetail', {
           record: records.records.find(
             (record) => record.lnurl === lnurlFromNfc

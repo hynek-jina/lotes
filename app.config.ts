@@ -6,6 +6,7 @@ export default {
   'expo': {
     'name': 'Lotes',
     'slug': 'lotes',
+    'scheme': 'lotes',
     'version': VERSION,
     'orientation': 'portrait',
     'plugins': [['react-native-nfc-manager', {includeNdefEntitlement: false}]],
