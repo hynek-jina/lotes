@@ -13,7 +13,7 @@ function ScannedLote({route, navigation}: any): JSX.Element {
   const {record} = route.params
 
   const handleClaimButtonPress = (): void => {
-    // TODO: Implement this:
+    // TODO: Implement Claim part (without additional scan)
     // void (async () => {
     //   try {
     //     const lnurlFromNfc = await readNfc()

@@ -1,25 +1,24 @@
-import {NavigationContainer} from '@react-navigation/native'
-import {createNativeStackNavigator} from '@react-navigation/native-stack'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import * as Linking from 'expo-linking'
-import {useAtomValue} from 'jotai'
-import {useEffect, useState} from 'react'
-import {Platform} from 'react-native'
+import { useAtomValue } from 'jotai'
+import { useEffect, useState } from 'react'
+import { Platform, Text } from 'react-native'
 import NfcManager from 'react-native-nfc-manager'
-import {Callout} from './components/Callout'
-import {NfcModal} from './components/ScanNfcModal'
+import { Callout } from './components/Callout'
+import { NfcModal } from './components/ScanNfcModal'
 import Home from './screens/HomeScreen'
 import Issue from './screens/IssueScreen'
 import Login from './screens/LoginScreen'
 import LoteDetail from './screens/LoteDetailScreen'
 import ScannedLote from './screens/ScannedLoteScreen'
 import Welcome from './screens/WelcomeScreen'
-import {lnbitsUrlAtom, nfcModalMessageAtom} from './state/atoms'
+import { nfcModalMessageAtom } from './state/atoms'
 
 const prefix = Linking.createURL('/')
 const Stack = createNativeStackNavigator()
 
 export default function App(): JSX.Element {
-  const lnbitsUrl = useAtomValue(lnbitsUrlAtom)
   const [hasNfc, setHasNfc] = useState(false)
   const modalMessage = useAtomValue(nfcModalMessageAtom)
 
@@ -27,8 +26,9 @@ export default function App(): JSX.Element {
     prefixes: [prefix],
     config: {
       screens: {
-        Home: 'home',
-        Settings: 'settings',
+        Welcome: 'Welcome',
+        Home: 'Home',
+        Settings: 'Settings',
       },
     },
   }
@@ -42,21 +42,19 @@ export default function App(): JSX.Element {
   }, [])
 
   return (
-    <NavigationContainer linking={linking}>
+    <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>
       <Stack.Navigator initialRouteName="Welcome">
-        {!lnbitsUrl ? (
-          <Stack.Screen
-            name="Welcome"
-            component={Welcome}
-            options={{headerShown: false}}
-          />
-        ) : (
-          <Stack.Screen
-            name="Home"
-            component={Home}
-            options={{headerShown: false}}
-          />
-        )}
+        <Stack.Screen
+          name="Welcome"
+          component={Welcome}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{headerShown: false}}
+        />
 
         <Stack.Screen name="Settings" component={Login} />
         <Stack.Screen

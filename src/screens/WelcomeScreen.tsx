@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Text, TouchableOpacity, View} from 'react-native'
 import {styles} from '../theme'
 
@@ -8,9 +8,15 @@ import {isFetchingAtom, lastFetchedAtom, lnbitsUrlAtom} from '../state/atoms'
 import constructLnbitsUrl from '../utils/constructLnbitsUrl'
 
 function Welcome({navigation}: {navigation: any}): JSX.Element {
-  const setLnbitsUrl = useSetAtom(lnbitsUrlAtom)
+  const [lnbitsUrl, setLnbitsUrl] = useAtom(lnbitsUrlAtom)
   const [isFetching, setIsFetching] = useAtom(isFetchingAtom)
   const setLastFetched = useSetAtom(lastFetchedAtom)
+
+  useEffect(() => {
+    if (lnbitsUrl) {
+      navigation.navigate('Home')
+    }
+  }, [lnbitsUrl, navigation])
 
   const handleNewUserButton = async (): Promise<void> => {
     setIsFetching(true)
