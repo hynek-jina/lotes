@@ -1,5 +1,5 @@
 import {Feather} from '@expo/vector-icons'
-import {useAtom, useAtomValue} from 'jotai'
+import {useAtom, useAtomValue, useSetAtom} from 'jotai'
 import React, {useEffect} from 'react'
 import {Text, TouchableOpacity, View} from 'react-native'
 import {useApiCalls} from '../api'
@@ -13,14 +13,13 @@ import {
   refreshCounterAtom,
 } from '../state/atoms'
 import {styles} from '../theme'
-import IsLoteInternal from '../utils/isLoteInternal'
 import {readNfc} from '../utils/nfc'
 
 function Home({navigation}: {navigation: any}): JSX.Element {
   const isFetching = useAtomValue(isFetchingAtom)
   const [refreshCounter, setRefreshCounter] = useAtom(refreshCounterAtom)
   const [balance, setBalance] = useAtom(balanceAtom)
-  const [records, setRecords] = useAtom(recordsAtom)
+  const setRecords = useSetAtom(recordsAtom)
   const filteredRecords = useAtomValue(filteredRecordsAtom)
   const allLotesValue = useAtomValue(allLotesValueAtom)
 
@@ -80,24 +79,6 @@ function Home({navigation}: {navigation: any}): JSX.Element {
     })()
   }
 
-  const handleScannedLotePress = (): void => {
-    void (async () => {
-      const lnurlFromNfc = await readNfc()
-      console.log('lnurlFromNfc: ', lnurlFromNfc)
-      const internalLote = IsLoteInternal(lnurlFromNfc, records)
-      if (internalLote) {
-        navigation.navigate('LoteDetail', {
-          record: records.records.find(
-            (record) => record.lnurl === lnurlFromNfc
-          ),
-        })
-      } else {
-        const scannedData = await scanLnurl(lnurlFromNfc)
-        navigation.navigate('ScannedLote', {record: scannedData})
-      }
-    })()
-  }
-
   return (
     <View style={styles.container}>
       <Feather
@@ -140,9 +121,6 @@ function Home({navigation}: {navigation: any}): JSX.Element {
       </View>
       <Text>{'\n'} </Text>
       {returnAvailableBalance()}
-      <TouchableOpacity onPress={handleScannedLotePress} disabled={isFetching}>
-        <Text style={styles.link}>💡 Open Scanned Lote</Text>
-      </TouchableOpacity>
     </View>
   )
 }
