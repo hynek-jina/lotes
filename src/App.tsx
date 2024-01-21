@@ -26,10 +26,7 @@ export default function App(): JSX.Element {
     prefixes: [prefix],
     config: {
       screens: {
-        Welcome: 'Welcome',
-        Home: 'Home',
-        Settings: 'Settings',
-        ScannedLote: 'ScannedLote/:id',
+        ScannedLote: ':id',
       },
     },
   }

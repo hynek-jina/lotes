@@ -1,9 +1,9 @@
-import {Feather} from '@expo/vector-icons'
-import {useAtom, useAtomValue, useSetAtom} from 'jotai'
-import React, {useEffect} from 'react'
-import {Text, TouchableOpacity, View} from 'react-native'
-import {useApiCalls} from '../api'
-import {RecordsList} from '../components/Lotes'
+import { Feather } from '@expo/vector-icons'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import React, { useEffect } from 'react'
+import { Text, TouchableOpacity, View } from 'react-native'
+import { useApiCalls } from '../api'
+import { RecordsList } from '../components/Lotes'
 import {
   allLotesValueAtom,
   balanceAtom,
@@ -12,8 +12,8 @@ import {
   recordsAtom,
   refreshCounterAtom,
 } from '../state/atoms'
-import {styles} from '../theme'
-import {readNfc} from '../utils/nfc'
+import { styles } from '../theme'
+import { readNfc } from '../utils/nfc'
 
 function Home({navigation}: {navigation: any}): JSX.Element {
   const isFetching = useAtomValue(isFetchingAtom)
@@ -68,6 +68,7 @@ function Home({navigation}: {navigation: any}): JSX.Element {
     void (async () => {
       try {
         const lnurlFromNfc = await readNfc()
+        if (!lnurlFromNfc) return
         const scanResultJson = await scanLnurl(lnurlFromNfc)
         const temporaryAmount = scanResultJson.maxWithdrawable / 1000
         const createdInvoice = await getInvoice(temporaryAmount)
@@ -77,6 +78,13 @@ function Home({navigation}: {navigation: any}): JSX.Element {
         console.error(error)
       }
     })()
+  }
+
+  const handleAdhocButtonPress = (): void => {
+    const testUrl =
+      'LNURL1DP68GURN8GHJ7MRWVF5HGUEWVDAZ7AMFW35XGUNPWUHKZURF9AMRZTMVDE6HYMP0X3HKK3TTGATXG4R92A5KX5RWG4252KJD8YUJ74PK29JKZ6ZD2D34SW2PDENNGM2RVF9KW4RT3YLMZ9'
+    const result = scanLnurl(testUrl)
+    console.log('ScanLnurl result', result)
   }
 
   return (
@@ -121,6 +129,13 @@ function Home({navigation}: {navigation: any}): JSX.Element {
       </View>
       <Text>{'\n'} </Text>
       {returnAvailableBalance()}
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleAdhocButtonPress}
+        disabled={isFetching}
+      >
+        <Text style={styles.buttonText}>Test</Text>
+      </TouchableOpacity>
     </View>
   )
 }
