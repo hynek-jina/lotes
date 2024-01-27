@@ -176,16 +176,14 @@ export function useApiCalls(): Api {
 
       setIsFetching(true)
       setLastFetched('scanLnurl')
-      const result: Response = await fetch(
-        urlJoin(domain, '/api/v1/lnurlscan/', lnurl),
-        {
-          method: 'GET',
-          headers: {
-            'Content-type': 'application/json',
-            'X-Api-Key': apiKey,
-          },
-        }
-      )
+      const url = urlJoin(domain, '/api/v1/lnurlscan/', lnurl)
+      const result: Response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Api-Key': apiKey,
+        },
+      })
 
       if (!result.ok) {
         setIsFetching(false)

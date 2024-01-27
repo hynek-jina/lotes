@@ -1,11 +1,12 @@
-const VERSION_CODE = 12
-const VERSION = '24.1.2'
+const VERSION_CODE = 14
+const VERSION = '24.1.4'
 
 const versionString = `${VERSION} (${VERSION_CODE})`
 export default {
   'expo': {
     'name': 'Lotes',
     'slug': 'lotes',
+    'scheme': 'lotes',
     'version': VERSION,
     'orientation': 'portrait',
     'plugins': [['react-native-nfc-manager', {includeNdefEntitlement: false}]],
@@ -27,6 +28,10 @@ export default {
     },
     'android': {
       'versionCode': VERSION_CODE,
+      'adaptiveIcon': {
+        'foregroundImage': './assets/icon.png',
+        'backgroundColor': '#FFFFFF',
+      },
       'permissions': ['android.permission.NFC'],
       'package': 'com.hynjin.lotesapp',
     },

@@ -68,6 +68,7 @@ function Home({navigation}: {navigation: any}): JSX.Element {
     void (async () => {
       try {
         const lnurlFromNfc = await readNfc()
+        if (!lnurlFromNfc) return
         const scanResultJson = await scanLnurl(lnurlFromNfc)
         const temporaryAmount = scanResultJson.maxWithdrawable / 1000
         const createdInvoice = await getInvoice(temporaryAmount)
@@ -78,10 +79,6 @@ function Home({navigation}: {navigation: any}): JSX.Element {
       }
     })()
   }
-
-  // const handleScannedLotePress = (): void => {
-  //   navigation.navigate('ScannedLote', {record: recordx})
-  // }
 
   return (
     <View style={styles.container}>
@@ -125,9 +122,6 @@ function Home({navigation}: {navigation: any}): JSX.Element {
       </View>
       <Text>{'\n'} </Text>
       {returnAvailableBalance()}
-      {/* <TouchableOpacity onPress={handleScannedLotePress} disabled={isFetching}>
-        <Text style={styles.link}>💡 Open Scanned Lote</Text>
-      </TouchableOpacity> */}
     </View>
   )
 }
