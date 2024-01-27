@@ -1,4 +1,4 @@
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import {useAtom, useAtomValue, useSetAtom} from 'jotai'
 import urlJoin from 'url-join'
 import {
   adminKeyAtom,
@@ -176,19 +176,14 @@ export function useApiCalls(): Api {
 
       setIsFetching(true)
       setLastFetched('scanLnurl')
-      console.log('domain: ', domain)
-      console.log('apiKey: ', apiKey)
-      console.log("adresa: ", urlJoin(domain, '/api/v1/lnurlscan/', lnurl))
-      const result: Response = await fetch(
-        urlJoin(domain, '/api/v1/lnurlscan/', lnurl),
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Api-Key': apiKey,
-          },
-        }
-      )
+      const url = urlJoin(domain, '/api/v1/lnurlscan/', lnurl)
+      const result: Response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Api-Key': apiKey,
+        },
+      })
 
       if (!result.ok) {
         setIsFetching(false)
@@ -196,7 +191,7 @@ export function useApiCalls(): Api {
           `Failed to scan lnurl. Status: ${result.status} - ${result.statusText}`
         )
       }
-      console.log('result: ', result)
+
       const json: scanLnurlApiResponse = await result.json()
       setIsFetching(false)
 

@@ -1760,7 +1760,7 @@
     node-forge "^1.2.1"
     nullthrows "^1.1.1"
 
-"@expo/config-plugins@7.2.5", "@expo/config-plugins@~7.2.0", "@expo/config-plugins@~7.2.2":
+"@expo/config-plugins@7.2.5", "@expo/config-plugins@~7.2.0", "@expo/config-plugins@~7.2.5":
   version "7.2.5"
   resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-7.2.5.tgz#b15f22878975fdc4ddcfa8cdc971937ddc4c0249"
   integrity sha512-w+5ccu1IxBHgyQk9CPFKLZOk8yZQEyTjbJwOzESK1eR7QwosbcsLkN1c1WWUZYiCXwORu3UTwJYll4+X2xxJhQ==
@@ -7356,12 +7356,12 @@ react-native-mmkv@^2.6.3:
   resolved "https://registry.yarnpkg.com/react-native-mmkv/-/react-native-mmkv-2.6.3.tgz#6bfd1b3dd4b264c86e68adbaa9692f3388af2b5d"
   integrity sha512-CkLAU5EX18eDw0Q+h6qEXPvynb+NVDu54cOY3h4h9VUhaaflfAmGWBJRQCBQz5M0VdnS8utjgJNryTAWKUTqpw==
 
-react-native-nfc-manager@^3.14.8:
-  version "3.14.8"
-  resolved "https://registry.yarnpkg.com/react-native-nfc-manager/-/react-native-nfc-manager-3.14.8.tgz#8ae9a19b4411c284c3554e2851910ea18adbb074"
-  integrity sha512-ZSvBMN1dDHcYp9RTrNnu6dbEgQpEWZB/PJD3xsWnXpRs1jbReTq2byzdtjNK6wJtUruJ57QG7zXMfm/TKS/I6g==
+react-native-nfc-manager@^3.14.12:
+  version "3.14.12"
+  resolved "https://registry.yarnpkg.com/react-native-nfc-manager/-/react-native-nfc-manager-3.14.12.tgz#a31b65ebe0579766f89c5fb188231d87546a0b97"
+  integrity sha512-UtzUGyiwjS5rt76A8Kl22vXjdXJjEBModOUMQ5W53vVKkVcnnIAPS+POWj+HLJPxn4gb5t1FibjLaQnZYdpofw==
   dependencies:
-    "@expo/config-plugins" "~7.2.2"
+    "@expo/config-plugins" "~7.2.5"
 
 react-native-safe-area-context@4.6.3:
   version "4.6.3"
