@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from 'react'
-import {Text, TouchableOpacity, View} from 'react-native'
-import {useAtom, useAtomValue} from 'jotai'
-import {recordsAtom, refreshCounterAtom, isFetchingAtom} from '../state/atoms'
-import {useApiCalls} from '../api'
-import type {scanLnurlApiResponse} from '../api'
+import { useAtom, useAtomValue } from 'jotai'
+import React, { useEffect, useState } from 'react'
+import { Text, TouchableOpacity, View } from 'react-native'
+import type { scanLnurlApiResponse } from '../api'
+import { useApiCalls } from '../api'
+import { isFetchingAtom, recordsAtom, refreshCounterAtom } from '../state/atoms'
 
-import {styles} from '../theme'
+import { styles } from '../theme'
 
 function ScannedLote({route, navigation}: any): JSX.Element {
-  const id = route.params
+  const {id} = route.params
   const records = useAtomValue(recordsAtom)
   const [refreshCounter, setRefreshCounter] = useAtom(refreshCounterAtom)
   const isFetching = useAtomValue(isFetchingAtom)
@@ -55,7 +55,7 @@ function ScannedLote({route, navigation}: any): JSX.Element {
     <View style={styles.container}>
       <Text style={styles.sectionHeader}>Lote contains promise of:</Text>
       <Text style={styles.header}>
-        {selectedRecord === null ? 'loading' : selectedRecord.maxWithdrawable}
+        {selectedRecord === null ? 'loading' : selectedRecord.maxWithdrawable/1000}
       </Text>
       <Text style={styles.subHeader}>sats</Text>
       <View style={styles.buttonContainer}>

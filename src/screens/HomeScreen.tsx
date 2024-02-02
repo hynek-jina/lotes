@@ -1,9 +1,9 @@
-import { Feather } from '@expo/vector-icons'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import React, { useEffect } from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
-import { useApiCalls } from '../api'
-import { RecordsList } from '../components/Lotes'
+import {Feather} from '@expo/vector-icons'
+import {useAtom, useAtomValue, useSetAtom} from 'jotai'
+import React, {useEffect} from 'react'
+import {Text, TouchableOpacity, View} from 'react-native'
+import {useApiCalls} from '../api'
+import {RecordsList} from '../components/Lotes'
 import {
   allLotesValueAtom,
   balanceAtom,
@@ -12,8 +12,8 @@ import {
   recordsAtom,
   refreshCounterAtom,
 } from '../state/atoms'
-import { styles } from '../theme'
-import { readNfc } from '../utils/nfc'
+import {styles} from '../theme'
+import {readNfc} from '../utils/nfc'
 
 function Home({navigation}: {navigation: any}): JSX.Element {
   const isFetching = useAtomValue(isFetchingAtom)
@@ -80,6 +80,12 @@ function Home({navigation}: {navigation: any}): JSX.Element {
     })()
   }
 
+  const handleCheckLotePress = (): void => {
+    navigation.navigate('ScannedLote', {
+      id: 'LNURL1DP68GURN8GHJ7MRWVF5HGUEWVDAZ7AMFW35XGUNPWUHKZURF9AMRZTMVDE6HYMP0G9V42MT9WAX5GCF58QUKG6MHXFQ5WURXFFZZ73EJWPJ8XJ6Z8924WNJ8TFPNYNJP893XJ7JENWYMQM',
+    })
+  }
+
   return (
     <View style={styles.container}>
       <Feather
@@ -122,6 +128,9 @@ function Home({navigation}: {navigation: any}): JSX.Element {
       </View>
       <Text>{'\n'} </Text>
       {returnAvailableBalance()}
+      <TouchableOpacity onPress={handleCheckLotePress} disabled={isFetching}>
+        <Text style={styles.link}>🔍 Check Lote</Text>
+      </TouchableOpacity>
     </View>
   )
 }
