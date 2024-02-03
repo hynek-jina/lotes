@@ -80,6 +80,20 @@ function Home({navigation}: {navigation: any}): JSX.Element {
     })()
   }
 
+  const handleCheckLotePress = (): void => {
+    void (async () => {
+      try {
+        const lnurlFromNfc = await readNfc()
+        if (!lnurlFromNfc) return
+        navigation.navigate('ScannedLote', {
+          id: lnurlFromNfc,
+        })
+      } catch (error) {
+        console.error(error)
+      }
+    })()
+  }
+
   return (
     <View style={styles.container}>
       <Feather
@@ -122,6 +136,9 @@ function Home({navigation}: {navigation: any}): JSX.Element {
       </View>
       <Text>{'\n'} </Text>
       {returnAvailableBalance()}
+      <TouchableOpacity onPress={handleCheckLotePress} disabled={isFetching}>
+        <Text style={styles.link}>🔍 Check Lote</Text>
+      </TouchableOpacity>
     </View>
   )
 }

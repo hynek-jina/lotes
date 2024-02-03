@@ -42,7 +42,7 @@ interface getInvoiceApiResponse {
   lnurl_response: string
 }
 
-interface scanLnurlApiResponse {
+export interface scanLnurlApiResponse {
   domain: string
   tag: string
   callback: string
