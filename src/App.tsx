@@ -1,8 +1,9 @@
 import {NavigationContainer} from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
+import {HeaderBackButton} from '@react-navigation/elements'
 import * as Linking from 'expo-linking'
 import {useAtomValue} from 'jotai'
-import {useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Platform, Text} from 'react-native'
 import NfcManager from 'react-native-nfc-manager'
 import {Callout} from './components/Callout'
@@ -60,14 +61,35 @@ export default function App(): JSX.Element {
           options={{title: 'Issue New Lote'}}
           component={Issue}
         />
+
         <Stack.Screen
           name="LoteDetail"
-          options={{title: 'Lote detail'}}
+          options={({navigation}) => ({
+            title: 'Lote Detail',
+            headerLeft: (props) => (
+              <HeaderBackButton
+                {...props}
+                onPress={() => {
+                  navigation.navigate('Home')
+                }}
+              />
+            ),
+          })}
           component={LoteDetail}
         />
         <Stack.Screen
           name="ScannedLote"
-          options={{title: 'Scanned Lote'}}
+          options={({navigation}) => ({
+            title: 'Scanned Lote',
+            headerLeft: (props) => (
+              <HeaderBackButton
+                {...props}
+                onPress={() => {
+                  navigation.navigate('Home')
+                }}
+              />
+            ),
+          })}
           component={ScannedLote}
         />
       </Stack.Navigator>
