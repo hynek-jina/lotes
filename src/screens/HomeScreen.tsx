@@ -81,9 +81,17 @@ function Home({navigation}: {navigation: any}): JSX.Element {
   }
 
   const handleCheckLotePress = (): void => {
-    navigation.navigate('ScannedLote', {
-      id: 'LNURL1DP68GURN8GHJ7MRWVF5HGUEWVDAZ7AMFW35XGUNPWUHKZURF9AMRZTMVDE6HYMP0G9V42MT9WAX5GCF58QUKG6MHXFQ5WURXFFZZ73EJWPJ8XJ6Z8924WNJ8TFPNYNJP893XJ7JENWYMQM',
-    })
+    void (async () => {
+      try {
+        const lnurlFromNfc = await readNfc()
+        if (!lnurlFromNfc) return
+        navigation.navigate('ScannedLote', {
+          id: lnurlFromNfc,
+        })
+      } catch (error) {
+        console.error(error)
+      }
+    })()
   }
 
   return (
